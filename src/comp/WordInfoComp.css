@@ -1,0 +1,15 @@
+.word-info {
+	padding: 1vmin;
+}
+
+.invalid-word {
+	font-style: italic;
+}
+
+.valid-word {
+	font-weight: bold;
+}
+
+.word-score {
+	font-size: smaller;
+}

@@ -1,0 +1,62 @@
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-family: sans-serif;
+	font-size: 4vmin;
+	user-select: none;
+	background-color: #222;
+	color: white;
+}
+
+#root {
+	display: flex;
+	flex-direction: column;
+}
+
+@media (min-aspect-ratio: 4/3) {
+	#root {
+		flex-direction: row;
+	}
+}
+
+a {
+	color: skyblue;
+}
+
+a:visited {
+	color: violet;
+}
+
+button {
+	background-color: #666;
+	color: white;
+	border-width: 0.5vmin;
+	border-style: solid;
+	border-top-color: #bbb;
+	border-left-color: #999;
+	border-right-color: #444;
+	border-bottom-color: #333;
+	text-shadow: -1px -1px 0 #333;
+	padding: 0.5vmin 1vmin;
+}
+
+button:active {
+	background-color: #555;
+	border-bottom-color: #999;
+	border-right-color: #777;
+	border-left-color: #333;
+	border-top-color: #111;
+}
+
+button:focus {
+	text-shadow: 0 0 1vmin white;
+}
+
+button:disabled {
+	text-shadow: -1px -1px 0 #333;
+	background-color: #666;
+	color: #bbb;
+	border-color: transparent;
+}

@@ -1,0 +1,7 @@
+.aspect {
+	display: grid;
+}
+
+.aspect > * {
+	grid-area: 1 / 1 / 2 / 2;
+}

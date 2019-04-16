@@ -1,0 +1,8 @@
+.players {
+	border-spacing: 1vmin;
+}
+.player-name-button {
+	display: block;
+	width: 100%;
+	text-align: left;
+}

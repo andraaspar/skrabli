@@ -1,0 +1,41 @@
+.board {
+	width: 25rem;
+	display: grid;
+	grid-template-columns: repeat(15, calc((100% - 14px) / 15));
+	grid-template-rows: repeat(15, auto);
+	grid-gap: 1px;
+}
+
+.board-field {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-color: #444;
+	color: white;
+	text-align: center;
+	font-size: 0.5rem;
+	border: 1px solid transparent;
+	cursor: pointer;
+	white-space: pre-wrap;
+}
+
+.board-field.is-start,
+.board-field.is-double-word {
+	background-color: indianred;
+}
+
+.board-field.is-triple-word {
+	background-color: crimson;
+}
+
+.board-field.is-double-letter {
+	background-color: cornflowerblue;
+}
+
+.board-field.is-triple-letter {
+	background-color: royalblue;
+}
+
+.board-field.is-selected {
+	border-color: hotpink;
+}
