@@ -1,8 +1,7 @@
 import { isUndefinedOrNull } from 'illa/Type'
-import { IState } from '../model/State'
 import { TSetStateReducer } from '../model/TSetStateReducer'
 
-export function nextPlayer(): TSetStateReducer<IState> {
+export function nextPlayer(): TSetStateReducer {
 	return state => {
 		const { playerIndex } = state
 		return {

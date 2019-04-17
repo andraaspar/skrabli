@@ -1,10 +1,9 @@
-import { IState } from '../model/State'
 import { TSetStateReducer } from '../model/TSetStateReducer'
 
 export function swapHands(o: {
 	handIndexA: number
 	handIndexB: number
-}): TSetStateReducer<IState> {
+}): TSetStateReducer {
 	return ({ hands, playerIndex }) => {
 		const hand = hands[playerIndex!]
 		const handIndexA = Math.min(o.handIndexA, o.handIndexB)

@@ -1,9 +1,8 @@
 import { isUndefinedOrNull } from 'illa/Type'
 import { IField } from '../model/Field'
-import { IState } from '../model/State'
 import { TSetStateReducer } from '../model/TSetStateReducer'
 
-export function collectTiles(): TSetStateReducer<IState> {
+export function collectTiles(): TSetStateReducer {
 	return ({ board, playerIndex, hands }) => {
 		const tiles = board
 			.filter(isFieldAffected)

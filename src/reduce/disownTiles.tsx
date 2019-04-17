@@ -1,7 +1,6 @@
-import { IState } from '../model/State'
 import { TSetStateReducer } from '../model/TSetStateReducer'
 
-export function disownTiles(): TSetStateReducer<IState> {
+export function disownTiles(): TSetStateReducer {
 	return ({ board }) => ({
 		board: board.map(field =>
 			field.tile && field.tile.isOwned

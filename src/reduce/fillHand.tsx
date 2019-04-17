@@ -1,9 +1,8 @@
 import { isUndefinedOrNull } from 'illa/Type'
-import { IState } from '../model/State'
 import { ITile } from '../model/Tile'
 import { TSetStateReducer } from '../model/TSetStateReducer'
 
-export function fillHand(): TSetStateReducer<IState> {
+export function fillHand(): TSetStateReducer {
 	return state => {
 		const { bag, hands, playerIndex } = state
 		if (isUndefinedOrNull(playerIndex)) throw `[ppt31s]`

@@ -1,8 +1,7 @@
 import { Mode } from '../model/Mode'
-import { IState } from '../model/State'
 import { TSetStateReducer } from '../model/TSetStateReducer'
 
-export function setMode(mode: Mode): TSetStateReducer<IState> {
+export function setMode(mode: Mode): TSetStateReducer {
 	return state => ({
 		mode,
 		fieldIndex: mode === state.mode ? state.fieldIndex : null,

@@ -1,4 +1,3 @@
-import { IState } from '../model/State'
 import { TSetStateReducer } from '../model/TSetStateReducer'
 
 export function swapHandAndBoard({
@@ -7,7 +6,7 @@ export function swapHandAndBoard({
 }: {
 	handIndex: number
 	fieldIndex: number
-}): TSetStateReducer<IState> {
+}): TSetStateReducer {
 	return ({ board, hands, playerIndex }) => {
 		const field = board[fieldIndex]
 		const hand = hands[playerIndex!]

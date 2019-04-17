@@ -1,10 +1,9 @@
-import { IState } from '../model/State'
 import { TSetStateReducer } from '../model/TSetStateReducer'
 
 export function swapTiles(o: {
 	fieldIndexA: number
 	fieldIndexB: number
-}): TSetStateReducer<IState> {
+}): TSetStateReducer {
 	return ({ board }) => {
 		const fieldIndexA = Math.min(o.fieldIndexA, o.fieldIndexB)
 		const fieldIndexB = Math.max(o.fieldIndexA, o.fieldIndexB)

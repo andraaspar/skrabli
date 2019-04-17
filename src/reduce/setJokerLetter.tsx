@@ -1,7 +1,6 @@
-import { IState } from '../model/State'
 import { TSetStateReducer } from '../model/TSetStateReducer'
 
-export function setJokerLetter(letter: string): TSetStateReducer<IState> {
+export function setJokerLetter(letter: string): TSetStateReducer {
 	return ({ board, fieldIndex }) => {
 		if (!fieldIndex) return {}
 		const field = board[fieldIndex]

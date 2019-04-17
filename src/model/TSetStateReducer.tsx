@@ -1,1 +1,3 @@
-export type TSetStateReducer<T> = (s: T) => Partial<T>
+import { IState } from './State'
+
+export type TSetStateReducer = (s: IState) => Partial<IState>
