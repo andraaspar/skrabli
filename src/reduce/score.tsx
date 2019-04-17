@@ -1,6 +1,6 @@
 import { IState } from '../model/State'
 import { TSetStateReducer } from '../model/TSetStateReducer'
-import { getMoveScore } from './getMoveScore'
+import { getMoveScore } from '../select/getMoveScore'
 
 export function score(): TSetStateReducer<IState> {
 	return ({ players, playerIndex, board }) => {

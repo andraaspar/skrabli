@@ -1,6 +1,7 @@
 import { Direction } from '../model/Direction'
 import { IField } from '../model/Field'
 import { getFieldIndexOffset } from './getNextFieldIndex'
+
 export function isThereAGap(
 	board: ReadonlyArray<IField>,
 	startFieldIndex: number,

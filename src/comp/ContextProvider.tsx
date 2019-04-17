@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react'
-import { createState } from '../fun/createState'
+import { createState } from '../reduce/createState'
 import { IState } from '../model/State'
 import { TSetState } from '../model/TSetState'
 import { TSetStateReducer } from '../model/TSetStateReducer'

@@ -1,6 +1,7 @@
 import { BOARD_SIZE } from '../model/Constants'
 import { IField } from '../model/Field'
 import { getColumnIndex } from './getColumnIndex'
+
 export function getColumnLine(
 	board: ReadonlyArray<IField>,
 	fieldIndex: number,
