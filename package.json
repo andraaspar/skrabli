@@ -10,6 +10,8 @@
 		"@types/node": "11.13.0",
 		"@types/react": "16.8.13",
 		"@types/react-dom": "16.8.3",
+		"compression": "^1.7.4",
+		"express": "^4.16.4",
 		"gh-pages": "^2.0.1",
 		"illa": "^16.0.0",
 		"lodash": "^4.17.11",
@@ -26,7 +28,8 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"serve": "node --watch build server.js"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
