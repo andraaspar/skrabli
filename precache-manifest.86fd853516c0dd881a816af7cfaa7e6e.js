@@ -4,15 +4,15 @@ self.__precacheManifest = [
     "url": "/skrabli/static/js/runtime~main.6f60a26b.js"
   },
   {
-    "revision": "d79ac3846d23e34a3153",
-    "url": "/skrabli/static/js/main.a82d977e.chunk.js"
+    "revision": "cc850000cd34a4e6ddf4",
+    "url": "/skrabli/static/js/main.dd649c84.chunk.js"
   },
   {
     "revision": "b4f89c067493d8656b86",
     "url": "/skrabli/static/js/2.112ce33d.chunk.js"
   },
   {
-    "revision": "d79ac3846d23e34a3153",
+    "revision": "cc850000cd34a4e6ddf4",
     "url": "/skrabli/static/css/main.45148e64.chunk.css"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/skrabli/static/css/2.a3ab5a97.chunk.css"
   },
   {
-    "revision": "fe46a26733e4c22e3ecc8827569de02a",
+    "revision": "eb7414327e6816b8b1c4ec01ef31c5b8",
     "url": "/skrabli/index.html"
   }
 ];
