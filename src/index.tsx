@@ -1,15 +1,24 @@
 import 'normalize.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import { combineReducers } from 'redux'
+import { configureStore } from 'redux-starter-kit'
 import { AppComp } from './comp/AppComp'
-import { ContextProvider } from './comp/ContextProvider'
 import './index.css'
+import { appStateReducer } from './model/AppState'
 import * as serviceWorker from './serviceWorker'
 
+export const store = configureStore({
+	reducer: combineReducers({
+		app: appStateReducer,
+	}),
+})
+
 ReactDOM.render(
-	<ContextProvider>
+	<Provider store={store}>
 		<AppComp />
-	</ContextProvider>,
+	</Provider>,
 	document.getElementById('root'),
 )
 

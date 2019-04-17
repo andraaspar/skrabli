@@ -10,6 +10,7 @@
 		"@types/node": "11.13.0",
 		"@types/react": "16.8.13",
 		"@types/react-dom": "16.8.3",
+		"@types/react-redux": "^7.0.6",
 		"compression": "^1.7.4",
 		"express": "^4.16.4",
 		"gh-pages": "^2.0.1",
@@ -19,7 +20,10 @@
 		"normalize.css": "^8.0.1",
 		"react": "^16.8.6",
 		"react-dom": "^16.8.6",
+		"react-redux": "^7.0.2",
 		"react-scripts": "2.1.8",
+		"redux": "^4.0.1",
+		"redux-starter-kit": "^0.4.3",
 		"typescript": "3.4.2"
 	},
 	"scripts": {
