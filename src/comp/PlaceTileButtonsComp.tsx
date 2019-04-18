@@ -16,9 +16,12 @@ import { TBoard } from '../model/Board'
 import { Mode } from '../model/Mode'
 import { MoveError } from '../model/MoveError'
 import letters from '../res/letters.json'
-import { getMoveScoreFromState } from '../select/getMoveScore'
-import { selectBag, selectBoard } from '../select/simpleSelectors'
-import { validateMoveFromState } from '../select/validateMove'
+import { selectMoveScoreFromState } from '../select/selectMoveScore'
+import {
+	selectBagFromState,
+	selectBoardFromState,
+} from '../select/simpleSelectors'
+import { selectMoveErrorsFromState } from '../select/selectMoveErrors'
 import './PlaceTileButtonsComp.css'
 
 interface PlaceTileButtonsCompPropsFromStore {
@@ -34,11 +37,11 @@ export interface PlaceTileButtonsCompProps
 
 export const PlaceTileButtonsComp = connect(
 	(state: TState): PlaceTileButtonsCompPropsFromStore => ({
-		bag: selectBag(state),
-		board: selectBoard(state),
+		bag: selectBagFromState(state),
+		board: selectBoardFromState(state),
 		fieldIndex: state.app.fieldIndex,
-		moveScore: getMoveScoreFromState(state),
-		moveErrors: validateMoveFromState(state),
+		moveScore: selectMoveScoreFromState(state),
+		moveErrors: selectMoveErrorsFromState(state),
 	}),
 )(
 	({

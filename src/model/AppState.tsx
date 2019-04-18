@@ -1,7 +1,7 @@
 import { isUndefinedOrNull, withInterface } from 'illa/Type'
 import { createReducer, PayloadAction } from 'redux-starter-kit'
 import { CaseReducersMapObject } from 'redux-starter-kit/src/createReducer'
-import { getMoveScore } from '../select/getMoveScore'
+import { selectMoveScore } from '../select/selectMoveScore'
 import {
 	addTilesToBag,
 	collectTiles,
@@ -123,7 +123,7 @@ export const appStateReducer = createReducer(
 		},
 		[score.type]: (state, action: ReturnType<typeof score>) => {
 			const { players, playerIndex } = state
-			players[playerIndex!].score += getMoveScore(state)
+			players[playerIndex!].score += selectMoveScore(state)
 		},
 		[selectField.type]: (state, action: ReturnType<typeof selectField>) => {
 			state.fieldIndex = action.payload.fieldIndex

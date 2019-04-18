@@ -1,18 +1,17 @@
 import { isUndefinedOrNull } from 'illa/Type'
 import { defaultMemoize } from 'reselect'
+import { getFieldIndexOffset } from '../fun/getNextFieldIndex'
+import { getWordsAt } from '../fun/getWordsAt'
 import { TState } from '../index'
 import { IAppState } from '../model/AppState'
 import { TBoard } from '../model/Board'
 import { Direction } from '../model/Direction'
 import { IField } from '../model/Field'
-import { getFieldIndexOffset } from './getNextFieldIndex'
-import { getWordInfo } from './getWordInfo'
-import { getWordsAt } from './getWordsAt'
-import { isTileOwned } from './isTileOwned'
+import { selectWordInfo } from './selectWordInfo'
 
-export const getAllOwnedWords = defaultMemoize(
+export const selectAllOwnedWords = defaultMemoize(
 	(board: TBoard): IField[][] => {
-		const { firstFieldIndex, lastFieldIndex, direction } = getWordInfo(
+		const { firstFieldIndex, lastFieldIndex, direction } = selectWordInfo(
 			board,
 		)
 		const words: IField[][] = []
@@ -25,7 +24,7 @@ export const getAllOwnedWords = defaultMemoize(
 			let fieldIndex = firstFieldIndex
 			let field = board[fieldIndex]
 			while (field && field.tile) {
-				if (isTileOwned(field.tile)) {
+				if (field.tile.isOwned) {
 					const { horizontal, vertical } = getWordsAt(
 						board,
 						fieldIndex,
@@ -56,7 +55,7 @@ export const getAllOwnedWords = defaultMemoize(
 	},
 )
 
-export const getAllOwnedWordsFromAppState = (s: IAppState) =>
-	getAllOwnedWords(s.board)
-export const getAllOwnedWordsFromState = (s: TState) =>
-	getAllOwnedWordsFromAppState(s.app)
+export const selectAllOwnedWordsFromAppState = (s: IAppState) =>
+	selectAllOwnedWords(s.board)
+export const selectAllOwnedWordsFromState = (s: TState) =>
+	selectAllOwnedWordsFromAppState(s.app)

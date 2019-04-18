@@ -8,8 +8,11 @@ import { TBoard } from '../model/Board'
 import { FieldKind } from '../model/FieldKind'
 import { THands } from '../model/Hands'
 import { Mode } from '../model/Mode'
-import { isFieldIndexOwned } from '../select/isFieldIndexOwned'
-import { selectBoard, selectHands, selectMode } from '../select/simpleSelectors'
+import {
+	selectBoardFromState,
+	selectHandsFromState,
+	selectModeFromState,
+} from '../select/simpleSelectors'
 import { AspectComp } from './AspectComp'
 import './BoardComp.css'
 import { TileComp } from './TileComp'
@@ -26,14 +29,13 @@ export interface BoardCompProps extends BoardCompPropsFromState, DispatchProp {}
 
 export const BoardComp = connect(
 	(state: TState): BoardCompPropsFromState => ({
-		mode: selectMode(state),
-		board: selectBoard(state),
+		mode: selectModeFromState(state),
+		board: selectBoardFromState(state),
 		playerIndex: state.app.playerIndex,
 		fieldIndex: state.app.fieldIndex,
 		handIndex: state.app.handIndex,
-		hands: selectHands(state),
+		hands: selectHandsFromState(state),
 	}),
-	dispatch => ({ dispatch }),
 )(
 	({
 		mode,
@@ -63,10 +65,7 @@ export const BoardComp = connect(
 								)
 								const oldField = get(() => board[fieldIndex!])
 								const field = board[aFieldIndex]
-								if (
-									!field.tile ||
-									isFieldIndexOwned(board, aFieldIndex)
-								) {
+								if (!field.tile || field.tile.isOwned) {
 									if (handTile) {
 										dispatch(
 											swapHandAndBoard({

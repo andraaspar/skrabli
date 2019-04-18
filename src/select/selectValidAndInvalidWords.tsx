@@ -2,12 +2,12 @@ import { createSelector } from 'reselect'
 import { TState } from '../index'
 import { IField } from '../model/Field'
 import { IValidAndInvalidWords } from '../model/IValidAndInvalidWords'
-import { getAllOwnedWordsFromAppState } from './getAllOwnedWords'
-import { getWordString } from './getWordString'
-import { isWordStringValid } from './isWordStringValid'
+import { getWordString } from '../fun/getWordString'
+import { isWordStringValid } from '../fun/isWordStringValid'
+import { selectAllOwnedWordsFromAppState } from './selectAllOwnedWords'
 
-export const getValidAndInvalidWords = createSelector(
-	[getAllOwnedWordsFromAppState],
+export const selectValidAndInvalidWords = createSelector(
+	[selectAllOwnedWordsFromAppState],
 	(words: IField[][]): IValidAndInvalidWords => {
 		const valid: IField[][] = []
 		const invalid: IField[][] = []
@@ -25,5 +25,5 @@ export const getValidAndInvalidWords = createSelector(
 	},
 )
 
-export const getValidAndInvalidWordsFromState = (s: TState) =>
-	getValidAndInvalidWords(s.app)
+export const selectValidAndInvalidWordsFromState = (s: TState) =>
+	selectValidAndInvalidWords(s.app)

@@ -4,7 +4,10 @@ import { TState } from '../index'
 import { fillHand, nextPlayer, resetGame, setMode } from '../model/actions'
 import { TBag } from '../model/Bag'
 import { Mode } from '../model/Mode'
-import { selectBag, selectMode } from '../select/simpleSelectors'
+import {
+	selectBagFromState,
+	selectModeFromState,
+} from '../select/simpleSelectors'
 import './AppComp.css'
 import { BagComp } from './BagComp'
 import { BoardComp } from './BoardComp'
@@ -22,8 +25,8 @@ export interface IAppCompProps extends IAppCompPropsFromState, DispatchProp {}
 
 export const AppComp = connect(
 	(state: TState): IAppCompPropsFromState => ({
-		mode: selectMode(state),
-		bag: selectBag(state),
+		mode: selectModeFromState(state),
+		bag: selectBagFromState(state),
 	}),
 )(({ mode, bag, dispatch }: IAppCompProps) => {
 	return (

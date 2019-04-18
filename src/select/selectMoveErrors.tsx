@@ -1,20 +1,20 @@
 import { isUndefinedOrNull } from 'illa/Type'
 import { createSelector } from 'reselect'
+import { getWordString } from '../fun/getWordString'
+import { isWordStringValid } from '../fun/isWordStringValid'
 import { TState } from '../index'
 import { CENTER_FIELD_INDEX } from '../model/Constants'
 import { FieldKind } from '../model/FieldKind'
 import { MoveError } from '../model/MoveError'
-import { getAllOwnedWordsFromAppState } from './getAllOwnedWords'
-import { getWordInfoFromAppState } from './getWordInfo'
-import { getWordString } from './getWordString'
-import { isWordStringValid } from './isWordStringValid'
+import { selectAllOwnedWordsFromAppState } from './selectAllOwnedWords'
+import { selectWordInfoFromAppState } from './selectWordInfo'
 import { selectBoardFromAppState } from './simpleSelectors'
 
-export const validateMove = createSelector(
+export const selectMoveErrors = createSelector(
 	[
 		selectBoardFromAppState,
-		getAllOwnedWordsFromAppState,
-		getWordInfoFromAppState,
+		selectAllOwnedWordsFromAppState,
+		selectWordInfoFromAppState,
 	],
 	(board, words, { firstFieldIndex, lastFieldIndex, direction }) => {
 		const errors: Set<MoveError> = new Set()
@@ -57,4 +57,4 @@ export const validateMove = createSelector(
 	},
 )
 
-export const validateMoveFromState = (s: TState) => validateMove(s.app)
+export const selectMoveErrorsFromState = (s: TState) => selectMoveErrors(s.app)

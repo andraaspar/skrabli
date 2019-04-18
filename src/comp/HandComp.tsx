@@ -15,10 +15,10 @@ import { THandIndicesToReplace } from '../model/HandIndicesToReplace'
 import { THands } from '../model/Hands'
 import { Mode } from '../model/Mode'
 import {
-	selectBoard,
-	selectHandIndicesToReplace,
-	selectHands,
-	selectMode,
+	selectBoardFromState,
+	selectHandIndicesToReplaceFromState,
+	selectHandsFromState,
+	selectModeFromState,
 } from '../select/simpleSelectors'
 import { AspectComp } from './AspectComp'
 import './HandComp.css'
@@ -37,13 +37,13 @@ export interface HandCompProps extends HandCompPropsFromState, DispatchProp {}
 
 export const HandComp = connect(
 	(state: TState): HandCompPropsFromState => ({
-		hands: selectHands(state),
+		hands: selectHandsFromState(state),
 		playerIndex: state.app.playerIndex,
 		handIndex: state.app.handIndex,
 		fieldIndex: state.app.fieldIndex,
-		board: selectBoard(state),
-		handIndicesToReplace: selectHandIndicesToReplace(state),
-		mode: selectMode(state),
+		board: selectBoardFromState(state),
+		handIndicesToReplace: selectHandIndicesToReplaceFromState(state),
+		mode: selectModeFromState(state),
 	}),
 )(
 	({

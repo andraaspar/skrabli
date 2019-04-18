@@ -1,15 +1,14 @@
 import { isUndefinedOrNull } from 'illa/Type'
 import { defaultMemoize } from 'reselect'
+import { getColumnIndex } from '../fun/getColumnIndex'
+import { getRowIndex } from '../fun/getRowIndex'
+import { getWordsAt } from '../fun/getWordsAt'
+import { isThereAGap } from '../fun/isThereAGap'
 import { TState } from '../index'
 import { IAppState } from '../model/AppState'
 import { TBoard } from '../model/Board'
 import { BOARD_SIZE } from '../model/Constants'
 import { Direction } from '../model/Direction'
-import { getColumnIndex } from './getColumnIndex'
-import { getRowIndex } from './getRowIndex'
-import { getWordsAt } from './getWordsAt'
-import { isFieldIndexOwned } from './isFieldIndexOwned'
-import { isThereAGap } from './isThereAGap'
 
 export interface IWordInfo {
 	firstFieldIndex: number | null
@@ -17,7 +16,7 @@ export interface IWordInfo {
 	direction: Direction | null
 }
 
-export const getWordInfo = defaultMemoize(
+export const selectWordInfo = defaultMemoize(
 	(board: TBoard): IWordInfo => {
 		let firstFieldIndex: number | null = null
 		let lastFieldIndex: number | null = null
@@ -26,7 +25,8 @@ export const getWordInfo = defaultMemoize(
 		let direction: Direction | null = null
 
 		for (let fieldIndex = 0; fieldIndex < board.length; fieldIndex++) {
-			if (isFieldIndexOwned(board, fieldIndex)) {
+			const field = board[fieldIndex]
+			if (field.tile && field.tile.isOwned) {
 				if (isUndefinedOrNull(colIndex)) {
 					// First field
 					firstFieldIndex = fieldIndex
@@ -101,7 +101,7 @@ export const getWordInfo = defaultMemoize(
 	},
 )
 
-export const getWordInfoFromAppState = (state: IAppState) =>
-	getWordInfo(state.board)
-export const getWordInfoFromState = (state: TState) =>
-	getWordInfoFromAppState(state.app)
+export const selectWordInfoFromAppState = (state: IAppState) =>
+	selectWordInfo(state.board)
+export const selectWordInfoFromState = (state: TState) =>
+	selectWordInfoFromAppState(state.app)

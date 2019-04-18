@@ -14,8 +14,8 @@ import { THands } from '../model/Hands'
 import { Mode } from '../model/Mode'
 import { ITile } from '../model/Tile'
 import {
-	selectHandIndicesToReplace,
-	selectHands,
+	selectHandIndicesToReplaceFromState,
+	selectHandsFromState,
 } from '../select/simpleSelectors'
 
 export interface ReplaceTilesButtonsCompPropsFromStore {
@@ -29,8 +29,8 @@ export interface ReplaceTilesButtonsCompProps
 
 export const ReplaceTilesButtonsComp = connect(
 	(state: TState): ReplaceTilesButtonsCompPropsFromStore => ({
-		handIndicesToReplace: selectHandIndicesToReplace(state),
-		hands: selectHands(state),
+		handIndicesToReplace: selectHandIndicesToReplaceFromState(state),
+		hands: selectHandsFromState(state),
 		playerIndex: state.app.playerIndex,
 	}),
 )(

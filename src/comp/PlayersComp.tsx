@@ -3,7 +3,7 @@ import { connect, DispatchProp } from 'react-redux'
 import { TState } from '../index'
 import { setPlayerName } from '../model/actions'
 import { TPlayers } from '../model/Player'
-import { selectPlayers } from '../select/simpleSelectors'
+import { selectPlayersFromState } from '../select/simpleSelectors'
 
 export interface PlayersCompPropsFromStore {
 	players: TPlayers
@@ -15,7 +15,7 @@ export interface PlayersCompProps
 
 export const PlayersComp = connect(
 	(state: TState): PlayersCompPropsFromStore => ({
-		players: selectPlayers(state),
+		players: selectPlayersFromState(state),
 		playerIndex: state.app.playerIndex,
 	}),
 )(({ players, playerIndex, dispatch }: PlayersCompProps) => {
