@@ -1,8 +1,5 @@
 import { get } from 'illa/FunctionUtil'
 import { isUndefinedOrNull } from 'illa/Type'
-import { AnyAction } from 'redux'
-import { ThunkAction } from 'redux-thunk'
-import { TState } from '../index'
 import { selectField, swapHandAndBoard, swapTiles } from '../model/actions'
 import { Mode } from '../model/Mode'
 import { selectFieldFromState } from '../select/selectField'
@@ -13,10 +10,9 @@ import {
 	selectHandIndexFromState,
 	selectModeFromState,
 } from '../select/simpleSelectors'
+import { ThunkValue } from './ThunkValue'
 
-export function selectFieldThunk(
-	fieldIndexToSelect: number,
-): ThunkAction<void, TState, undefined, AnyAction> {
+export function selectFieldThunk(fieldIndexToSelect: number): ThunkValue {
 	return (dispatch, getState) => {
 		const state = getState()
 		const mode = selectModeFromState(state)

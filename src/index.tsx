@@ -1,3 +1,4 @@
+import { get } from 'illa/FunctionUtil'
 import 'normalize.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -12,6 +13,7 @@ export const store = configureStore({
 	reducer: {
 		app: appStateReducer,
 	},
+	preloadedState: get(() => JSON.parse(localStorage['game'])),
 })
 export type TState = ReturnType<typeof store.getState>
 

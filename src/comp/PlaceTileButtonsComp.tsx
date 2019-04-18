@@ -1,12 +1,14 @@
 import { get } from 'illa/FunctionUtil'
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { saveGameThunk } from '../action/saveGameThunk'
 import { TState } from '../index'
 import {
 	collectTiles,
 	disownTiles,
 	fillHand,
 	nextPlayer,
+	resetGame,
 	score,
 	setJokerLetter,
 	setMode,
@@ -62,6 +64,7 @@ export const PlaceTileButtonsComp = connect(
 						dispatch(disownTiles())
 						dispatch(fillHand())
 						dispatch(nextPlayer())
+						dispatch(saveGameThunk())
 					}}
 				>
 					{`Oké`}
@@ -94,11 +97,22 @@ export const PlaceTileButtonsComp = connect(
 				</button>
 				<button
 					onClick={e => {
-						dispatch(collectTiles())
-						dispatch(nextPlayer())
+						if (confirm(`Biztos hogy nem teszel semmit?`)) {
+							dispatch(collectTiles())
+							dispatch(nextPlayer())
+						}
 					}}
 				>
 					{`Kihagyom`}
+				</button>
+				<button
+					onClick={e => {
+						if (confirm(`Biztos hogy új játékot akarsz kezdeni?`)) {
+							dispatch(resetGame())
+						}
+					}}
+				>
+					{`Új játék`}
 				</button>
 				{get(() => board[fieldIndex!].tile!.isJoker) && (
 					<select
