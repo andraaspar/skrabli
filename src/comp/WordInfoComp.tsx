@@ -1,17 +1,28 @@
 import * as React from 'react'
-import { useContext } from 'react'
-import { getValidAndInvalidWords } from '../select/getValidAndInvalidWords'
+import { connect, DispatchProp } from 'react-redux'
+import { TState } from '../index'
+import { IValidAndInvalidWords } from '../model/IValidAndInvalidWords'
+import { MoveError } from '../model/MoveError'
+import { getValidAndInvalidWordsFromState } from '../select/getValidAndInvalidWords'
 import { getWordScore } from '../select/getWordScore'
 import { getWordString } from '../select/getWordString'
-import { validateMove } from '../select/validateMove'
-import { MoveError } from '../model/MoveError'
-import { StateContext } from './ContextProvider'
+import { validateMoveFromState } from '../select/validateMove'
 import './WordInfoComp.css'
 
-export function WordInfoComp() {
-	const { board } = useContext(StateContext)
-	const { valid, invalid } = getValidAndInvalidWords(board)
-	const errors = validateMove(board)
+export interface WordInfoCompPropsFromStore {
+	words: IValidAndInvalidWords
+	errors: MoveError[]
+}
+export interface WordInfoCompProps
+	extends WordInfoCompPropsFromStore,
+		DispatchProp {}
+
+export const WordInfoComp = connect(
+	(state: TState): WordInfoCompPropsFromStore => ({
+		words: getValidAndInvalidWordsFromState(state),
+		errors: validateMoveFromState(state),
+	}),
+)(({ words: { valid, invalid }, errors, dispatch }: WordInfoCompProps) => {
 	return (
 		<div className='word-info'>
 			{valid.length > 0 && (
@@ -66,7 +77,7 @@ export function WordInfoComp() {
 					})}
 				</div>
 			)}
-			{errors.size > 0 && (
+			{errors.length > 0 && (
 				<div>
 					{Array.from(errors)
 						.map(e => {
@@ -94,4 +105,4 @@ export function WordInfoComp() {
 			)}
 		</div>
 	)
-}
+})

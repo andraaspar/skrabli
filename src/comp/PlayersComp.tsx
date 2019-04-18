@@ -1,40 +1,48 @@
 import * as React from 'react'
-import { useContext } from 'react'
-import { SetStateContext, StateContext } from './ContextProvider'
-import './PlayersComp.css'
+import { connect, DispatchProp } from 'react-redux'
+import { TState } from '../index'
+import { setPlayerName } from '../model/actions'
+import { TPlayers } from '../model/Player'
+import { selectPlayers } from '../select/simpleSelectors'
 
-export function PlayersComp() {
-	const c = useContext(StateContext)
-	const setState = useContext(SetStateContext)
+export interface PlayersCompPropsFromStore {
+	players: TPlayers
+	playerIndex: number | null
+}
+export interface PlayersCompProps
+	extends PlayersCompPropsFromStore,
+		DispatchProp {}
+
+export const PlayersComp = connect(
+	(state: TState): PlayersCompPropsFromStore => ({
+		players: selectPlayers(state),
+		playerIndex: state.app.playerIndex,
+	}),
+)(({ players, playerIndex, dispatch }: PlayersCompProps) => {
 	return (
 		<table className='players'>
 			<tbody>
-				{c.players.map((player, playerIndex) => (
-					<tr className='player' key={playerIndex}>
+				{players.map((player, aPlayerIndex) => (
+					<tr className='player' key={aPlayerIndex}>
 						<td>
 							<button
 								className='player-name-button'
 								onClick={e => {
 									const name = prompt(`Mi a neved?`)
 									if (name && name.trim()) {
-										setState(({ players }) => ({
-											players: players.map(
-												(player, aPlayerIndex) =>
-													aPlayerIndex === playerIndex
-														? {
-																...player,
-																name: name.trim(),
-														  }
-														: player,
-											),
-										}))
+										dispatch(
+											setPlayerName({
+												playerIndex: aPlayerIndex,
+												name: name.trim(),
+											}),
+										)
 									}
 								}}
 							>
 								{player.name}
 							</button>
 						</td>
-						<td>{playerIndex === c.playerIndex && `•`}</td>
+						<td>{aPlayerIndex === playerIndex && `•`}</td>
 						<td>
 							{player.score}
 							{` `}
@@ -45,4 +53,4 @@ export function PlayersComp() {
 			</tbody>
 		</table>
 	)
-}
+})

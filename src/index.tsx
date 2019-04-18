@@ -14,6 +14,7 @@ export const store = configureStore({
 		app: appStateReducer,
 	}),
 })
+export type TState = ReturnType<typeof store.getState>
 
 ReactDOM.render(
 	<Provider store={store}>

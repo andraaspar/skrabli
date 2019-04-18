@@ -1,31 +1,37 @@
-import { PayloadAction, createReducer } from 'redux-starter-kit'
-import { TBag, createBag } from './Bag'
-import { TBoard, createBoard } from './Board'
+import { isUndefinedOrNull, withInterface } from 'illa/Type'
+import { createReducer, PayloadAction } from 'redux-starter-kit'
+import { CaseReducersMapObject } from 'redux-starter-kit/src/createReducer'
+import { getMoveScore } from '../select/getMoveScore'
 import {
-	THandIndicesToReplace,
-	createHandIndicesToReplace,
-} from './HandIndicesToReplace'
-import { THands, createHands } from './Hands'
-import { TPlayers, createPlayers } from './Player'
-import {
+	addTilesToBag,
 	collectTiles,
+	deselectTilesToReplace,
 	disownTiles,
 	fillHand,
 	nextPlayer,
+	removeTilesToReplaceFromHand,
 	resetGame,
 	score,
+	selectField,
+	selectHand,
 	setJokerLetter,
 	setMode,
+	setPlayerName,
 	swapHandAndBoard,
 	swapHands,
 	swapTiles,
+	toggleHandIndexToReplace,
 } from './actions'
-import { isUndefinedOrNull, withInterface } from 'illa/Type'
-
-import { CaseReducersMapObject } from 'redux-starter-kit/src/createReducer'
-import { ITile } from './Tile'
+import { createBag, TBag } from './Bag'
+import { createBoard, TBoard } from './Board'
+import {
+	createHandIndicesToReplace,
+	THandIndicesToReplace,
+} from './HandIndicesToReplace'
+import { createHands, THands } from './Hands'
 import { Mode } from './Mode'
-import { getMoveScore } from '../select/getMoveScore'
+import { createPlayers, TPlayers } from './Player'
+import { ITile } from './Tile'
 
 export interface IAppState {
 	readonly mode: Mode
@@ -116,8 +122,14 @@ export const appStateReducer = createReducer(
 			return createAppState()
 		},
 		[score.type]: (state, action: ReturnType<typeof score>) => {
-			const { players, playerIndex, board } = state
-			players[playerIndex!].score += getMoveScore(board)
+			const { players, playerIndex } = state
+			players[playerIndex!].score += getMoveScore(state)
+		},
+		[selectField.type]: (state, action: ReturnType<typeof selectField>) => {
+			state.fieldIndex = action.payload.fieldIndex
+		},
+		[selectHand.type]: (state, action: ReturnType<typeof selectHand>) => {
+			state.handIndex = action.payload.handIndex
 		},
 		[setJokerLetter.type]: (
 			state,
@@ -134,6 +146,13 @@ export const appStateReducer = createReducer(
 				state.handIndex = null
 			}
 			state.mode = mode
+		},
+		[setPlayerName.type]: (
+			state,
+			action: ReturnType<typeof setPlayerName>,
+		) => {
+			const { playerIndex, name } = action.payload
+			state.players[playerIndex].name = name
 		},
 		[swapHandAndBoard.type]: (
 			state,
@@ -166,11 +185,41 @@ export const appStateReducer = createReducer(
 		[swapTiles.type]: (state, action: ReturnType<typeof swapTiles>) => {
 			const { board } = state
 			const { fieldIndexA, fieldIndexB } = action.payload
-			const fieldA = board[fieldIndexA]
-			const fieldB = board[fieldIndexB]
+			const fieldATile = board[fieldIndexA].tile
+			const fieldBTile = board[fieldIndexB].tile
 			state.fieldIndex = null
-			board[fieldIndexA].tile = fieldB.tile
-			board[fieldIndexB].tile = fieldA.tile
+			board[fieldIndexA].tile = fieldBTile
+			board[fieldIndexB].tile = fieldATile
+		},
+		[toggleHandIndexToReplace.type]: (
+			state,
+			action: ReturnType<typeof toggleHandIndexToReplace>,
+		) => {
+			const { handIndicesToReplace } = state
+			const { handIndex } = action.payload
+			handIndicesToReplace[handIndex] = !handIndicesToReplace[handIndex]
+		},
+		[removeTilesToReplaceFromHand.type]: (
+			state,
+			action: ReturnType<typeof removeTilesToReplaceFromHand>,
+		) => {
+			const { handIndicesToReplace, playerIndex, hands } = state
+			const hand = hands[playerIndex!]
+			state.hands[playerIndex!] = hand.map((tile, index) =>
+				handIndicesToReplace[index] ? null : tile,
+			)
+		},
+		[deselectTilesToReplace.type]: (
+			state,
+			action: ReturnType<typeof deselectTilesToReplace>,
+		) => {
+			state.handIndicesToReplace.fill(false)
+		},
+		[addTilesToBag.type]: (
+			state,
+			action: ReturnType<typeof addTilesToBag>,
+		) => {
+			state.bag.push(...action.payload.tiles)
 		},
 	}),
 )

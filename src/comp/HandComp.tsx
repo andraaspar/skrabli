@@ -1,94 +1,136 @@
 import { get } from 'illa/FunctionUtil'
 import { isUndefinedOrNull } from 'illa/Type'
 import * as React from 'react'
-import { useContext } from 'react'
+import { connect, DispatchProp } from 'react-redux'
 import { isNullOrUndefined } from 'util'
-import { swapHandAndBoard } from '../reduce/swapHandAndBoard'
-import { swapHands } from '../reduce/swapHands'
+import { TState } from '../index'
+import {
+	selectHand,
+	swapHandAndBoard,
+	swapHands,
+	toggleHandIndexToReplace,
+} from '../model/actions'
+import { TBoard } from '../model/Board'
+import { THandIndicesToReplace } from '../model/HandIndicesToReplace'
+import { THands } from '../model/Hands'
 import { Mode } from '../model/Mode'
+import {
+	selectBoard,
+	selectHandIndicesToReplace,
+	selectHands,
+	selectMode,
+} from '../select/simpleSelectors'
 import { AspectComp } from './AspectComp'
-import { SetStateContext, StateContext } from './ContextProvider'
 import './HandComp.css'
 import { TileComp } from './TileComp'
 
-export function HandComp() {
-	const {
-		hands,
-		playerIndex,
-		handIndex,
+interface HandCompPropsFromState {
+	hands: THands
+	playerIndex: number | null
+	handIndex: number | null
+	board: TBoard
+	fieldIndex: number | null
+	mode: Mode
+	handIndicesToReplace: THandIndicesToReplace
+}
+export interface HandCompProps extends HandCompPropsFromState, DispatchProp {}
+
+export const HandComp = connect(
+	(state: TState): HandCompPropsFromState => ({
+		hands: selectHands(state),
+		playerIndex: state.app.playerIndex,
+		handIndex: state.app.handIndex,
+		fieldIndex: state.app.fieldIndex,
+		board: selectBoard(state),
+		handIndicesToReplace: selectHandIndicesToReplace(state),
+		mode: selectMode(state),
+	}),
+)(
+	({
 		board,
+		dispatch,
 		fieldIndex,
-		mode,
+		handIndex,
 		handIndicesToReplace,
-	} = useContext(StateContext)
-	const setState = useContext(SetStateContext)
-	return (
-		<>
-			{!isNullOrUndefined(playerIndex) && (
-				<div className='hand'>
-					{hands[playerIndex].map((tile, aHandIndex) => (
-						<div
-							key={aHandIndex}
-							className={[
-								'hand-slot',
-								handIndex === aHandIndex && 'is-selected',
-								handIndicesToReplace[aHandIndex] &&
-									'is-to-be-replaced',
-							]
-								.filter(Boolean)
-								.join(' ')}
-							onClick={e => {
-								if (mode === Mode.ReplaceTiles) {
-									setState(state => ({
-										handIndicesToReplace: handIndicesToReplace.map(
-											(flag, index) =>
-												index === aHandIndex
-													? !flag
-													: flag,
-										),
-									}))
-								} else {
-									if (get(() => board[fieldIndex!].tile)) {
-										setState(
-											swapHandAndBoard({
+		hands,
+		mode,
+		playerIndex,
+	}: HandCompProps) => {
+		return (
+			<>
+				{!isNullOrUndefined(playerIndex) && (
+					<div className='hand'>
+						{hands[playerIndex].map((tile, aHandIndex) => (
+							<div
+								key={aHandIndex}
+								className={[
+									'hand-slot',
+									handIndex === aHandIndex && 'is-selected',
+									handIndicesToReplace[aHandIndex] &&
+										'is-to-be-replaced',
+								]
+									.filter(Boolean)
+									.join(' ')}
+								onClick={e => {
+									if (mode === Mode.ReplaceTiles) {
+										dispatch(
+											toggleHandIndexToReplace({
 												handIndex: aHandIndex,
-												fieldIndex: fieldIndex!,
 											}),
 										)
 									} else {
-										if (handIndex === aHandIndex) {
-											setState(state => ({
-												handIndex: null,
-											}))
+										if (
+											get(() => board[fieldIndex!].tile)
+										) {
+											dispatch(
+												swapHandAndBoard({
+													handIndex: aHandIndex,
+													fieldIndex: fieldIndex!,
+												}),
+											)
 										} else {
-											if (isUndefinedOrNull(handIndex)) {
-												setState(state => ({
-													handIndex: hands[
-														playerIndex!
-													][aHandIndex]
-														? aHandIndex
-														: null,
-												}))
-											} else {
-												setState(
-													swapHands({
-														handIndexA: handIndex,
-														handIndexB: aHandIndex,
+											if (handIndex === aHandIndex) {
+												dispatch(
+													selectHand({
+														handIndex: null,
 													}),
 												)
+											} else {
+												if (
+													isUndefinedOrNull(handIndex)
+												) {
+													dispatch(
+														selectHand({
+															handIndex: hands[
+																playerIndex!
+															][aHandIndex]
+																? aHandIndex
+																: null,
+														}),
+													)
+												} else {
+													dispatch(
+														swapHands({
+															handIndexA: handIndex,
+															handIndexB: aHandIndex,
+														}),
+													)
+												}
 											}
 										}
 									}
-								}
-							}}
-						>
-							<AspectComp width={1} height={1}>
-								{tile && <TileComp tile={tile} neverOwned />}
-							</AspectComp>
-						</div>
-					))}
-				</div>
-			)}
-		</>
-	)
-}
+								}}
+							>
+								<AspectComp width={1} height={1}>
+									{tile && (
+										<TileComp tile={tile} neverOwned />
+									)}
+								</AspectComp>
+							</div>
+						))}
+					</div>
+				)}
+			</>
+		)
+	},
+)

@@ -1,13 +1,14 @@
-import memoizee from 'memoizee'
+import { createSelector } from 'reselect'
+import { TState } from '../index'
 import { IField } from '../model/Field'
 import { IValidAndInvalidWords } from '../model/IValidAndInvalidWords'
-import { getAllOwnedWords } from './getAllOwnedWords'
+import { getAllOwnedWordsFromAppState } from './getAllOwnedWords'
 import { getWordString } from './getWordString'
 import { isWordStringValid } from './isWordStringValid'
 
-export const getValidAndInvalidWords = memoizee(
-	(board: ReadonlyArray<IField>): IValidAndInvalidWords => {
-		const words = getAllOwnedWords(board)
+export const getValidAndInvalidWords = createSelector(
+	[getAllOwnedWordsFromAppState],
+	(words: IField[][]): IValidAndInvalidWords => {
 		const valid: IField[][] = []
 		const invalid: IField[][] = []
 		for (let word of words) {
@@ -22,5 +23,7 @@ export const getValidAndInvalidWords = memoizee(
 			invalid,
 		}
 	},
-	{ max: 1 },
 )
+
+export const getValidAndInvalidWordsFromState = (s: TState) =>
+	getValidAndInvalidWords(s.app)
