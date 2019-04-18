@@ -1,15 +1,15 @@
 {
-  "main.css": "/skrabli/static/css/main.45148e64.chunk.css",
-  "main.js": "/skrabli/static/js/main.45876c13.chunk.js",
-  "main.js.map": "/skrabli/static/js/main.45876c13.chunk.js.map",
+  "main.css": "/skrabli/static/css/main.75cb86fb.chunk.css",
+  "main.js": "/skrabli/static/js/main.2a877308.chunk.js",
+  "main.js.map": "/skrabli/static/js/main.2a877308.chunk.js.map",
   "runtime~main.js": "/skrabli/static/js/runtime~main.6f60a26b.js",
   "runtime~main.js.map": "/skrabli/static/js/runtime~main.6f60a26b.js.map",
-  "static/css/2.a3ab5a97.chunk.css": "/skrabli/static/css/2.a3ab5a97.chunk.css",
-  "static/js/2.112ce33d.chunk.js": "/skrabli/static/js/2.112ce33d.chunk.js",
-  "static/js/2.112ce33d.chunk.js.map": "/skrabli/static/js/2.112ce33d.chunk.js.map",
+  "static/css/2.01df2a09.chunk.css": "/skrabli/static/css/2.01df2a09.chunk.css",
+  "static/js/2.858aec64.chunk.js": "/skrabli/static/js/2.858aec64.chunk.js",
+  "static/js/2.858aec64.chunk.js.map": "/skrabli/static/js/2.858aec64.chunk.js.map",
   "index.html": "/skrabli/index.html",
-  "precache-manifest.d39fc4493fc61c92c43b50703070829e.js": "/skrabli/precache-manifest.d39fc4493fc61c92c43b50703070829e.js",
+  "precache-manifest.5a6c069a84462f91655c3bfdfb432f67.js": "/skrabli/precache-manifest.5a6c069a84462f91655c3bfdfb432f67.js",
   "service-worker.js": "/skrabli/service-worker.js",
-  "static/css/2.a3ab5a97.chunk.css.map": "/skrabli/static/css/2.a3ab5a97.chunk.css.map",
-  "static/css/main.45148e64.chunk.css.map": "/skrabli/static/css/main.45148e64.chunk.css.map"
+  "static/css/2.01df2a09.chunk.css.map": "/skrabli/static/css/2.01df2a09.chunk.css.map",
+  "static/css/main.75cb86fb.chunk.css.map": "/skrabli/static/css/main.75cb86fb.chunk.css.map"
 }
