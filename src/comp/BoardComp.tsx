@@ -1,27 +1,16 @@
-import { get } from 'illa/FunctionUtil'
-import { isUndefinedOrNull } from 'illa/Type'
 import * as React from 'react'
-import { connect, DispatchProp } from 'react-redux'
+import { connect } from 'react-redux'
+import { selectFieldThunk } from '../action/selectFieldThunk'
 import { TState } from '../index'
-import { selectField, swapHandAndBoard, swapTiles } from '../model/actions'
 import { TBoard } from '../model/Board'
 import { FieldKind } from '../model/FieldKind'
-import { THands } from '../model/Hands'
-import { Mode } from '../model/Mode'
-import {
-	selectBoardFromState,
-	selectHandsFromState,
-	selectModeFromState,
-} from '../select/simpleSelectors'
+import { selectBoardFromState } from '../select/simpleSelectors'
 import { AspectComp } from './AspectComp'
 import './BoardComp.css'
+import { DispatchProp } from './DispatchProp'
 import { TileComp } from './TileComp'
 
 interface BoardCompPropsFromState {
-	mode: Mode
-	hands: THands
-	playerIndex: number | null
-	handIndex: number | null
 	fieldIndex: number | null
 	board: TBoard
 }
@@ -29,103 +18,37 @@ export interface BoardCompProps extends BoardCompPropsFromState, DispatchProp {}
 
 export const BoardComp = connect(
 	(state: TState): BoardCompPropsFromState => ({
-		mode: selectModeFromState(state),
 		board: selectBoardFromState(state),
-		playerIndex: state.app.playerIndex,
 		fieldIndex: state.app.fieldIndex,
-		handIndex: state.app.handIndex,
-		hands: selectHandsFromState(state),
 	}),
-)(
-	({
-		mode,
-		hands,
-		playerIndex,
-		handIndex,
-		fieldIndex,
-		board,
-		dispatch,
-	}: BoardCompProps) => {
-		return (
-			<div className='board'>
-				{board.map((field, aFieldIndex) => (
-					<AspectComp key={aFieldIndex} width={1} height={1}>
-						<div
-							className={[
-								'board-field',
-								fieldKindToCssClass(field.kind),
-								aFieldIndex === fieldIndex && 'is-selected',
-							]
-								.filter(Boolean)
-								.join(' ')}
-							onClick={e => {
-								if (mode !== Mode.PlaceTile) return
-								const handTile = get(
-									() => hands[playerIndex!][handIndex!],
-								)
-								const oldField = get(() => board[fieldIndex!])
-								const field = board[aFieldIndex]
-								if (!field.tile || field.tile.isOwned) {
-									if (handTile) {
-										dispatch(
-											swapHandAndBoard({
-												handIndex: handIndex!,
-												fieldIndex: aFieldIndex,
-											}),
-										)
-									} else {
-										if (aFieldIndex === fieldIndex) {
-											dispatch(
-												selectField({
-													fieldIndex: null,
-												}),
-											)
-										} else {
-											if (
-												isUndefinedOrNull(fieldIndex) ||
-												(!get(
-													() =>
-														oldField!.tile!.isOwned,
-												) &&
-													!get(
-														() =>
-															field.tile!.isOwned,
-													))
-											) {
-												dispatch(
-													selectField({
-														fieldIndex: field.tile
-															? aFieldIndex
-															: null,
-													}),
-												)
-											} else {
-												dispatch(
-													swapTiles({
-														fieldIndexA: fieldIndex,
-														fieldIndexB: aFieldIndex,
-													}),
-												)
-											}
-										}
-									}
-								} else {
-									dispatch(selectField({ fieldIndex: null }))
-								}
-							}}
-						>
-							{field.tile ? (
-								<TileComp tile={field.tile} />
-							) : (
-								fieldKindToLabel(field.kind)
-							)}
-						</div>
-					</AspectComp>
-				))}
-			</div>
-		)
-	},
-)
+)(({ fieldIndex, board, dispatch }: BoardCompProps) => {
+	return (
+		<div className='board'>
+			{board.map((field, aFieldIndex) => (
+				<AspectComp key={aFieldIndex} width={1} height={1}>
+					<div
+						className={[
+							'board-field',
+							fieldKindToCssClass(field.kind),
+							aFieldIndex === fieldIndex && 'is-selected',
+						]
+							.filter(Boolean)
+							.join(' ')}
+						onClick={e => {
+							dispatch(selectFieldThunk(aFieldIndex))
+						}}
+					>
+						{field.tile ? (
+							<TileComp tile={field.tile} />
+						) : (
+							fieldKindToLabel(field.kind)
+						)}
+					</div>
+				</AspectComp>
+			))}
+		</div>
+	)
+})
 
 function fieldKindToCssClass(k: FieldKind): string {
 	switch (k) {

@@ -1,6 +1,6 @@
 import { get } from 'illa/FunctionUtil'
 import * as React from 'react'
-import { connect, DispatchProp } from 'react-redux'
+import { connect } from 'react-redux'
 import { TState } from '../index'
 import {
 	collectTiles,
@@ -16,12 +16,13 @@ import { TBoard } from '../model/Board'
 import { Mode } from '../model/Mode'
 import { MoveError } from '../model/MoveError'
 import letters from '../res/letters.json'
+import { selectMoveErrorsFromState } from '../select/selectMoveErrors'
 import { selectMoveScoreFromState } from '../select/selectMoveScore'
 import {
 	selectBagFromState,
 	selectBoardFromState,
 } from '../select/simpleSelectors'
-import { selectMoveErrorsFromState } from '../select/selectMoveErrors'
+import { DispatchProp } from './DispatchProp'
 import './PlaceTileButtonsComp.css'
 
 interface PlaceTileButtonsCompPropsFromStore {

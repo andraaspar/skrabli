@@ -1,9 +1,10 @@
 import * as React from 'react'
-import { connect, DispatchProp } from 'react-redux'
+import { connect } from 'react-redux'
 import { TState } from '../index'
 import { setPlayerName } from '../model/actions'
 import { TPlayers } from '../model/Player'
 import { selectPlayersFromState } from '../select/simpleSelectors'
+import { DispatchProp } from './DispatchProp'
 
 export interface PlayersCompPropsFromStore {
 	players: TPlayers

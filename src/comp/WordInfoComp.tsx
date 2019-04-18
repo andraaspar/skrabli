@@ -1,12 +1,13 @@
 import * as React from 'react'
-import { connect, DispatchProp } from 'react-redux'
+import { connect } from 'react-redux'
 import { getWordScore } from '../fun/getWordScore'
 import { getWordString } from '../fun/getWordString'
 import { TState } from '../index'
 import { IValidAndInvalidWords } from '../model/IValidAndInvalidWords'
 import { MoveError } from '../model/MoveError'
-import { selectValidAndInvalidWordsFromState } from '../select/selectValidAndInvalidWords'
 import { selectMoveErrorsFromState } from '../select/selectMoveErrors'
+import { selectValidAndInvalidWordsFromState } from '../select/selectValidAndInvalidWords'
+import { DispatchProp } from './DispatchProp'
 import './WordInfoComp.css'
 
 export interface WordInfoCompPropsFromStore {

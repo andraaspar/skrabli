@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { connect, DispatchProp } from 'react-redux'
+import { connect } from 'react-redux'
 import { TState } from '../index'
 import {
 	addTilesToBag,
@@ -17,6 +17,7 @@ import {
 	selectHandIndicesToReplaceFromState,
 	selectHandsFromState,
 } from '../select/simpleSelectors'
+import { DispatchProp } from './DispatchProp'
 
 export interface ReplaceTilesButtonsCompPropsFromStore {
 	hands: THands

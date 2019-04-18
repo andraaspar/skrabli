@@ -1,7 +1,7 @@
 import { get } from 'illa/FunctionUtil'
 import { isUndefinedOrNull } from 'illa/Type'
 import * as React from 'react'
-import { connect, DispatchProp } from 'react-redux'
+import { connect } from 'react-redux'
 import { isNullOrUndefined } from 'util'
 import { TState } from '../index'
 import {
@@ -21,6 +21,7 @@ import {
 	selectModeFromState,
 } from '../select/simpleSelectors'
 import { AspectComp } from './AspectComp'
+import { DispatchProp } from './DispatchProp'
 import './HandComp.css'
 import { TileComp } from './TileComp'
 
