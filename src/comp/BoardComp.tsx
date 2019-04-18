@@ -1,27 +1,27 @@
-import { get } from 'illa/FunctionUtil'
-import { isUndefinedOrNull } from 'illa/Type'
 import * as React from 'react'
-import { useContext } from 'react'
-import { isFieldIndexOwned } from '../select/isFieldIndexOwned'
-import { swapHandAndBoard } from '../reduce/swapHandAndBoard'
-import { swapTiles } from '../reduce/swapTiles'
+import { connect } from 'react-redux'
+import { selectFieldThunk } from '../action/selectFieldThunk'
+import { TState } from '../index'
+import { TBoard } from '../model/Board'
 import { FieldKind } from '../model/FieldKind'
-import { Mode } from '../model/Mode'
+import { selectBoardFromState } from '../select/simpleSelectors'
 import { AspectComp } from './AspectComp'
 import './BoardComp.css'
-import { SetStateContext, StateContext } from './ContextProvider'
+import { DispatchProp } from './DispatchProp'
 import { TileComp } from './TileComp'
 
-export function BoardComp() {
-	const {
-		mode,
-		hands,
-		playerIndex,
-		handIndex,
-		fieldIndex,
-		board,
-	} = useContext(StateContext)
-	const setState = useContext(SetStateContext)
+interface BoardCompPropsFromState {
+	fieldIndex: number | null
+	board: TBoard
+}
+export interface BoardCompProps extends BoardCompPropsFromState, DispatchProp {}
+
+export const BoardComp = connect(
+	(state: TState): BoardCompPropsFromState => ({
+		board: selectBoardFromState(state),
+		fieldIndex: state.app.fieldIndex,
+	}),
+)(({ fieldIndex, board, dispatch }: BoardCompProps) => {
 	return (
 		<div className='board'>
 			{board.map((field, aFieldIndex) => (
@@ -35,52 +35,7 @@ export function BoardComp() {
 							.filter(Boolean)
 							.join(' ')}
 						onClick={e => {
-							if (mode !== Mode.PlaceTile) return {}
-							const handTile = get(
-								() => hands[playerIndex!][handIndex!],
-							)
-							const oldField = get(() => board[fieldIndex!])
-							const field = board[aFieldIndex]
-							if (
-								!field.tile ||
-								isFieldIndexOwned(board, aFieldIndex)
-							) {
-								if (handTile) {
-									setState(
-										swapHandAndBoard({
-											handIndex: handIndex!,
-											fieldIndex: aFieldIndex,
-										}),
-									)
-								} else {
-									if (aFieldIndex === fieldIndex) {
-										return { fieldIndex: null }
-									} else {
-										if (
-											isUndefinedOrNull(fieldIndex) ||
-											(!get(
-												() => oldField!.tile!.isOwned,
-											) &&
-												!get(() => field.tile!.isOwned))
-										) {
-											setState(state => ({
-												fieldIndex: field.tile
-													? aFieldIndex
-													: null,
-											}))
-										} else {
-											setState(
-												swapTiles({
-													fieldIndexA: fieldIndex,
-													fieldIndexB: aFieldIndex,
-												}),
-											)
-										}
-									}
-								}
-							} else {
-								return { fieldIndex: null }
-							}
+							dispatch(selectFieldThunk(aFieldIndex))
 						}}
 					>
 						{field.tile ? (
@@ -93,7 +48,7 @@ export function BoardComp() {
 			))}
 		</div>
 	)
-}
+})
 
 function fieldKindToCssClass(k: FieldKind): string {
 	switch (k) {

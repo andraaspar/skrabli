@@ -1,19 +1,22 @@
 import { isUndefinedOrNull } from 'illa/Type'
-import memoizee from 'memoizee'
+import { createSelector } from 'reselect'
+import { getWordString } from '../fun/getWordString'
+import { isWordStringValid } from '../fun/isWordStringValid'
+import { TState } from '../index'
 import { CENTER_FIELD_INDEX } from '../model/Constants'
-import { IField } from '../model/Field'
 import { FieldKind } from '../model/FieldKind'
 import { MoveError } from '../model/MoveError'
-import { getAllOwnedWords } from './getAllOwnedWords'
-import { getWordInfo } from './getWordInfo'
-import { getWordString } from './getWordString'
-import { isWordStringValid } from './isWordStringValid'
+import { selectAllOwnedWordsFromAppState } from './selectAllOwnedWords'
+import { selectWordInfoFromAppState } from './selectWordInfo'
+import { selectBoardFromAppState } from './simpleSelectors'
 
-export const validateMove = memoizee(
-	(board: ReadonlyArray<IField>) => {
-		const { firstFieldIndex, lastFieldIndex, direction } = getWordInfo(
-			board,
-		)
+export const selectMoveErrors = createSelector(
+	[
+		selectBoardFromAppState,
+		selectAllOwnedWordsFromAppState,
+		selectWordInfoFromAppState,
+	],
+	(board, words, { firstFieldIndex, lastFieldIndex, direction }) => {
 		const errors: Set<MoveError> = new Set()
 		if (isUndefinedOrNull(firstFieldIndex)) {
 			errors.add(MoveError.NoTile)
@@ -29,7 +32,6 @@ export const validateMove = memoizee(
 				if (errors.size === 0) {
 					let touchesStart = false
 					let touchesUnowned = false
-					const words = getAllOwnedWords(board)
 					for (const word of words) {
 						if (!isWordStringValid(getWordString(word))) {
 							errors.add(MoveError.InvalidWord)
@@ -51,7 +53,8 @@ export const validateMove = memoizee(
 				}
 			}
 		}
-		return errors
+		return Array.from(errors)
 	},
-	{ max: 1 },
 )
+
+export const selectMoveErrorsFromState = (s: TState) => selectMoveErrors(s.app)

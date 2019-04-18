@@ -1,9 +1,7 @@
 import * as React from 'react'
-import { useContext } from 'react'
+import { TBag } from '../model/Bag'
 import './BagComp.css'
-import { StateContext } from './ContextProvider'
 
-export function BagComp() {
-	const c = useContext(StateContext)
-	return <div className='bag'>{`Lapkák a zsákban: ${c.bag.length}`}</div>
+export function BagComp({ bag }: { bag: TBag }) {
+	return <div className='bag'>{`Lapkák a zsákban: ${bag.length}`}</div>
 }

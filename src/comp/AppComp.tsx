@@ -1,23 +1,35 @@
 import * as React from 'react'
-import { useContext } from 'react'
-import { fillHand } from '../reduce/fillHand'
-import { nextPlayer } from '../reduce/nextPlayer'
-import { resetGame } from '../reduce/resetGame'
-import { setMode } from '../reduce/setMode'
+import { connect } from 'react-redux'
+import { TState } from '../index'
+import { fillHand, nextPlayer, resetGame, setMode } from '../model/actions'
+import { TBag } from '../model/Bag'
 import { Mode } from '../model/Mode'
+import {
+	selectBagFromState,
+	selectModeFromState,
+} from '../select/simpleSelectors'
 import './AppComp.css'
 import { BagComp } from './BagComp'
 import { BoardComp } from './BoardComp'
-import { SetStateContext, StateContext } from './ContextProvider'
+import { DispatchProp } from './DispatchProp'
 import { HandComp } from './HandComp'
 import { PlaceTileButtonsComp } from './PlaceTileButtonsComp'
 import { PlayersComp } from './PlayersComp'
 import { ReplaceTilesButtonsComp } from './ReplaceTilesButtonsComp'
 import { WordInfoComp } from './WordInfoComp'
 
-export function AppComp() {
-	const { mode } = useContext(StateContext)
-	const setState = useContext(SetStateContext)
+interface IAppCompPropsFromState {
+	mode: Mode
+	bag: TBag
+}
+export interface IAppCompProps extends IAppCompPropsFromState, DispatchProp {}
+
+export const AppComp = connect(
+	(state: TState): IAppCompPropsFromState => ({
+		mode: selectModeFromState(state),
+		bag: selectBagFromState(state),
+	}),
+)(({ mode, bag, dispatch }: IAppCompProps) => {
 	return (
 		<>
 			<BoardComp />
@@ -25,20 +37,20 @@ export function AppComp() {
 				{mode === Mode.NotStarted && (
 					<button
 						onClick={e => {
-							setState(resetGame())
-							setState(nextPlayer())
-							setState(fillHand())
-							setState(nextPlayer())
-							setState(fillHand())
-							setState(nextPlayer())
-							setState(setMode(Mode.PlaceTile))
+							dispatch(resetGame())
+							dispatch(nextPlayer())
+							dispatch(fillHand())
+							dispatch(nextPlayer())
+							dispatch(fillHand())
+							dispatch(nextPlayer())
+							dispatch(setMode(Mode.PlaceTile))
 						}}
 					>{`Új játék`}</button>
 				)}
 				{mode === Mode.PlaceTile && (
 					<>
 						<PlayersComp />
-						<BagComp />
+						<BagComp bag={bag} />
 						<HandComp />
 						<WordInfoComp />
 						<PlaceTileButtonsComp />
@@ -54,4 +66,4 @@ export function AppComp() {
 			</div>
 		</>
 	)
-}
+})
