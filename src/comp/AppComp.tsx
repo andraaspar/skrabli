@@ -1,9 +1,12 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { TState } from '../index'
+import { loadGameThunk } from '../action/loadGameThunk'
+import { nextPlayerAndSaveThunk } from '../action/nextPlayerAndSaveThunk'
+import { savedGameExists } from '../fun/savedGameExists'
 import { fillHand, nextPlayer, resetGame, setMode } from '../model/actions'
 import { TBag } from '../model/Bag'
 import { Mode } from '../model/Mode'
+import { IState } from '../model/State'
 import {
 	selectBagFromState,
 	selectModeFromState,
@@ -25,7 +28,7 @@ interface IAppCompPropsFromState {
 export interface IAppCompProps extends IAppCompPropsFromState, DispatchProp {}
 
 export const AppComp = connect(
-	(state: TState): IAppCompPropsFromState => ({
+	(state: IState): IAppCompPropsFromState => ({
 		mode: selectModeFromState(state),
 		bag: selectBagFromState(state),
 	}),
@@ -35,17 +38,26 @@ export const AppComp = connect(
 			<BoardComp />
 			<div className='tools'>
 				{mode === Mode.NotStarted && (
-					<button
-						onClick={e => {
-							dispatch(resetGame())
-							dispatch(nextPlayer())
-							dispatch(fillHand())
-							dispatch(nextPlayer())
-							dispatch(fillHand())
-							dispatch(nextPlayer())
-							dispatch(setMode(Mode.PlaceTile))
-						}}
-					>{`Új játék`}</button>
+					<>
+						{savedGameExists() && (
+							<button
+								onClick={e => {
+									dispatch(loadGameThunk())
+								}}
+							>{`Folytatás`}</button>
+						)}
+						<button
+							onClick={e => {
+								dispatch(resetGame())
+								dispatch(nextPlayer())
+								dispatch(fillHand())
+								dispatch(nextPlayer())
+								dispatch(fillHand())
+								dispatch(setMode(Mode.PlaceTile))
+								dispatch(nextPlayerAndSaveThunk())
+							}}
+						>{`Új játék`}</button>
+					</>
 				)}
 				{mode === Mode.PlaceTile && (
 					<>

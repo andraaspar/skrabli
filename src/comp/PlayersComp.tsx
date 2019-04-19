@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { TState } from '../index'
+import { saveGameThunk } from '../action/saveGameThunk'
 import { setPlayerName } from '../model/actions'
 import { TPlayers } from '../model/Player'
+import { IState } from '../model/State'
 import { selectPlayersFromState } from '../select/simpleSelectors'
 import { DispatchProp } from './DispatchProp'
 
@@ -15,7 +16,7 @@ export interface PlayersCompProps
 		DispatchProp {}
 
 export const PlayersComp = connect(
-	(state: TState): PlayersCompPropsFromStore => ({
+	(state: IState): PlayersCompPropsFromStore => ({
 		players: selectPlayersFromState(state),
 		playerIndex: state.app.playerIndex,
 	}),
@@ -37,6 +38,7 @@ export const PlayersComp = connect(
 												name: name.trim(),
 											}),
 										)
+										dispatch(saveGameThunk())
 									}
 								}}
 							>

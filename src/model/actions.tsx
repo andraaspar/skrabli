@@ -1,7 +1,9 @@
 import { createAction } from 'redux-starter-kit'
 import { Mode } from './Mode'
+import { IState } from './State'
 import { ITile } from './Tile'
 
+export const setGame = createAction<{ game: IState }>('setGame')
 export const collectTiles = createAction<{}>('collectTiles')
 export const disownTiles = createAction<{}>('disownTiles')
 export const fillHand = createAction<{}>('fillHand')

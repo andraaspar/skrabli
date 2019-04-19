@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
-import { TState } from '../index'
-import { selectValidAndInvalidWords } from './selectValidAndInvalidWords'
 import { getWordScore } from '../fun/getWordScore'
+import { IState } from '../model/State'
+import { selectValidAndInvalidWords } from './selectValidAndInvalidWords'
 
 export const selectMoveScore = createSelector(
 	[selectValidAndInvalidWords],
@@ -14,4 +14,4 @@ export const selectMoveScore = createSelector(
 	},
 )
 
-export const selectMoveScoreFromState = (s: TState) => selectMoveScore(s.app)
+export const selectMoveScoreFromState = (s: IState) => selectMoveScore(s.app)

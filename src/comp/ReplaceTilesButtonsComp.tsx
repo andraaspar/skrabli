@@ -1,17 +1,17 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { TState } from '../index'
+import { nextPlayerAndSaveThunk } from '../action/nextPlayerAndSaveThunk'
 import {
 	addTilesToBag,
 	deselectTilesToReplace,
 	fillHand,
-	nextPlayer,
 	removeTilesToReplaceFromHand,
 	setMode,
 } from '../model/actions'
 import { THandIndicesToReplace } from '../model/HandIndicesToReplace'
 import { THands } from '../model/Hands'
 import { Mode } from '../model/Mode'
+import { IState } from '../model/State'
 import { ITile } from '../model/Tile'
 import {
 	selectHandIndicesToReplaceFromState,
@@ -29,7 +29,7 @@ export interface ReplaceTilesButtonsCompProps
 		DispatchProp {}
 
 export const ReplaceTilesButtonsComp = connect(
-	(state: TState): ReplaceTilesButtonsCompPropsFromStore => ({
+	(state: IState): ReplaceTilesButtonsCompPropsFromStore => ({
 		handIndicesToReplace: selectHandIndicesToReplaceFromState(state),
 		hands: selectHandsFromState(state),
 		playerIndex: state.app.playerIndex,
@@ -55,7 +55,7 @@ export const ReplaceTilesButtonsComp = connect(
 						dispatch(fillHand())
 						dispatch(addTilesToBag({ tiles: tilesToReplace }))
 						dispatch(setMode(Mode.PlaceTile))
-						dispatch(nextPlayer())
+						dispatch(nextPlayerAndSaveThunk())
 					}}
 				>{`Csere`}</button>
 				<button

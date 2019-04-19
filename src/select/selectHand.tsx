@@ -1,6 +1,6 @@
 import { isUndefinedOrNull } from 'illa/Type'
 import { createSelector } from 'reselect'
-import { TState } from '../index'
+import { IState } from '../model/State'
 import {
 	selectHandsFromAppState,
 	selectPlayerIndexFromAppState,
@@ -13,4 +13,4 @@ export const selectHandFromAppState = createSelector(
 	},
 )
 
-export const selectHandFromState = (s: TState) => selectHandsFromAppState(s.app)
+export const selectHandFromState = (s: IState) => selectHandsFromAppState(s.app)

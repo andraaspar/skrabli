@@ -1,13 +1,11 @@
 import { get } from 'illa/FunctionUtil'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { saveGameThunk } from '../action/saveGameThunk'
-import { TState } from '../index'
+import { nextPlayerAndSaveThunk } from '../action/nextPlayerAndSaveThunk'
 import {
 	collectTiles,
 	disownTiles,
 	fillHand,
-	nextPlayer,
 	resetGame,
 	score,
 	setJokerLetter,
@@ -17,6 +15,7 @@ import { TBag } from '../model/Bag'
 import { TBoard } from '../model/Board'
 import { Mode } from '../model/Mode'
 import { MoveError } from '../model/MoveError'
+import { IState } from '../model/State'
 import letters from '../res/letters.json'
 import { selectMoveErrorsFromState } from '../select/selectMoveErrors'
 import { selectMoveScoreFromState } from '../select/selectMoveScore'
@@ -39,7 +38,7 @@ export interface PlaceTileButtonsCompProps
 		DispatchProp {}
 
 export const PlaceTileButtonsComp = connect(
-	(state: TState): PlaceTileButtonsCompPropsFromStore => ({
+	(state: IState): PlaceTileButtonsCompPropsFromStore => ({
 		bag: selectBagFromState(state),
 		board: selectBoardFromState(state),
 		fieldIndex: state.app.fieldIndex,
@@ -63,8 +62,7 @@ export const PlaceTileButtonsComp = connect(
 						dispatch(score())
 						dispatch(disownTiles())
 						dispatch(fillHand())
-						dispatch(nextPlayer())
-						dispatch(saveGameThunk())
+						dispatch(nextPlayerAndSaveThunk())
 					}}
 				>
 					{`Oké`}
@@ -99,7 +97,7 @@ export const PlaceTileButtonsComp = connect(
 					onClick={e => {
 						if (confirm(`Biztos hogy nem teszel semmit?`)) {
 							dispatch(collectTiles())
-							dispatch(nextPlayer())
+							dispatch(nextPlayerAndSaveThunk())
 						}
 					}}
 				>

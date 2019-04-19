@@ -3,7 +3,6 @@ import { isUndefinedOrNull } from 'illa/Type'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { isNullOrUndefined } from 'util'
-import { TState } from '../index'
 import {
 	selectHand,
 	swapHandAndBoard,
@@ -14,6 +13,7 @@ import { TBoard } from '../model/Board'
 import { THandIndicesToReplace } from '../model/HandIndicesToReplace'
 import { THands } from '../model/Hands'
 import { Mode } from '../model/Mode'
+import { IState } from '../model/State'
 import {
 	selectBoardFromState,
 	selectHandIndicesToReplaceFromState,
@@ -37,7 +37,7 @@ interface HandCompPropsFromState {
 export interface HandCompProps extends HandCompPropsFromState, DispatchProp {}
 
 export const HandComp = connect(
-	(state: TState): HandCompPropsFromState => ({
+	(state: IState): HandCompPropsFromState => ({
 		hands: selectHandsFromState(state),
 		playerIndex: state.app.playerIndex,
 		handIndex: state.app.handIndex,

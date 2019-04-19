@@ -2,9 +2,9 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { getWordScore } from '../fun/getWordScore'
 import { getWordString } from '../fun/getWordString'
-import { TState } from '../index'
 import { IValidAndInvalidWords } from '../model/IValidAndInvalidWords'
 import { MoveError } from '../model/MoveError'
+import { IState } from '../model/State'
 import { selectMoveErrorsFromState } from '../select/selectMoveErrors'
 import { selectValidAndInvalidWordsFromState } from '../select/selectValidAndInvalidWords'
 import { DispatchProp } from './DispatchProp'
@@ -19,7 +19,7 @@ export interface WordInfoCompProps
 		DispatchProp {}
 
 export const WordInfoComp = connect(
-	(state: TState): WordInfoCompPropsFromStore => ({
+	(state: IState): WordInfoCompPropsFromStore => ({
 		words: selectValidAndInvalidWordsFromState(state),
 		errors: selectMoveErrorsFromState(state),
 	}),

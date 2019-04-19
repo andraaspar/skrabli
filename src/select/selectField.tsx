@@ -1,6 +1,6 @@
 import { isUndefinedOrNull } from 'illa/Type'
 import { createSelector } from 'reselect'
-import { TState } from '../index'
+import { IState } from '../model/State'
 import {
 	selectBoardFromAppState,
 	selectFieldIndexFromAppState,
@@ -12,5 +12,5 @@ export const selectFieldFromAppState = createSelector(
 		return isUndefinedOrNull(fieldIndex) ? null : board[fieldIndex]
 	},
 )
-export const selectFieldFromState = (s: TState) =>
+export const selectFieldFromState = (s: IState) =>
 	selectFieldFromAppState(s.app)

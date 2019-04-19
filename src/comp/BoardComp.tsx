@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { selectFieldThunk } from '../action/selectFieldThunk'
-import { TState } from '../index'
 import { TBoard } from '../model/Board'
 import { FieldKind } from '../model/FieldKind'
+import { IState } from '../model/State'
 import { selectBoardFromState } from '../select/simpleSelectors'
 import { AspectComp } from './AspectComp'
 import './BoardComp.css'
@@ -17,7 +17,7 @@ interface BoardCompPropsFromState {
 export interface BoardCompProps extends BoardCompPropsFromState, DispatchProp {}
 
 export const BoardComp = connect(
-	(state: TState): BoardCompPropsFromState => ({
+	(state: IState): BoardCompPropsFromState => ({
 		board: selectBoardFromState(state),
 		fieldIndex: state.app.fieldIndex,
 	}),

@@ -14,6 +14,7 @@ import {
 	score,
 	selectField,
 	selectHand,
+	setGame,
 	setJokerLetter,
 	setMode,
 	setPlayerName,
@@ -220,6 +221,9 @@ export const appStateReducer = createReducer(
 			action: ReturnType<typeof addTilesToBag>,
 		) => {
 			state.bag.push(...action.payload.tiles)
+		},
+		[setGame.type]: (state, action: ReturnType<typeof setGame>) => {
+			return action.payload.game.app
 		},
 	}),
 )
