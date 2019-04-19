@@ -1,7 +1,8 @@
 import { isUndefinedOrNull, withInterface } from 'illa/Type'
 import { createReducer, PayloadAction } from 'redux-starter-kit'
 import { CaseReducersMapObject } from 'redux-starter-kit/src/createReducer'
-import { selectMoveScore } from '../select/selectMoveScore'
+import { selectHandCountFromAppState } from '../select/selectHandCount'
+import { selectMoveScoreFromAppState } from '../select/selectMoveScore'
 import {
 	addTilesToBag,
 	collectTiles,
@@ -44,6 +45,7 @@ export interface IAppState {
 	readonly handIndex: number | null
 	readonly hands: THands
 	readonly handIndicesToReplace: THandIndicesToReplace
+	readonly startingHandCount: number | null
 }
 
 export function createAppState(): IAppState {
@@ -57,6 +59,7 @@ export function createAppState(): IAppState {
 		fieldIndex: null,
 		handIndex: null,
 		handIndicesToReplace: createHandIndicesToReplace(),
+		startingHandCount: null,
 	}
 }
 
@@ -110,6 +113,7 @@ export const appStateReducer = createReducer(
 			state.hands[playerIndex!] = hand.map(tile =>
 				tile ? tile : tiles.shift() || null,
 			)
+			state.startingHandCount = selectHandCountFromAppState(state)
 		},
 		[nextPlayer.type]: (state, action: ReturnType<typeof nextPlayer>) => {
 			const { playerIndex } = state
@@ -124,7 +128,7 @@ export const appStateReducer = createReducer(
 		},
 		[score.type]: (state, action: ReturnType<typeof score>) => {
 			const { players, playerIndex } = state
-			players[playerIndex!].score += selectMoveScore(state)
+			players[playerIndex!].score += selectMoveScoreFromAppState(state)
 		},
 		[selectField.type]: (state, action: ReturnType<typeof selectField>) => {
 			state.fieldIndex = action.payload.fieldIndex

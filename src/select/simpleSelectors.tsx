@@ -31,3 +31,7 @@ export const selectFieldIndexFromAppState = (state: IAppState) =>
 	state.fieldIndex
 export const selectFieldIndexFromState = (state: IState) =>
 	selectFieldIndexFromAppState(state.app)
+export const selectStartingHandCountFromAppState = (state: IAppState) =>
+	state.startingHandCount
+export const selectStartingHandCountFromState = (state: IState) =>
+	selectStartingHandCountFromAppState(state.app)

@@ -13,3 +13,8 @@
 .word-score {
 	font-size: smaller;
 }
+
+.bingo {
+	font-weight: bold;
+	color: hotpink;
+}

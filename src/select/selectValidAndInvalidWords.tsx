@@ -6,7 +6,7 @@ import { IValidAndInvalidWords } from '../model/IValidAndInvalidWords'
 import { IState } from '../model/State'
 import { selectAllOwnedWordsFromAppState } from './selectAllOwnedWords'
 
-export const selectValidAndInvalidWords = createSelector(
+export const selectValidAndInvalidWordsFromAppState = createSelector(
 	[selectAllOwnedWordsFromAppState],
 	(words: IField[][]): IValidAndInvalidWords => {
 		const valid: IField[][] = []
@@ -26,4 +26,4 @@ export const selectValidAndInvalidWords = createSelector(
 )
 
 export const selectValidAndInvalidWordsFromState = (s: IState) =>
-	selectValidAndInvalidWords(s.app)
+	selectValidAndInvalidWordsFromAppState(s.app)
