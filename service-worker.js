@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/skrabli/precache-manifest.3af30f264b02fd3d3aa6e444faab55b2.js"
+  "/skrabli/precache-manifest.b9a4fcecec76a44b9e030be13b508320.js"
 );
 
 workbox.clientsClaim();
