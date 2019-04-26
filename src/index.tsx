@@ -5,13 +5,11 @@ import { Provider } from 'react-redux'
 import { configureStore } from 'redux-starter-kit'
 import { AppComp } from './comp/AppComp'
 import './index.css'
-import { appStateReducer } from './model/AppState'
+import { stateReducer } from './model/State'
 import * as serviceWorker from './serviceWorker'
 
 export const store = configureStore({
-	reducer: {
-		app: appStateReducer,
-	},
+	reducer: stateReducer,
 })
 
 ReactDOM.render(
