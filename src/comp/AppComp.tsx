@@ -1,9 +1,8 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { loadGameThunk } from '../action/loadGameThunk'
-import { nextPlayerAndSaveThunk } from '../action/nextPlayerAndSaveThunk'
+import { newGameThunk } from '../action/newGameThunk'
 import { savedGameExists } from '../fun/savedGameExists'
-import { fillHand, nextPlayer, resetGame, setMode } from '../model/actions'
 import { TBag } from '../model/Bag'
 import { Mode } from '../model/Mode'
 import { IState } from '../model/State'
@@ -48,13 +47,7 @@ export const AppComp = connect(
 						)}
 						<button
 							onClick={e => {
-								dispatch(resetGame())
-								dispatch(nextPlayer())
-								dispatch(fillHand())
-								dispatch(nextPlayer())
-								dispatch(fillHand())
-								dispatch(setMode(Mode.PlaceTile))
-								dispatch(nextPlayerAndSaveThunk())
+								dispatch(newGameThunk())
 							}}
 						>{`Új játék`}</button>
 					</>

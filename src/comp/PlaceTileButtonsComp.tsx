@@ -1,12 +1,12 @@
 import { get } from 'illa/FunctionUtil'
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { newGameThunk } from '../action/newGameThunk'
 import { nextPlayerAndSaveThunk } from '../action/nextPlayerAndSaveThunk'
 import {
 	collectTiles,
 	disownTiles,
 	fillHand,
-	resetGame,
 	score,
 	setJokerLetter,
 	setMode,
@@ -106,7 +106,7 @@ export const PlaceTileButtonsComp = connect(
 				<button
 					onClick={e => {
 						if (confirm(`Biztos hogy új játékot akarsz kezdeni?`)) {
-							dispatch(resetGame())
+							dispatch(newGameThunk())
 						}
 					}}
 				>
