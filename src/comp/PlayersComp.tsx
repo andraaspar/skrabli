@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { saveGameThunk } from '../action/saveGameThunk'
-import { setPlayerName } from '../model/actions'
+import { setPlayerName } from '../action/actions'
 import { TPlayers } from '../model/Player'
 import { IState } from '../model/State'
 import { selectPlayersFromState } from '../select/simpleSelectors'

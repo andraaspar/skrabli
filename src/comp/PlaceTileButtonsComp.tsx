@@ -10,7 +10,7 @@ import {
 	score,
 	setJokerLetter,
 	setMode,
-} from '../model/actions'
+} from '../action/actions'
 import { TBag } from '../model/Bag'
 import { TBoard } from '../model/Board'
 import { Mode } from '../model/Mode'

@@ -1,8 +1,8 @@
 import { Draft, produce } from 'immer'
-import { setMode } from './actions'
+import { setMode } from '../action/actions'
 import { appStateReducer, createAppState, IAppState } from './AppState'
 import { Mode } from './Mode'
-import { TAction } from './TAction'
+import { TAction } from '../action/TAction'
 
 export interface IState {
 	readonly app: IAppState

@@ -1,4 +1,4 @@
-import { nextPlayer } from '../model/actions'
+import { nextPlayer } from './actions'
 import { saveGameThunk } from './saveGameThunk'
 import { ThunkValue } from './ThunkValue'
 

@@ -1,6 +1,6 @@
-import { Mode } from './Mode'
-import { IState } from './State'
-import { ITile } from './Tile'
+import { Mode } from '../model/Mode'
+import { IState } from '../model/State'
+import { ITile } from '../model/Tile'
 
 export const setGame = createAction<'setGame', { game: IState }>('setGame')
 export const collectTiles = createAction<'collectTiles'>('collectTiles')

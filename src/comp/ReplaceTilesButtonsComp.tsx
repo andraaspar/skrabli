@@ -7,7 +7,7 @@ import {
 	fillHand,
 	removeTilesToReplaceFromHand,
 	setMode,
-} from '../model/actions'
+} from '../action/actions'
 import { THandIndicesToReplace } from '../model/HandIndicesToReplace'
 import { THands } from '../model/Hands'
 import { Mode } from '../model/Mode'

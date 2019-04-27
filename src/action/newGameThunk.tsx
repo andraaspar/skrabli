@@ -4,7 +4,7 @@ import {
 	resetGame,
 	setMode,
 	setPlayerName,
-} from '../model/actions'
+} from './actions'
 import { Mode } from '../model/Mode'
 import { selectPlayersFromState } from '../select/simpleSelectors'
 import { nextPlayerAndSaveThunk } from './nextPlayerAndSaveThunk'

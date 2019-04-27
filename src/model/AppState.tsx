@@ -22,7 +22,7 @@ import {
 	swapHands,
 	swapTiles,
 	toggleHandIndexToReplace,
-} from './actions'
+} from '../action/actions'
 import { createBag, TBag } from './Bag'
 import { createBoard, TBoard } from './Board'
 import {
@@ -32,7 +32,7 @@ import {
 import { createHands, THands } from './Hands'
 import { Mode } from './Mode'
 import { createPlayers, TPlayers } from './Player'
-import { TAction } from './TAction'
+import { TAction } from '../action/TAction'
 import { ITile } from './Tile'
 
 export interface IAppState {

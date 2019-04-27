@@ -1,6 +1,6 @@
 import { get } from 'illa/FunctionUtil'
 import { isUndefinedOrNull } from 'illa/Type'
-import { selectField, swapHandAndBoard, swapTiles } from '../model/actions'
+import { selectField, swapHandAndBoard, swapTiles } from './actions'
 import { Mode } from '../model/Mode'
 import { selectFieldFromState } from '../select/selectField'
 import { selectHandTileFromState } from '../select/selectHandTile'

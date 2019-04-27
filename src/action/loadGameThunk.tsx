@@ -1,5 +1,5 @@
 import { get } from 'illa/FunctionUtil'
-import { setGame } from '../model/actions'
+import { setGame } from './actions'
 import { LocalStorageKey } from '../model/LocalStorageKey'
 import { IState } from '../model/State'
 import { ThunkValue } from './ThunkValue'

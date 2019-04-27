@@ -8,7 +8,7 @@ import {
 	swapHandAndBoard,
 	swapHands,
 	toggleHandIndexToReplace,
-} from '../model/actions'
+} from '../action/actions'
 import { TBoard } from '../model/Board'
 import { THandIndicesToReplace } from '../model/HandIndicesToReplace'
 import { THands } from '../model/Hands'
