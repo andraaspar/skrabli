@@ -1,16 +1,18 @@
 import { get } from 'illa/FunctionUtil'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { newGameThunk } from '../action/newGameThunk'
-import { nextPlayerAndSaveThunk } from '../action/nextPlayerAndSaveThunk'
 import {
 	collectTiles,
 	disownTiles,
 	fillHand,
+	resetSkipCount,
 	score,
 	setJokerLetter,
 	setMode,
 } from '../action/actions'
+import { newGameThunk } from '../action/newGameThunk'
+import { nextPlayerAndSaveThunk } from '../action/nextPlayerAndSaveThunk'
+import { skipThunk } from '../action/skipThunk'
 import { TBag } from '../model/Bag'
 import { TBoard } from '../model/Board'
 import { Mode } from '../model/Mode'
@@ -62,6 +64,7 @@ export const PlaceTileButtonsComp = connect(
 						dispatch(score())
 						dispatch(disownTiles())
 						dispatch(fillHand())
+						dispatch(resetSkipCount())
 						dispatch(nextPlayerAndSaveThunk())
 					}}
 				>
@@ -96,8 +99,7 @@ export const PlaceTileButtonsComp = connect(
 				<button
 					onClick={e => {
 						if (confirm(`Biztos hogy nem teszel semmit?`)) {
-							dispatch(collectTiles())
-							dispatch(nextPlayerAndSaveThunk())
+							dispatch(skipThunk())
 						}
 					}}
 				>

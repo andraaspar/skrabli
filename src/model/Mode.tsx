@@ -2,5 +2,6 @@ export enum Mode {
 	NotStarted = 'NotStarted',
 	PlaceTile = 'PlaceTile',
 	ReplaceTiles = 'ReplaceTiles',
-	Finished = 'Finished',
+	Won = 'Won',
+	Drawn = 'Drawn',
 }

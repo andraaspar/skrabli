@@ -6,3 +6,7 @@
 	width: 100%;
 	text-align: left;
 }
+.player-bonus {
+	font-size: small;
+	color: gray;
+}

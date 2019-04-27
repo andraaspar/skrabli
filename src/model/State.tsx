@@ -1,8 +1,8 @@
 import { Draft, produce } from 'immer'
 import { setMode } from '../action/actions'
+import { TAction } from '../action/TAction'
 import { appStateReducer, createAppState, IAppState } from './AppState'
 import { Mode } from './Mode'
-import { TAction } from '../action/TAction'
 
 export interface IState {
 	readonly app: IAppState
@@ -17,4 +17,4 @@ export function createState(): IState {
 export const stateReducer = produce((state: Draft<IState>, action: TAction) => {
 	state.app = appStateReducer(state.app, action) as Draft<IAppState>
 }, createAppState())
-stateReducer(undefined, setMode(Mode.Finished))
+stateReducer(undefined, setMode(Mode.Won))

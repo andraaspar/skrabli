@@ -1,17 +1,18 @@
 import { isUndefinedOrNull } from 'illa/Type'
 import { Draft, produce } from 'immer'
-import { selectHandCountFromAppState } from '../select/selectHandCount'
-import { selectMoveScoreFromAppState } from '../select/selectMoveScore'
 import {
 	addTilesToBag,
 	collectTiles,
 	deselectTilesToReplace,
 	disownTiles,
 	fillHand,
+	incrementSkipCount,
 	nextPlayer,
 	removeTilesToReplaceFromHand,
 	resetGame,
+	resetSkipCount,
 	score,
+	scoreBonuses,
 	selectField,
 	selectHand,
 	setGame,
@@ -23,6 +24,9 @@ import {
 	swapTiles,
 	toggleHandIndexToReplace,
 } from '../action/actions'
+import { TAction } from '../action/TAction'
+import { selectHandCountFromAppState } from '../select/selectHandCount'
+import { selectMoveScoreFromAppState } from '../select/selectMoveScore'
 import { createBag, TBag } from './Bag'
 import { createBoard, TBoard } from './Board'
 import {
@@ -32,7 +36,6 @@ import {
 import { createHands, THands } from './Hands'
 import { Mode } from './Mode'
 import { createPlayers, TPlayers } from './Player'
-import { TAction } from '../action/TAction'
 import { ITile } from './Tile'
 
 export interface IAppState {
@@ -46,6 +49,8 @@ export interface IAppState {
 	readonly hands: THands
 	readonly handIndicesToReplace: THandIndicesToReplace
 	readonly startingHandCount: number | null
+	readonly skipCount: number | null
+	readonly playerBonuses: ReadonlyArray<number> | null
 }
 
 export function createAppState(): IAppState {
@@ -60,188 +65,188 @@ export function createAppState(): IAppState {
 		handIndex: null,
 		handIndicesToReplace: createHandIndicesToReplace(),
 		startingHandCount: null,
+		skipCount: null,
+		playerBonuses: null,
 	}
 }
 
 export const appStateReducer = produce(
 	(state: Draft<IAppState>, action: TAction) => {
 		switch (action.type) {
-			case collectTiles.type:
-				{
-					const { board, playerIndex, hands } = state
-					const tiles: ITile[] = []
-					for (const field of board) {
-						if (field.tile && field.tile.isOwned) {
-							const tile = field.tile
-							field.tile = null
-							tiles.push(tile)
-							if (tile.isJoker) tile.letter = ' '
-						}
-					}
-					const hand = hands[playerIndex!]
-					for (let i = 0; i < hand.length; i++) {
-						if (isUndefinedOrNull(hand[i])) {
-							hand[i] = tiles.shift() || null
-						}
-					}
-				}
-				break
-			case disownTiles.type:
-				{
-					for (const field of state.board) {
-						if (field.tile) {
-							field.tile.isOwned = false
-						}
-					}
-				}
-				break
-			case fillHand.type:
-				{
-					const { bag, hands, playerIndex } = state
-					const hand = hands[playerIndex!]
-					const count = Math.min(
-						bag.length,
-						hand.reduce((sum, tile) => (tile ? sum : sum + 1), 0),
-					)
-					const tiles: ITile[] = []
-					for (let i = 0; i < count; i++) {
-						const tile = bag.splice(
-							Math.floor(Math.random() * bag.length),
-							1,
-						)[0]
-						tile.isOwned = true
+			case collectTiles.type: {
+				const { board, playerIndex, hands } = state
+				const tiles: ITile[] = []
+				for (const field of board) {
+					if (field.tile && field.tile.isOwned) {
+						const tile = field.tile
+						field.tile = null
 						tiles.push(tile)
+						if (tile.isJoker) tile.letter = ' '
 					}
-					state.hands[playerIndex!] = hand.map(tile =>
-						tile ? tile : tiles.shift() || null,
-					)
-					state.startingHandCount = selectHandCountFromAppState(state)
+				}
+				const hand = hands[playerIndex!]
+				for (let i = 0; i < hand.length; i++) {
+					if (isUndefinedOrNull(hand[i])) {
+						hand[i] = tiles.shift() || null
+					}
 				}
 				break
-			case nextPlayer.type:
-				{
-					const { playerIndex } = state
-					state.playerIndex = isUndefinedOrNull(playerIndex)
-						? 0
-						: 1 - playerIndex
-					state.fieldIndex = null
-					state.handIndex = null
+			}
+			case disownTiles.type: {
+				for (const field of state.board) {
+					if (field.tile) {
+						field.tile.isOwned = false
+					}
 				}
 				break
+			}
+			case fillHand.type: {
+				const { bag, hands, playerIndex } = state
+				const hand = hands[playerIndex!]
+				const count = Math.min(
+					bag.length,
+					hand.reduce((sum, tile) => (tile ? sum : sum + 1), 0),
+				)
+				const tiles: ITile[] = []
+				for (let i = 0; i < count; i++) {
+					const tile = bag.splice(
+						Math.floor(Math.random() * bag.length),
+						1,
+					)[0]
+					tile.isOwned = true
+					tiles.push(tile)
+				}
+				state.hands[playerIndex!] = hand.map(tile =>
+					tile ? tile : tiles.shift() || null,
+				)
+				state.startingHandCount = selectHandCountFromAppState(state)
+				break
+			}
+			case nextPlayer.type: {
+				const { playerIndex } = state
+				state.playerIndex = isUndefinedOrNull(playerIndex)
+					? 0
+					: 1 - playerIndex
+				state.fieldIndex = null
+				state.handIndex = null
+				break
+			}
 			case resetGame.type:
 				return createAppState()
-			case score.type:
-				{
-					const { players, playerIndex } = state
-					players[playerIndex!].score += selectMoveScoreFromAppState(
-						state,
-					)
-				}
+			case score.type: {
+				const { players, playerIndex } = state
+				players[playerIndex!].score += selectMoveScoreFromAppState(
+					state,
+				)
 				break
-			case selectField.type:
-				{
-					state.fieldIndex = action.payload.fieldIndex
-				}
+			}
+			case selectField.type: {
+				state.fieldIndex = action.payload.fieldIndex
 				break
-			case selectHand.type:
-				{
-					state.handIndex = action.payload.handIndex
-				}
+			}
+			case selectHand.type: {
+				state.handIndex = action.payload.handIndex
 				break
-			case setJokerLetter.type:
-				{
-					const { board, fieldIndex } = state
-					board[fieldIndex!].tile!.letter = action.payload.letter
+			}
+			case setJokerLetter.type: {
+				const { board, fieldIndex } = state
+				board[fieldIndex!].tile!.letter = action.payload.letter
+				state.fieldIndex = null
+				break
+			}
+			case setMode.type: {
+				const mode = action.payload
+				if (mode !== state.mode) {
 					state.fieldIndex = null
-				}
-				break
-			case setMode.type:
-				{
-					const mode = action.payload
-					if (mode !== state.mode) {
-						state.fieldIndex = null
-						state.handIndex = null
-					}
-					state.mode = mode
-				}
-				break
-			case setPlayerName.type:
-				{
-					const { playerIndex, name } = action.payload
-					state.players[playerIndex].name = name
-				}
-				break
-			case swapHandAndBoard.type:
-				{
-					const { board, hands, playerIndex } = state
-					const { fieldIndex, handIndex } = action.payload
-					const field = board[fieldIndex]
-					const hand = hands[playerIndex!]
-					const tileOnBoard = field.tile
-					const tileInHand = hand[handIndex]
-					state.fieldIndex =
-						tileInHand && tileInHand.isJoker ? fieldIndex : null
 					state.handIndex = null
-					board[fieldIndex].tile = tileInHand
-					hand[handIndex] = tileOnBoard
-					if (tileOnBoard && tileOnBoard.isJoker) {
-						tileOnBoard.letter = ' '
-					}
+				}
+				state.mode = mode
+				break
+			}
+			case setPlayerName.type: {
+				const { playerIndex, name } = action.payload
+				state.players[playerIndex].name = name
+				break
+			}
+			case swapHandAndBoard.type: {
+				const { board, hands, playerIndex } = state
+				const { fieldIndex, handIndex } = action.payload
+				const field = board[fieldIndex]
+				const hand = hands[playerIndex!]
+				const tileOnBoard = field.tile
+				const tileInHand = hand[handIndex]
+				state.fieldIndex =
+					tileInHand && tileInHand.isJoker ? fieldIndex : null
+				state.handIndex = null
+				board[fieldIndex].tile = tileInHand
+				hand[handIndex] = tileOnBoard
+				if (tileOnBoard && tileOnBoard.isJoker) {
+					tileOnBoard.letter = ' '
 				}
 				break
-			case swapHands.type:
-				{
-					const { hands, playerIndex } = state
-					const { handIndexA, handIndexB } = action.payload
-					const hand = hands[playerIndex!]
-					const tileA = hand[handIndexA]
-					const tileB = hand[handIndexB]
-					state.handIndex = null
-					hand[handIndexA] = tileB
-					hand[handIndexB] = tileA
-				}
+			}
+			case swapHands.type: {
+				const { hands, playerIndex } = state
+				const { handIndexA, handIndexB } = action.payload
+				const hand = hands[playerIndex!]
+				const tileA = hand[handIndexA]
+				const tileB = hand[handIndexB]
+				state.handIndex = null
+				hand[handIndexA] = tileB
+				hand[handIndexB] = tileA
 				break
-			case swapTiles.type:
-				{
-					const { board } = state
-					const { fieldIndexA, fieldIndexB } = action.payload
-					const fieldATile = board[fieldIndexA].tile
-					const fieldBTile = board[fieldIndexB].tile
-					state.fieldIndex = null
-					board[fieldIndexA].tile = fieldBTile
-					board[fieldIndexB].tile = fieldATile
-				}
+			}
+			case swapTiles.type: {
+				const { board } = state
+				const { fieldIndexA, fieldIndexB } = action.payload
+				const fieldATile = board[fieldIndexA].tile
+				const fieldBTile = board[fieldIndexB].tile
+				state.fieldIndex = null
+				board[fieldIndexA].tile = fieldBTile
+				board[fieldIndexB].tile = fieldATile
 				break
-			case toggleHandIndexToReplace.type:
-				{
-					const { handIndicesToReplace } = state
-					const { handIndex } = action.payload
-					handIndicesToReplace[handIndex] = !handIndicesToReplace[
-						handIndex
-					]
-				}
+			}
+			case toggleHandIndexToReplace.type: {
+				const { handIndicesToReplace } = state
+				const { handIndex } = action.payload
+				handIndicesToReplace[handIndex] = !handIndicesToReplace[
+					handIndex
+				]
 				break
-			case removeTilesToReplaceFromHand.type:
-				{
-					const { handIndicesToReplace, playerIndex, hands } = state
-					const hand = hands[playerIndex!]
-					state.hands[playerIndex!] = hand.map((tile, index) =>
-						handIndicesToReplace[index] ? null : tile,
-					)
-				}
+			}
+			case removeTilesToReplaceFromHand.type: {
+				const { handIndicesToReplace, playerIndex, hands } = state
+				const hand = hands[playerIndex!]
+				state.hands[playerIndex!] = hand.map((tile, index) =>
+					handIndicesToReplace[index] ? null : tile,
+				)
 				break
-			case deselectTilesToReplace.type:
-				{
-					state.handIndicesToReplace.fill(false)
-				}
+			}
+			case deselectTilesToReplace.type: {
+				state.handIndicesToReplace.fill(false)
 				break
-			case addTilesToBag.type:
-				{
-					state.bag.push(...action.payload.tiles)
-				}
+			}
+			case addTilesToBag.type: {
+				state.bag.push(...action.payload.tiles)
 				break
+			}
 			case setGame.type:
 				return action.payload.game.app
+			case incrementSkipCount.type: {
+				state.skipCount = (state.skipCount || 0) + 1
+				break
+			}
+			case resetSkipCount.type: {
+				state.skipCount = 0
+				break
+			}
+			case scoreBonuses.type: {
+				state.playerBonuses = action.payload as number[]
+				state.players.forEach((player, playerIndex) => {
+					player.score += action.payload[playerIndex]
+				})
+				break
+			}
 		}
 	},
 	createAppState(),

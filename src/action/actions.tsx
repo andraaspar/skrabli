@@ -65,6 +65,13 @@ export const deselectTilesToReplace = createAction<'deselectTilesToReplace'>(
 export const addTilesToBag = createAction<'addTilesToBag', { tiles: ITile[] }>(
 	'addTilesToBag',
 )
+export const incrementSkipCount = createAction<'incrementSkipCount'>(
+	'incrementSkipCount',
+)
+export const resetSkipCount = createAction<'resetSkipCount'>('resetSkipCount')
+export const scoreBonuses = createAction<'scoreBonuses', ReadonlyArray<number>>(
+	'scoreBonuses',
+)
 
 function createAction<T extends string, P = void>(type: T) {
 	const a = (payload: P) => ({ type, payload })

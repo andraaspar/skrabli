@@ -14,12 +14,16 @@ export const selectBagFromState = (state: IState): TBag => state.app.bag
 export const selectHandsFromAppState = (state: IAppState): THands => state.hands
 export const selectHandsFromState = (state: IState): THands =>
 	selectHandsFromAppState(state.app)
-export const selectModeFromState = (state: IState): Mode => state.app.mode
+export const selectModeFromAppState = (state: IAppState): Mode => state.mode
+export const selectModeFromState = (state: IState): Mode =>
+	selectModeFromAppState(state.app)
 export const selectHandIndicesToReplaceFromState = (
 	state: IState,
 ): THandIndicesToReplace => state.app.handIndicesToReplace
-export const selectPlayersFromState = (state: IState): TPlayers =>
-	state.app.players
+export const selectPlayersFromAppState = (state: IAppState): TPlayers =>
+	state.players
+export const selectPlayersFromState = (state: IState) =>
+	selectPlayersFromAppState(state.app)
 export const selectPlayerIndexFromAppState = (state: IAppState) =>
 	state.playerIndex
 export const selectPlayerIndexFromState = (state: IState) =>

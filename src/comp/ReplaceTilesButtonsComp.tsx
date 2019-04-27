@@ -1,13 +1,14 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { nextPlayerAndSaveThunk } from '../action/nextPlayerAndSaveThunk'
 import {
 	addTilesToBag,
 	deselectTilesToReplace,
 	fillHand,
 	removeTilesToReplaceFromHand,
+	resetSkipCount,
 	setMode,
 } from '../action/actions'
+import { nextPlayerAndSaveThunk } from '../action/nextPlayerAndSaveThunk'
 import { THandIndicesToReplace } from '../model/HandIndicesToReplace'
 import { THands } from '../model/Hands'
 import { Mode } from '../model/Mode'
@@ -54,6 +55,7 @@ export const ReplaceTilesButtonsComp = connect(
 						dispatch(deselectTilesToReplace())
 						dispatch(fillHand())
 						dispatch(addTilesToBag({ tiles: tilesToReplace }))
+						dispatch(resetSkipCount())
 						dispatch(setMode(Mode.PlaceTile))
 						dispatch(nextPlayerAndSaveThunk())
 					}}
