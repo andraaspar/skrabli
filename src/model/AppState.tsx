@@ -241,11 +241,20 @@ export const appStateReducer = produce(
 				break
 			}
 			case scoreBonuses.type: {
-				state.playerBonuses = action.payload as number[]
-				state.players.forEach((player, playerIndex) => {
-					player.score += action.payload[playerIndex]
-				})
-				break
+				const { players } = state
+				return {
+					...state,
+					playerBonuses: action.payload,
+					players: players.map((player, playerIndex) => ({
+						...player,
+						score: player.score + action.payload[playerIndex],
+					})),
+				}
+				// state.playerBonuses = action.payload as number[]
+				// state.players.forEach((player, playerIndex) => {
+				// 	player.score += action.payload[playerIndex]
+				// })
+				// break
 			}
 		}
 	},
