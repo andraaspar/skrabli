@@ -1,15 +1,11 @@
 import { isUndefinedOrNull } from 'illa/Type'
 import { createSelector } from 'reselect'
-import { IState } from '../model/State'
-import { selectHandFromAppState } from './selectHand'
-import { selectHandIndexFromAppState } from './simpleSelectors'
+import { selectHand } from './selectHand'
+import { selectHandIndex } from './simpleSelectors'
 
-export const selectHandTileFromAppState = createSelector(
-	[selectHandFromAppState, selectHandIndexFromAppState],
+export const selectHandTile = createSelector(
+	[selectHand, selectHandIndex],
 	(hand, handIndex) => {
 		return hand && !isUndefinedOrNull(handIndex) ? hand[handIndex] : null
 	},
 )
-
-export const selectHandTileFromState = (state: IState) =>
-	selectHandTileFromAppState(state.app)

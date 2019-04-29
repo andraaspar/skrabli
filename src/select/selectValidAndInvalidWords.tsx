@@ -3,11 +3,10 @@ import { getWordString } from '../fun/getWordString'
 import { isWordStringValid } from '../fun/isWordStringValid'
 import { IField } from '../model/Field'
 import { IValidAndInvalidWords } from '../model/IValidAndInvalidWords'
-import { IState } from '../model/State'
-import { selectAllOwnedWordsFromAppState } from './selectAllOwnedWords'
+import { selectAllOwnedWords } from './selectAllOwnedWords'
 
-export const selectValidAndInvalidWordsFromAppState = createSelector(
-	[selectAllOwnedWordsFromAppState],
+export const selectValidAndInvalidWords = createSelector(
+	[selectAllOwnedWords],
 	(words: IField[][]): IValidAndInvalidWords => {
 		const valid: IField[][] = []
 		const invalid: IField[][] = []
@@ -24,6 +23,3 @@ export const selectValidAndInvalidWordsFromAppState = createSelector(
 		}
 	},
 )
-
-export const selectValidAndInvalidWordsFromState = (s: IState) =>
-	selectValidAndInvalidWordsFromAppState(s.app)

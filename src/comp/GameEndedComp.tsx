@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { newGameThunk } from '../action/newGameThunk'
+import { IAppState } from '../model/AppState'
 import { Mode } from '../model/Mode'
-import { IState } from '../model/State'
-import { selectIsGameDrawnFromState } from '../select/selectIsGameDrawn'
-import { selectWinnersNamesFromState } from '../select/selectWinnersNames'
-import { selectModeFromState } from '../select/simpleSelectors'
+import { selectIsGameDrawn } from '../select/selectIsGameDrawn'
+import { selectWinnersNames } from '../select/selectWinnersNames'
+import { selectMode } from '../select/simpleSelectors'
 import { DispatchProp } from './DispatchProp'
 import { PlayersComp } from './PlayersComp'
 
@@ -19,10 +19,10 @@ export interface GameEndedCompProps
 		DispatchProp {}
 
 export const GameEndedComp = connect(
-	(state: IState): GameEndedCompPropsFromStore => ({
-		mode: selectModeFromState(state),
-		isGameDrawn: selectIsGameDrawnFromState(state),
-		winnerName: selectWinnersNamesFromState(state),
+	(state: IAppState): GameEndedCompPropsFromStore => ({
+		mode: selectMode(state),
+		isGameDrawn: selectIsGameDrawn(state),
+		winnerName: selectWinnersNames(state),
 	}),
 )(({ dispatch, mode, winnerName, isGameDrawn }: GameEndedCompProps) => {
 	return (

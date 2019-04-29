@@ -1,37 +1,42 @@
 import { get } from 'illa/FunctionUtil'
 import { isUndefinedOrNull } from 'illa/Type'
-import { selectField, swapHandAndBoard, swapTiles } from './actions'
 import { Mode } from '../model/Mode'
-import { selectFieldFromState } from '../select/selectField'
-import { selectHandTileFromState } from '../select/selectHandTile'
+import { selectField } from '../select/selectField'
+import { selectHandTile } from '../select/selectHandTile'
 import {
-	selectBoardFromState,
-	selectFieldIndexFromState,
-	selectHandIndexFromState,
-	selectModeFromState,
+	selectBoard,
+	selectFieldIndex,
+	selectHandIndex,
+	selectMode,
 } from '../select/simpleSelectors'
+import {
+	setSelectedField as selectFieldAction,
+	setSelectedField,
+	swapHandAndBoard,
+	swapTiles,
+} from './actions'
 import { ThunkValue } from './ThunkValue'
 
 export function selectFieldThunk(fieldIndexToSelect: number): ThunkValue {
 	return (dispatch, getState) => {
 		const state = getState()
-		const mode = selectModeFromState(state)
+		const mode = selectMode(state)
 		if (mode !== Mode.PlaceTile) return
-		const handTile = selectHandTileFromState(state)
-		const oldField = selectFieldFromState(state)
-		const fieldToSelect = selectBoardFromState(state)[fieldIndexToSelect]
+		const handTile = selectHandTile(state)
+		const oldField = selectField(state)
+		const fieldToSelect = selectBoard(state)[fieldIndexToSelect]
 		if (!fieldToSelect.tile || fieldToSelect.tile.isOwned) {
 			if (handTile) {
 				dispatch(
 					swapHandAndBoard({
-						handIndex: selectHandIndexFromState(state)!,
+						handIndex: selectHandIndex(state)!,
 						fieldIndex: fieldIndexToSelect,
 					}),
 				)
 			} else {
 				if (fieldToSelect === oldField) {
 					dispatch(
-						selectField({
+						selectFieldAction({
 							fieldIndex: null,
 						}),
 					)
@@ -42,7 +47,7 @@ export function selectFieldThunk(fieldIndexToSelect: number): ThunkValue {
 							!get(() => fieldToSelect.tile!.isOwned))
 					) {
 						dispatch(
-							selectField({
+							selectFieldAction({
 								fieldIndex: fieldToSelect.tile
 									? fieldIndexToSelect
 									: null,
@@ -51,7 +56,7 @@ export function selectFieldThunk(fieldIndexToSelect: number): ThunkValue {
 					} else {
 						dispatch(
 							swapTiles({
-								fieldIndexA: selectFieldIndexFromState(state)!,
+								fieldIndexA: selectFieldIndex(state)!,
 								fieldIndexB: fieldIndexToSelect,
 							}),
 						)
@@ -59,7 +64,7 @@ export function selectFieldThunk(fieldIndexToSelect: number): ThunkValue {
 				}
 			}
 		} else {
-			dispatch(selectField({ fieldIndex: null }))
+			dispatch(setSelectedField({ fieldIndex: null }))
 		}
 	}
 }

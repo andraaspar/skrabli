@@ -1,3 +1,5 @@
+import { Mode } from '../model/Mode'
+import { selectPlayers } from '../select/simpleSelectors'
 import {
 	fillHand,
 	nextPlayer,
@@ -5,15 +7,13 @@ import {
 	setMode,
 	setPlayerName,
 } from './actions'
-import { Mode } from '../model/Mode'
-import { selectPlayersFromState } from '../select/simpleSelectors'
 import { nextPlayerAndSaveThunk } from './nextPlayerAndSaveThunk'
 import { ThunkValue } from './ThunkValue'
 
 export function newGameThunk(): ThunkValue {
 	return (dispatch, getState) => {
 		const state = getState()
-		const players = selectPlayersFromState(state)
+		const players = selectPlayers(state)
 		const names = players.map(player => player.name)
 		dispatch(resetGame())
 		names.forEach((name, playerIndex) => {

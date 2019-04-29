@@ -1,16 +1,19 @@
 import { get } from 'illa/FunctionUtil'
-import { setGame } from './actions'
+import { IAppState } from '../model/AppState'
 import { LocalStorageKey } from '../model/LocalStorageKey'
-import { IState } from '../model/State'
+import { setGame } from './actions'
 import { ThunkValue } from './ThunkValue'
 
 export function loadGameThunk(): ThunkValue {
 	return (dispatch, getState) => {
-		const savedGame = get(
-			() => JSON.parse(localStorage[LocalStorageKey.SavedGame]) as IState,
+		const savedGame = get(() =>
+			JSON.parse(localStorage[LocalStorageKey.SavedGame]),
 		)
 		if (savedGame) {
-			dispatch(setGame({ game: savedGame }))
+			const game: IAppState = savedGame.app || savedGame
+			if (game) {
+				dispatch(setGame({ game }))
+			}
 		}
 	}
 }

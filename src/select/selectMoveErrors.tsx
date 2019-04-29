@@ -5,17 +5,12 @@ import { isWordStringValid } from '../fun/isWordStringValid'
 import { CENTER_FIELD_INDEX } from '../model/Constants'
 import { FieldKind } from '../model/FieldKind'
 import { MoveError } from '../model/MoveError'
-import { IState } from '../model/State'
-import { selectAllOwnedWordsFromAppState } from './selectAllOwnedWords'
-import { selectWordInfoFromAppState } from './selectWordInfo'
-import { selectBoardFromAppState } from './simpleSelectors'
+import { selectAllOwnedWords } from './selectAllOwnedWords'
+import { selectWordInfoFromState } from './selectWordInfo'
+import { selectBoard } from './simpleSelectors'
 
 export const selectMoveErrors = createSelector(
-	[
-		selectBoardFromAppState,
-		selectAllOwnedWordsFromAppState,
-		selectWordInfoFromAppState,
-	],
+	[selectBoard, selectAllOwnedWords, selectWordInfoFromState],
 	(board, words, { firstFieldIndex, lastFieldIndex, direction }) => {
 		const errors: Set<MoveError> = new Set()
 		if (isUndefinedOrNull(firstFieldIndex)) {
@@ -56,5 +51,3 @@ export const selectMoveErrors = createSelector(
 		return Array.from(errors)
 	},
 )
-
-export const selectMoveErrorsFromState = (s: IState) => selectMoveErrors(s.app)

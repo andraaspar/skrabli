@@ -2,13 +2,13 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { getWordScore } from '../fun/getWordScore'
 import { getWordString } from '../fun/getWordString'
+import { IAppState } from '../model/AppState'
 import { BINGO_SCORE } from '../model/Constants'
 import { IValidAndInvalidWords } from '../model/IValidAndInvalidWords'
 import { MoveError } from '../model/MoveError'
-import { IState } from '../model/State'
-import { selectIsBingoFromState } from '../select/selectIsBingo'
-import { selectMoveErrorsFromState } from '../select/selectMoveErrors'
-import { selectValidAndInvalidWordsFromState } from '../select/selectValidAndInvalidWords'
+import { selectIsBingo } from '../select/selectIsBingo'
+import { selectMoveErrors } from '../select/selectMoveErrors'
+import { selectValidAndInvalidWords } from '../select/selectValidAndInvalidWords'
 import { DispatchProp } from './DispatchProp'
 import './WordInfoComp.css'
 
@@ -22,10 +22,10 @@ export interface WordInfoCompProps
 		DispatchProp {}
 
 export const WordInfoComp = connect(
-	(state: IState): WordInfoCompPropsFromStore => ({
-		words: selectValidAndInvalidWordsFromState(state),
-		errors: selectMoveErrorsFromState(state),
-		isBingo: selectIsBingoFromState(state),
+	(state: IAppState): WordInfoCompPropsFromStore => ({
+		words: selectValidAndInvalidWords(state),
+		errors: selectMoveErrors(state),
+		isBingo: selectIsBingo(state),
 	}),
 )(
 	({

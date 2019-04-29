@@ -1,14 +1,10 @@
 import { createSelector } from 'reselect'
 import { Mode } from '../model/Mode'
 import { IPlayer } from '../model/Player'
-import { IState } from '../model/State'
-import {
-	selectModeFromAppState,
-	selectPlayersFromAppState,
-} from './simpleSelectors'
+import { selectMode, selectPlayers } from './simpleSelectors'
 
-export const selectWinnersFromAppState = createSelector(
-	[selectPlayersFromAppState, selectModeFromAppState],
+export const selectWinners = createSelector(
+	[selectPlayers, selectMode],
 	(players, mode) => {
 		if (mode !== Mode.Ended) return []
 		let winningScore = -1
@@ -24,6 +20,3 @@ export const selectWinnersFromAppState = createSelector(
 		return winners
 	},
 )
-
-export const selectWinnersFromState = (state: IState) =>
-	selectWinnersFromAppState(state.app)

@@ -8,7 +8,6 @@ import { IAppState } from '../model/AppState'
 import { TBoard } from '../model/Board'
 import { BOARD_SIZE } from '../model/Constants'
 import { Direction } from '../model/Direction'
-import { IState } from '../model/State'
 
 export interface IWordInfo {
 	firstFieldIndex: number | null
@@ -103,5 +102,5 @@ export const selectWordInfo = defaultMemoize(
 
 export const selectWordInfoFromAppState = (state: IAppState) =>
 	selectWordInfo(state.board)
-export const selectWordInfoFromState = (state: IState) =>
-	selectWordInfoFromAppState(state.app)
+export const selectWordInfoFromState = (state: IAppState) =>
+	selectWordInfoFromAppState(state)

@@ -1,14 +1,10 @@
 import { createSelector } from 'reselect'
-import { IState } from '../model/State'
-import { selectWinnersFromAppState } from './selectWinners'
-import { selectPlayersFromAppState } from './simpleSelectors'
+import { selectWinners } from './selectWinners'
+import { selectPlayers } from './simpleSelectors'
 
-export const selectIsGameDrawnFromAppState = createSelector(
-	[selectPlayersFromAppState, selectWinnersFromAppState],
+export const selectIsGameDrawn = createSelector(
+	[selectPlayers, selectWinners],
 	(players, winners) => {
 		return players.length === winners.length
 	},
 )
-
-export const selectIsGameDrawnFromState = (state: IState) =>
-	selectIsGameDrawnFromAppState(state.app)

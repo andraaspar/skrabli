@@ -1,16 +1,15 @@
 import { isUndefinedOrNull } from 'illa/Type'
-import { defaultMemoize } from 'reselect'
+import { createSelector } from 'reselect'
 import { getFieldIndexOffset } from '../fun/getNextFieldIndex'
 import { getWordsAt } from '../fun/getWordsAt'
-import { IAppState } from '../model/AppState'
-import { TBoard } from '../model/Board'
 import { Direction } from '../model/Direction'
 import { IField } from '../model/Field'
-import { IState } from '../model/State'
 import { selectWordInfo } from './selectWordInfo'
+import { selectBoard } from './simpleSelectors'
 
-export const selectAllOwnedWords = defaultMemoize(
-	(board: TBoard): IField[][] => {
+export const selectAllOwnedWords = createSelector(
+	[selectBoard],
+	(board): IField[][] => {
 		const { firstFieldIndex, lastFieldIndex, direction } = selectWordInfo(
 			board,
 		)
@@ -54,8 +53,3 @@ export const selectAllOwnedWords = defaultMemoize(
 		return words.filter(_ => _.length > 0)
 	},
 )
-
-export const selectAllOwnedWordsFromAppState = (s: IAppState) =>
-	selectAllOwnedWords(s.board)
-export const selectAllOwnedWordsFromState = (s: IState) =>
-	selectAllOwnedWordsFromAppState(s.app)

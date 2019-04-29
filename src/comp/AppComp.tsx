@@ -3,13 +3,10 @@ import { connect } from 'react-redux'
 import { loadGameThunk } from '../action/loadGameThunk'
 import { newGameThunk } from '../action/newGameThunk'
 import { savedGameExists } from '../fun/savedGameExists'
+import { IAppState } from '../model/AppState'
 import { TBag } from '../model/Bag'
 import { Mode } from '../model/Mode'
-import { IState } from '../model/State'
-import {
-	selectBagFromState,
-	selectModeFromState,
-} from '../select/simpleSelectors'
+import { selectBag, selectMode } from '../select/simpleSelectors'
 import './AppComp.css'
 import { BagComp } from './BagComp'
 import { BoardComp } from './BoardComp'
@@ -28,9 +25,9 @@ interface IAppCompPropsFromState {
 export interface IAppCompProps extends IAppCompPropsFromState, DispatchProp {}
 
 export const AppComp = connect(
-	(state: IState): IAppCompPropsFromState => ({
-		mode: selectModeFromState(state),
-		bag: selectBagFromState(state),
+	(state: IAppState): IAppCompPropsFromState => ({
+		mode: selectMode(state),
+		bag: selectBag(state),
 	}),
 )(({ mode, bag, dispatch }: IAppCompProps) => {
 	return (

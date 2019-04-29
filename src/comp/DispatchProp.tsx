@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
-import { IState } from '../model/State'
+import { IAppState } from '../model/AppState'
 
 export interface DispatchProp {
-	dispatch: ThunkDispatch<IState, any, AnyAction>
+	dispatch: ThunkDispatch<IAppState, any, AnyAction>
 }

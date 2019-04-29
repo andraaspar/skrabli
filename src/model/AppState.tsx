@@ -13,20 +13,19 @@ import {
 	resetSkipCount,
 	score,
 	scoreBonuses,
-	selectField,
 	selectHand,
 	setGame,
 	setJokerLetter,
 	setMode,
 	setPlayerName,
+	setSelectedField,
 	swapHandAndBoard,
 	swapHands,
 	swapTiles,
 	toggleHandIndexToReplace,
 } from '../action/actions'
 import { TAction } from '../action/TAction'
-import { selectHandCountFromAppState } from '../select/selectHandCount'
-import { selectMoveScoreFromAppState } from '../select/selectMoveScore'
+import { getHandTileCount } from '../fun/getHandTileCount'
 import { createBag, TBag } from './Bag'
 import { createBoard, TBoard } from './Board'
 import {
@@ -105,7 +104,7 @@ export const appStateReducer = produce(
 				const hand = hands[playerIndex!]
 				const count = Math.min(
 					bag.length,
-					hand.reduce((sum, tile) => (tile ? sum : sum + 1), 0),
+					hand.length - getHandTileCount(hand),
 				)
 				const tiles: ITile[] = []
 				for (let i = 0; i < count; i++) {
@@ -116,10 +115,10 @@ export const appStateReducer = produce(
 					tile.isOwned = true
 					tiles.push(tile)
 				}
-				state.hands[playerIndex!] = hand.map(tile =>
+				const newHand = (state.hands[playerIndex!] = hand.map(tile =>
 					tile ? tile : tiles.shift() || null,
-				)
-				state.startingHandCount = selectHandCountFromAppState(state)
+				))
+				state.startingHandCount = getHandTileCount(newHand)
 				break
 			}
 			case nextPlayer.type: {
@@ -135,12 +134,10 @@ export const appStateReducer = produce(
 				return createAppState()
 			case score.type: {
 				const { players, playerIndex } = state
-				players[playerIndex!].score += selectMoveScoreFromAppState(
-					state,
-				)
+				players[playerIndex!].score += action.payload
 				break
 			}
-			case selectField.type: {
+			case setSelectedField.type: {
 				state.fieldIndex = action.payload.fieldIndex
 				break
 			}
@@ -231,7 +228,7 @@ export const appStateReducer = produce(
 				break
 			}
 			case setGame.type:
-				return action.payload.game.app
+				return action.payload.game
 			case incrementSkipCount.type: {
 				state.skipCount = (state.skipCount || 0) + 1
 				break

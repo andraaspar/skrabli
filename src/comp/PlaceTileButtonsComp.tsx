@@ -5,18 +5,15 @@ import { collectTiles, setJokerLetter, setMode } from '../action/actions'
 import { doneThunk } from '../action/doneThunk'
 import { newGameThunk } from '../action/newGameThunk'
 import { skipThunk } from '../action/skipThunk'
+import { IAppState } from '../model/AppState'
 import { TBag } from '../model/Bag'
 import { TBoard } from '../model/Board'
 import { Mode } from '../model/Mode'
 import { MoveError } from '../model/MoveError'
-import { IState } from '../model/State'
 import letters from '../res/letters.json'
-import { selectMoveErrorsFromState } from '../select/selectMoveErrors'
-import { selectMoveScoreFromState } from '../select/selectMoveScore'
-import {
-	selectBagFromState,
-	selectBoardFromState,
-} from '../select/simpleSelectors'
+import { selectMoveErrors } from '../select/selectMoveErrors'
+import { selectMoveScore } from '../select/selectMoveScore'
+import { selectBag, selectBoard } from '../select/simpleSelectors'
 import { DispatchProp } from './DispatchProp'
 import './PlaceTileButtonsComp.css'
 
@@ -32,12 +29,12 @@ export interface PlaceTileButtonsCompProps
 		DispatchProp {}
 
 export const PlaceTileButtonsComp = connect(
-	(state: IState): PlaceTileButtonsCompPropsFromStore => ({
-		bag: selectBagFromState(state),
-		board: selectBoardFromState(state),
-		fieldIndex: state.app.fieldIndex,
-		moveScore: selectMoveScoreFromState(state),
-		moveErrors: selectMoveErrorsFromState(state),
+	(state: IAppState): PlaceTileButtonsCompPropsFromStore => ({
+		bag: selectBag(state),
+		board: selectBoard(state),
+		fieldIndex: state.fieldIndex,
+		moveScore: selectMoveScore(state),
+		moveErrors: selectMoveErrors(state),
 	}),
 )(
 	({

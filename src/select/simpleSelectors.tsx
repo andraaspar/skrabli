@@ -4,38 +4,17 @@ import { TBoard } from '../model/Board'
 import { THandIndicesToReplace } from '../model/HandIndicesToReplace'
 import { THands } from '../model/Hands'
 import { Mode } from '../model/Mode'
-import { TPlayers } from '../model/Player'
-import { IState } from '../model/State'
 
-export const selectBoardFromAppState = (state: IAppState): TBoard => state.board
-export const selectBoardFromState = (state: IState): TBoard =>
-	selectBoardFromAppState(state.app)
-export const selectBagFromState = (state: IState): TBag => state.app.bag
-export const selectHandsFromAppState = (state: IAppState): THands => state.hands
-export const selectHandsFromState = (state: IState): THands =>
-	selectHandsFromAppState(state.app)
-export const selectModeFromAppState = (state: IAppState): Mode => state.mode
-export const selectModeFromState = (state: IState): Mode =>
-	selectModeFromAppState(state.app)
-export const selectHandIndicesToReplaceFromState = (
-	state: IState,
-): THandIndicesToReplace => state.app.handIndicesToReplace
-export const selectPlayersFromAppState = (state: IAppState): TPlayers =>
-	state.players
-export const selectPlayersFromState = (state: IState) =>
-	selectPlayersFromAppState(state.app)
-export const selectPlayerIndexFromAppState = (state: IAppState) =>
-	state.playerIndex
-export const selectPlayerIndexFromState = (state: IState) =>
-	selectPlayerIndexFromAppState(state.app)
-export const selectHandIndexFromAppState = (state: IAppState) => state.handIndex
-export const selectHandIndexFromState = (state: IState) =>
-	selectHandIndexFromAppState(state.app)
-export const selectFieldIndexFromAppState = (state: IAppState) =>
-	state.fieldIndex
-export const selectFieldIndexFromState = (state: IState) =>
-	selectFieldIndexFromAppState(state.app)
-export const selectStartingHandCountFromAppState = (state: IAppState) =>
+export const selectBoard = (state: IAppState): TBoard => state.board
+export const selectBag = (state: IAppState): TBag => state.bag
+export const selectHands = (state: IAppState): THands => state.hands
+export const selectMode = (state: IAppState): Mode => state.mode
+export const selectHandIndicesToReplace = (
+	state: IAppState,
+): THandIndicesToReplace => state.handIndicesToReplace
+export const selectPlayers = (state: IAppState) => state.players
+export const selectPlayerIndex = (state: IAppState) => state.playerIndex
+export const selectHandIndex = (state: IAppState) => state.handIndex
+export const selectFieldIndex = (state: IAppState) => state.fieldIndex
+export const selectStartingHandCount = (state: IAppState) =>
 	state.startingHandCount
-export const selectStartingHandCountFromState = (state: IState) =>
-	selectStartingHandCountFromAppState(state.app)

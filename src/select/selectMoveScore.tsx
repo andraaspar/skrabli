@@ -1,12 +1,11 @@
 import { createSelector } from 'reselect'
 import { getWordScore } from '../fun/getWordScore'
 import { BINGO_SCORE } from '../model/Constants'
-import { IState } from '../model/State'
-import { selectIsBingoFromAppState } from './selectIsBingo'
-import { selectValidAndInvalidWordsFromAppState } from './selectValidAndInvalidWords'
+import { selectIsBingo } from './selectIsBingo'
+import { selectValidAndInvalidWords } from './selectValidAndInvalidWords'
 
-export const selectMoveScoreFromAppState = createSelector(
-	[selectValidAndInvalidWordsFromAppState, selectIsBingoFromAppState],
+export const selectMoveScore = createSelector(
+	[selectValidAndInvalidWords, selectIsBingo],
 	(words, isBingo): number => {
 		let score = 0
 		for (let word of words.valid) {
@@ -16,6 +15,3 @@ export const selectMoveScoreFromAppState = createSelector(
 		return score
 	},
 )
-
-export const selectMoveScoreFromState = (s: IState) =>
-	selectMoveScoreFromAppState(s.app)

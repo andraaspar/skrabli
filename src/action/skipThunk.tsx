@@ -8,7 +8,7 @@ export function skipThunk(): ThunkValue {
 		dispatch(incrementSkipCount())
 		dispatch((dispatch, getState) => {
 			const state = getState()
-			if ((state.app.skipCount || 0) > 3) {
+			if ((state.skipCount || 0) > 3) {
 				dispatch(endGameThunk())
 			} else {
 				dispatch(collectTiles())

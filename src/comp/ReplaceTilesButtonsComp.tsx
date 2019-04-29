@@ -9,14 +9,14 @@ import {
 	setMode,
 } from '../action/actions'
 import { nextPlayerAndSaveThunk } from '../action/nextPlayerAndSaveThunk'
+import { IAppState } from '../model/AppState'
 import { THandIndicesToReplace } from '../model/HandIndicesToReplace'
 import { THands } from '../model/Hands'
 import { Mode } from '../model/Mode'
-import { IState } from '../model/State'
 import { ITile } from '../model/Tile'
 import {
-	selectHandIndicesToReplaceFromState,
-	selectHandsFromState,
+	selectHandIndicesToReplace,
+	selectHands,
 } from '../select/simpleSelectors'
 import { DispatchProp } from './DispatchProp'
 
@@ -30,10 +30,10 @@ export interface ReplaceTilesButtonsCompProps
 		DispatchProp {}
 
 export const ReplaceTilesButtonsComp = connect(
-	(state: IState): ReplaceTilesButtonsCompPropsFromStore => ({
-		handIndicesToReplace: selectHandIndicesToReplaceFromState(state),
-		hands: selectHandsFromState(state),
-		playerIndex: state.app.playerIndex,
+	(state: IAppState): ReplaceTilesButtonsCompPropsFromStore => ({
+		handIndicesToReplace: selectHandIndicesToReplace(state),
+		hands: selectHands(state),
+		playerIndex: state.playerIndex,
 	}),
 )(
 	({

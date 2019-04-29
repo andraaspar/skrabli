@@ -1,16 +1,8 @@
-import { isUndefinedOrNull } from 'illa/Type'
 import { createSelector } from 'reselect'
-import { IState } from '../model/State'
-import { selectHandFromAppState } from './selectHand'
+import { getHandTileCount } from '../fun/getHandTileCount'
+import { selectHand } from './selectHand'
 
-export const selectHandCountFromAppState = createSelector(
-	[selectHandFromAppState],
-	hand =>
-		(hand || []).reduce(
-			(sum, tile) => sum + (isUndefinedOrNull(tile) ? 0 : 1),
-			0,
-		),
+export const selectHandCount = createSelector(
+	[selectHand],
+	getHandTileCount,
 )
-
-export const selectHandCountFromState = (state: IState) =>
-	selectHandCountFromAppState(state.app)

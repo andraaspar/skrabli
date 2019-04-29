@@ -9,16 +9,16 @@ import {
 	swapHands,
 	toggleHandIndexToReplace,
 } from '../action/actions'
+import { IAppState } from '../model/AppState'
 import { TBoard } from '../model/Board'
 import { THandIndicesToReplace } from '../model/HandIndicesToReplace'
 import { THands } from '../model/Hands'
 import { Mode } from '../model/Mode'
-import { IState } from '../model/State'
 import {
-	selectBoardFromState,
-	selectHandIndicesToReplaceFromState,
-	selectHandsFromState,
-	selectModeFromState,
+	selectBoard,
+	selectHandIndicesToReplace,
+	selectHands,
+	selectMode,
 } from '../select/simpleSelectors'
 import { AspectComp } from './AspectComp'
 import { DispatchProp } from './DispatchProp'
@@ -37,14 +37,14 @@ interface HandCompPropsFromState {
 export interface HandCompProps extends HandCompPropsFromState, DispatchProp {}
 
 export const HandComp = connect(
-	(state: IState): HandCompPropsFromState => ({
-		hands: selectHandsFromState(state),
-		playerIndex: state.app.playerIndex,
-		handIndex: state.app.handIndex,
-		fieldIndex: state.app.fieldIndex,
-		board: selectBoardFromState(state),
-		handIndicesToReplace: selectHandIndicesToReplaceFromState(state),
-		mode: selectModeFromState(state),
+	(state: IAppState): HandCompPropsFromState => ({
+		hands: selectHands(state),
+		playerIndex: state.playerIndex,
+		handIndex: state.handIndex,
+		fieldIndex: state.fieldIndex,
+		board: selectBoard(state),
+		handIndicesToReplace: selectHandIndicesToReplace(state),
+		mode: selectMode(state),
 	}),
 )(
 	({

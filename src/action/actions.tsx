@@ -1,18 +1,18 @@
+import { IAppState } from '../model/AppState'
 import { Mode } from '../model/Mode'
-import { IState } from '../model/State'
 import { ITile } from '../model/Tile'
 
-export const setGame = createAction<'setGame', { game: IState }>('setGame')
+export const setGame = createAction<'setGame', { game: IAppState }>('setGame')
 export const collectTiles = createAction<'collectTiles'>('collectTiles')
 export const disownTiles = createAction<'disownTiles'>('disownTiles')
 export const fillHand = createAction<'fillHand'>('fillHand')
 export const nextPlayer = createAction<'nextPlayer'>('nextPlayer')
 export const resetGame = createAction<'resetGame'>('resetGame')
-export const score = createAction<'score'>('score')
-export const selectField = createAction<
-	'selectField',
+export const score = createAction<'score', number>('score')
+export const setSelectedField = createAction<
+	'setSelectedField',
 	{ fieldIndex: number | null }
->('selectField')
+>('setSelectedField')
 export const selectHand = createAction<
 	'selectHand',
 	{ handIndex: number | null }

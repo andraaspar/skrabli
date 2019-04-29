@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import { setPlayerName } from '../action/actions'
 import { saveGameThunk } from '../action/saveGameThunk'
 import { numberToSignedString } from '../fun/numberToSignedString'
+import { IAppState } from '../model/AppState'
 import { TPlayers } from '../model/Player'
-import { IState } from '../model/State'
-import { selectPlayersFromState } from '../select/simpleSelectors'
+import { selectPlayers } from '../select/simpleSelectors'
 import { DispatchProp } from './DispatchProp'
 import './PlayersComp.css'
 
@@ -21,10 +21,10 @@ export interface PlayersCompProps
 }
 
 export const PlayersComp = connect(
-	(state: IState): PlayersCompPropsFromStore => ({
-		players: selectPlayersFromState(state),
-		playerIndex: state.app.playerIndex,
-		playerBonuses: state.app.playerBonuses,
+	(state: IAppState): PlayersCompPropsFromStore => ({
+		players: selectPlayers(state),
+		playerIndex: state.playerIndex,
+		playerBonuses: state.playerBonuses,
 	}),
 )(
 	({
