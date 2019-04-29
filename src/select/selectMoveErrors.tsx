@@ -6,11 +6,11 @@ import { CENTER_FIELD_INDEX } from '../model/Constants'
 import { FieldKind } from '../model/FieldKind'
 import { MoveError } from '../model/MoveError'
 import { selectAllOwnedWords } from './selectAllOwnedWords'
-import { selectWordInfoFromState } from './selectWordInfo'
+import { selectWordInfo } from './selectWordInfo'
 import { selectBoard } from './simpleSelectors'
 
 export const selectMoveErrors = createSelector(
-	[selectBoard, selectAllOwnedWords, selectWordInfoFromState],
+	[selectBoard, selectAllOwnedWords, selectWordInfo],
 	(board, words, { firstFieldIndex, lastFieldIndex, direction }) => {
 		const errors: Set<MoveError> = new Set()
 		if (isUndefinedOrNull(firstFieldIndex)) {

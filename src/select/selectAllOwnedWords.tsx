@@ -8,11 +8,8 @@ import { selectWordInfo } from './selectWordInfo'
 import { selectBoard } from './simpleSelectors'
 
 export const selectAllOwnedWords = createSelector(
-	[selectBoard],
-	(board): IField[][] => {
-		const { firstFieldIndex, lastFieldIndex, direction } = selectWordInfo(
-			board,
-		)
+	[selectBoard, selectWordInfo],
+	(board, { firstFieldIndex, lastFieldIndex, direction }): IField[][] => {
 		const words: IField[][] = []
 		let mainWord: IField[] | null = null
 		if (

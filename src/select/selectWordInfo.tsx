@@ -1,13 +1,12 @@
 import { isUndefinedOrNull } from 'illa/Type'
-import { defaultMemoize } from 'reselect'
+import { createSelector } from 'reselect'
 import { getColumnIndex } from '../fun/getColumnIndex'
 import { getRowIndex } from '../fun/getRowIndex'
 import { getWordsAt } from '../fun/getWordsAt'
 import { isThereAGap } from '../fun/isThereAGap'
-import { IAppState } from '../model/AppState'
-import { TBoard } from '../model/Board'
 import { BOARD_SIZE } from '../model/Constants'
 import { Direction } from '../model/Direction'
+import { selectBoard } from './simpleSelectors'
 
 export interface IWordInfo {
 	firstFieldIndex: number | null
@@ -15,8 +14,9 @@ export interface IWordInfo {
 	direction: Direction | null
 }
 
-export const selectWordInfo = defaultMemoize(
-	(board: TBoard): IWordInfo => {
+export const selectWordInfo = createSelector(
+	[selectBoard],
+	(board): IWordInfo => {
 		let firstFieldIndex: number | null = null
 		let lastFieldIndex: number | null = null
 		let colIndex: number | null = null
@@ -99,8 +99,3 @@ export const selectWordInfo = defaultMemoize(
 		}
 	},
 )
-
-export const selectWordInfoFromAppState = (state: IAppState) =>
-	selectWordInfo(state.board)
-export const selectWordInfoFromState = (state: IAppState) =>
-	selectWordInfoFromAppState(state)
