@@ -6,9 +6,10 @@ export const selectWinnersNamesFromAppState = createSelector(
 	[selectWinnersFromAppState],
 	winners => {
 		if (winners.length === 0) return ``
-		const last = winners[winners.length - 1]
-		const rest = winners.slice(0, winners.length - 1)
-		return `${rest.join(', ')} és ${last}`
+		const winnerNames = winners.map(winner => winner.name)
+		const last = winnerNames[winnerNames.length - 1]
+		const rest = winnerNames.slice(0, winnerNames.length - 1)
+		return rest.length ? `${rest.join(', ')} és ${last}` : last
 	},
 )
 

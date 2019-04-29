@@ -7,6 +7,7 @@ import { TPlayers } from '../model/Player'
 import { IState } from '../model/State'
 import { selectPlayersFromState } from '../select/simpleSelectors'
 import { DispatchProp } from './DispatchProp'
+import './PlayersComp.css'
 
 export interface PlayersCompPropsFromStore {
 	players: TPlayers
@@ -70,12 +71,14 @@ export const PlayersComp = connect(
 								{`pont`}
 							</td>
 							{playerBonuses && (
-								<td className='player-bonus'>
-									{numberToSignedString(
-										playerBonuses[aPlayerIndex],
-									)}
-									{` `}
-									{`pont`}
+								<td>
+									<div className='player-bonus'>
+										{numberToSignedString(
+											playerBonuses[aPlayerIndex],
+										)}
+										{` `}
+										{`pont`}
+									</div>
 								</td>
 							)}
 						</tr>

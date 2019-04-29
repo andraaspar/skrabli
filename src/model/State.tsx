@@ -17,4 +17,4 @@ export function createState(): IState {
 export const stateReducer = produce((state: Draft<IState>, action: TAction) => {
 	state.app = appStateReducer(state.app, action) as Draft<IAppState>
 }, createAppState())
-stateReducer(undefined, setMode(Mode.Won))
+stateReducer(undefined, setMode(Mode.Ended))

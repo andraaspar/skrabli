@@ -1,11 +1,5 @@
-import { Mode } from '../model/Mode'
-import { selectPlayerBonusesFromState } from '../select/selectPlayerBonuses'
-import {
-	collectTiles,
-	incrementSkipCount,
-	scoreBonuses,
-	setMode,
-} from './actions'
+import { collectTiles, incrementSkipCount } from './actions'
+import { endGameThunk } from './endGameThunk'
 import { nextPlayerAndSaveThunk } from './nextPlayerAndSaveThunk'
 import { ThunkValue } from './ThunkValue'
 
@@ -15,8 +9,7 @@ export function skipThunk(): ThunkValue {
 		dispatch((dispatch, getState) => {
 			const state = getState()
 			if ((state.app.skipCount || 0) > 3) {
-				dispatch(setMode(Mode.Drawn))
-				dispatch(scoreBonuses(selectPlayerBonusesFromState(state)))
+				dispatch(endGameThunk())
 			} else {
 				dispatch(collectTiles())
 				dispatch(nextPlayerAndSaveThunk())

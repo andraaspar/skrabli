@@ -6,7 +6,6 @@ import { savedGameExists } from '../fun/savedGameExists'
 import { TBag } from '../model/Bag'
 import { Mode } from '../model/Mode'
 import { IState } from '../model/State'
-import { selectWinnersNamesFromState } from '../select/selectWinnersNames'
 import {
 	selectBagFromState,
 	selectModeFromState,
@@ -15,6 +14,7 @@ import './AppComp.css'
 import { BagComp } from './BagComp'
 import { BoardComp } from './BoardComp'
 import { DispatchProp } from './DispatchProp'
+import { GameEndedComp } from './GameEndedComp'
 import { HandComp } from './HandComp'
 import { PlaceTileButtonsComp } from './PlaceTileButtonsComp'
 import { PlayersComp } from './PlayersComp'
@@ -24,7 +24,6 @@ import { WordInfoComp } from './WordInfoComp'
 interface IAppCompPropsFromState {
 	mode: Mode
 	bag: TBag
-	winnerName: string
 }
 export interface IAppCompProps extends IAppCompPropsFromState, DispatchProp {}
 
@@ -32,9 +31,8 @@ export const AppComp = connect(
 	(state: IState): IAppCompPropsFromState => ({
 		mode: selectModeFromState(state),
 		bag: selectBagFromState(state),
-		winnerName: selectWinnersNamesFromState(state),
 	}),
-)(({ mode, bag, winnerName, dispatch }: IAppCompProps) => {
+)(({ mode, bag, dispatch }: IAppCompProps) => {
 	return (
 		<>
 			<BoardComp />
@@ -70,20 +68,7 @@ export const AppComp = connect(
 						<ReplaceTilesButtonsComp />
 					</>
 				)}
-				{(mode === Mode.Drawn || mode === Mode.Won) && (
-					<>
-						{mode === Mode.Drawn && <div>{`Döntetlen!`}</div>}
-						{mode === Mode.Won && (
-							<div>{`${winnerName} győzött!`}</div>
-						)}
-						<PlayersComp />
-						<button
-							onClick={e => {
-								dispatch(newGameThunk())
-							}}
-						>{`Új játék`}</button>
-					</>
-				)}
+				{mode === Mode.Ended && <GameEndedComp />}
 			</div>
 		</>
 	)

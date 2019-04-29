@@ -10,7 +10,7 @@ import {
 export const selectWinnersFromAppState = createSelector(
 	[selectPlayersFromAppState, selectModeFromAppState],
 	(players, mode) => {
-		if (mode !== Mode.Won) return []
+		if (mode !== Mode.Ended) return []
 		let winningScore = -1
 		let winners: IPlayer[] = []
 		for (let player of players) {

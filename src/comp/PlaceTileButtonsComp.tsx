@@ -1,17 +1,9 @@
 import { get } from 'illa/FunctionUtil'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import {
-	collectTiles,
-	disownTiles,
-	fillHand,
-	resetSkipCount,
-	score,
-	setJokerLetter,
-	setMode,
-} from '../action/actions'
+import { collectTiles, setJokerLetter, setMode } from '../action/actions'
+import { doneThunk } from '../action/doneThunk'
 import { newGameThunk } from '../action/newGameThunk'
-import { nextPlayerAndSaveThunk } from '../action/nextPlayerAndSaveThunk'
 import { skipThunk } from '../action/skipThunk'
 import { TBag } from '../model/Bag'
 import { TBoard } from '../model/Board'
@@ -61,11 +53,7 @@ export const PlaceTileButtonsComp = connect(
 				<button
 					disabled={moveErrors.length > 0}
 					onClick={e => {
-						dispatch(score())
-						dispatch(disownTiles())
-						dispatch(fillHand())
-						dispatch(resetSkipCount())
-						dispatch(nextPlayerAndSaveThunk())
+						dispatch(doneThunk())
 					}}
 				>
 					{`Oké`}
