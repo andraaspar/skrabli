@@ -98,7 +98,7 @@ export const PlaceTileButtonsComp = connect(
 				</button>
 				<button
 					onClick={e => {
-						if (confirm(`Biztos hogy nem teszel semmit?`)) {
+						if (window.confirm(`Biztos hogy nem teszel semmit?`)) {
 							dispatch(skipThunk())
 						}
 					}}
@@ -107,7 +107,11 @@ export const PlaceTileButtonsComp = connect(
 				</button>
 				<button
 					onClick={e => {
-						if (confirm(`Biztos hogy új játékot akarsz kezdeni?`)) {
+						if (
+							window.confirm(
+								`Biztos hogy új játékot akarsz kezdeni?`,
+							)
+						) {
 							dispatch(newGameThunk())
 						}
 					}}

@@ -55,6 +55,7 @@ export const WordInfoComp = connect(
 												`"${wordString}"`,
 											)}`}
 											target='_blank'
+											rel='noopener noreferrer'
 										>
 											{wordString.replace(' ', ' ')}
 										</a>
@@ -85,6 +86,7 @@ export const WordInfoComp = connect(
 											`"${wordString}"`,
 										)}`}
 										target='_blank'
+										rel='noopener noreferrer'
 									>
 										{wordString.replace(' ', ' ')}
 									</a>

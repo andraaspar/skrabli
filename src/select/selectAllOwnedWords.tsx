@@ -29,7 +29,7 @@ export const selectAllOwnedWords = defaultMemoize(
 						board,
 						fieldIndex,
 					)
-					if (direction == Direction.Horizontal) {
+					if (direction === Direction.Horizontal) {
 						words.push(vertical.word)
 						if (mainWord) {
 							// words.push(word.horizontal)

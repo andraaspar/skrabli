@@ -24,6 +24,7 @@ export function getWordScore(word: ReadonlyArray<IField>): number {
 						case FieldKind.TripleWord:
 							wordMulti *= 3
 							break
+						default:
 					}
 				}
 			}

@@ -247,6 +247,7 @@ export const appStateReducer = produce(
 				})
 				break
 			}
+			default:
 		}
 	},
 	createAppState(),

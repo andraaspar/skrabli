@@ -9,7 +9,7 @@ export const selectPlayerBonusesFromAppState = createSelector(
 	[selectHandsFromAppState, selectEmptyHandBonusFromAppState],
 	(hands, emptyHandBonus) => {
 		return hands.map(hand => {
-			if (hand.filter(isNull).length == 7) {
+			if (hand.filter(isNull).length === 7) {
 				return emptyHandBonus
 			} else {
 				return -getHandValue(hand)
