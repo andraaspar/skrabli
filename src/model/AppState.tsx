@@ -175,7 +175,7 @@ export const appStateReducer = produce(
 				state.fieldIndex =
 					tileInHand && tileInHand.isJoker ? fieldIndex : null
 				state.handIndex = null
-				board[fieldIndex].tile = tileInHand
+				field.tile = tileInHand
 				hand[handIndex] = tileOnBoard
 				if (tileOnBoard && tileOnBoard.isJoker) {
 					tileOnBoard.letter = ' '

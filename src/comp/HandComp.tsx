@@ -1,4 +1,3 @@
-import { get } from 'illa/FunctionUtil'
 import { isUndefinedOrNull } from 'illa/Type'
 import * as React from 'react'
 import { connect } from 'react-redux'
@@ -80,9 +79,11 @@ export const HandComp = connect(
 											}),
 										)
 									} else {
-										if (
-											get(() => board[fieldIndex!].tile)
-										) {
+										const field = fieldIndex
+											? board[fieldIndex]
+											: null
+										const tile = field && field.tile
+										if (field && (!tile || tile.isOwned)) {
 											dispatch(
 												swapHandAndBoard({
 													handIndex: aHandIndex,
