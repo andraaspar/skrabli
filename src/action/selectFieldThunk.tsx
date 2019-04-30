@@ -20,13 +20,7 @@ export function selectFieldThunk(fieldIndexToSelect: number): ThunkValue {
 		const handTile = selectHandTile(state)
 		const selectedField = selectField(state)
 		const fieldToSelect = selectBoard(state)[fieldIndexToSelect]
-		if (selectedFieldIndex === fieldIndexToSelect) {
-			dispatch(
-				setSelectedField({
-					fieldIndex: null,
-				}),
-			)
-		} else if (
+		if (
 			!isUndefinedOrNull(selectedField) &&
 			(selectedField.tile &&
 				selectedField.tile.isOwned &&
@@ -46,6 +40,15 @@ export function selectFieldThunk(fieldIndexToSelect: number): ThunkValue {
 				swapHandAndBoard({
 					handIndex: selectHandIndex(state)!,
 					fieldIndex: fieldIndexToSelect,
+				}),
+			)
+		} else if (
+			selectedFieldIndex === fieldIndexToSelect ||
+			!fieldToSelect.tile
+		) {
+			dispatch(
+				setSelectedField({
+					fieldIndex: null,
 				}),
 			)
 		} else {

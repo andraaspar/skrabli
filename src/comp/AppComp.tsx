@@ -5,22 +5,27 @@ import { newGameThunk } from '../action/newGameThunk'
 import { savedGameExists } from '../fun/savedGameExists'
 import { IAppState } from '../model/AppState'
 import { TBag } from '../model/Bag'
+import { BINGO_SCORE } from '../model/Constants'
 import { Mode } from '../model/Mode'
+import { selectIsBingo } from '../select/selectIsBingo'
 import { selectBag, selectMode } from '../select/simpleSelectors'
 import './AppComp.css'
 import { BagComp } from './BagComp'
 import { BoardComp } from './BoardComp'
 import { DispatchProp } from './DispatchProp'
+import { ErrorsComp } from './ErrorsComp'
 import { GameEndedComp } from './GameEndedComp'
 import { HandComp } from './HandComp'
+import { OwnWordInfoComp } from './OwnWordInfoComp'
+import { PlacedWordInfoComp } from './PlacedWordInfoComp'
 import { PlaceTileButtonsComp } from './PlaceTileButtonsComp'
 import { PlayersComp } from './PlayersComp'
 import { ReplaceTilesButtonsComp } from './ReplaceTilesButtonsComp'
-import { WordInfoComp } from './WordInfoComp'
 
 interface IAppCompPropsFromState {
 	mode: Mode
 	bag: TBag
+	isBingo: boolean
 }
 export interface IAppCompProps extends IAppCompPropsFromState, DispatchProp {}
 
@@ -28,8 +33,9 @@ export const AppComp = connect(
 	(state: IAppState): IAppCompPropsFromState => ({
 		mode: selectMode(state),
 		bag: selectBag(state),
+		isBingo: selectIsBingo(state),
 	}),
-)(({ mode, bag, dispatch }: IAppCompProps) => {
+)(({ mode, bag, isBingo, dispatch }: IAppCompProps) => {
 	return (
 		<>
 			<BoardComp />
@@ -55,8 +61,13 @@ export const AppComp = connect(
 						<PlayersComp isEnabled />
 						<BagComp bag={bag} />
 						<HandComp />
-						<WordInfoComp />
+						{isBingo && (
+							<div className='bingo'>{`+${BINGO_SCORE} pont!`}</div>
+						)}
+						<OwnWordInfoComp />
+						<ErrorsComp />
 						<PlaceTileButtonsComp />
+						<PlacedWordInfoComp />
 					</>
 				)}
 				{mode === Mode.ReplaceTiles && (

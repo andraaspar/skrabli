@@ -1,4 +1,4 @@
-.word-info {
+.own-word-info {
 	padding: 1vmin;
 }
 
@@ -12,9 +12,4 @@
 
 .word-score {
 	font-size: smaller;
-}
-
-.bingo {
-	font-weight: bold;
-	color: hotpink;
 }

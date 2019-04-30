@@ -5,9 +5,9 @@ import { IField } from '../model/Field'
 import { IValidAndInvalidWords } from '../model/IValidAndInvalidWords'
 import { selectAllOwnedWords } from './selectAllOwnedWords'
 
-export const selectValidAndInvalidWords = createSelector(
+export const selectOwnValidAndInvalidWords = createSelector(
 	[selectAllOwnedWords],
-	(words: IField[][]): IValidAndInvalidWords => {
+	(words: IField[][]): IValidAndInvalidWords | null => {
 		const valid: IField[][] = []
 		const invalid: IField[][] = []
 		for (let word of words) {
@@ -17,9 +17,13 @@ export const selectValidAndInvalidWords = createSelector(
 				invalid.push(word)
 			}
 		}
-		return {
-			valid,
-			invalid,
+		if (valid.length > 0 || invalid.length > 0) {
+			return {
+				valid,
+				invalid,
+			}
+		} else {
+			return null
 		}
 	},
 )
