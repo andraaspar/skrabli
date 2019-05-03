@@ -1,13 +1,7 @@
-import { isUndefinedOrNull } from 'illa/Type'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { isNullOrUndefined } from 'util'
-import {
-	selectHand,
-	swapHandAndBoard,
-	swapHands,
-	toggleHandIndexToReplace,
-} from '../action/actions'
+import { selectHandThunk } from '../action/selectHandThunk'
 import { IAppState } from '../model/AppState'
 import { TBoard } from '../model/Board'
 import { THandIndicesToReplace } from '../model/HandIndicesToReplace'
@@ -72,55 +66,7 @@ export const HandComp = connect(
 									.filter(Boolean)
 									.join(' ')}
 								onClick={e => {
-									if (mode === Mode.ReplaceTiles) {
-										dispatch(
-											toggleHandIndexToReplace({
-												handIndex: aHandIndex,
-											}),
-										)
-									} else {
-										const field = fieldIndex
-											? board[fieldIndex]
-											: null
-										const tile = field && field.tile
-										if (field && (!tile || tile.isOwned)) {
-											dispatch(
-												swapHandAndBoard({
-													handIndex: aHandIndex,
-													fieldIndex: fieldIndex!,
-												}),
-											)
-										} else {
-											if (handIndex === aHandIndex) {
-												dispatch(
-													selectHand({
-														handIndex: null,
-													}),
-												)
-											} else {
-												if (
-													isUndefinedOrNull(handIndex)
-												) {
-													dispatch(
-														selectHand({
-															handIndex: hands[
-																playerIndex!
-															][aHandIndex]
-																? aHandIndex
-																: null,
-														}),
-													)
-												} else {
-													dispatch(
-														swapHands({
-															handIndexA: handIndex,
-															handIndexB: aHandIndex,
-														}),
-													)
-												}
-											}
-										}
-									}
+									dispatch(selectHandThunk(aHandIndex))
 								}}
 							>
 								<AspectComp width={1} height={1}>

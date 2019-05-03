@@ -42,10 +42,7 @@ export function selectFieldThunk(fieldIndexToSelect: number): ThunkValue {
 					fieldIndex: fieldIndexToSelect,
 				}),
 			)
-		} else if (
-			selectedFieldIndex === fieldIndexToSelect ||
-			!fieldToSelect.tile
-		) {
+		} else if (selectedFieldIndex === fieldIndexToSelect) {
 			dispatch(
 				setSelectedField({
 					fieldIndex: null,
