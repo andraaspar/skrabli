@@ -8,9 +8,11 @@ import { skipThunk } from '../action/skipThunk'
 import { IAppState } from '../model/AppState'
 import { TBag } from '../model/Bag'
 import { TBoard } from '../model/Board'
+import { THand } from '../model/Hands'
 import { Mode } from '../model/Mode'
 import { MoveError } from '../model/MoveError'
 import letters from '../res/letters.json'
+import { selectHand } from '../select/selectHand'
 import { selectMoveErrors } from '../select/selectMoveErrors'
 import { selectMoveScore } from '../select/selectMoveScore'
 import { selectBag, selectBoard } from '../select/simpleSelectors'
@@ -23,6 +25,7 @@ interface PlaceTileButtonsCompPropsFromStore {
 	bag: TBag
 	moveScore: number
 	moveErrors: MoveError[]
+	hand: THand | null
 }
 export interface PlaceTileButtonsCompProps
 	extends PlaceTileButtonsCompPropsFromStore,
@@ -35,6 +38,7 @@ export const PlaceTileButtonsComp = connect(
 		fieldIndex: state.fieldIndex,
 		moveScore: selectMoveScore(state),
 		moveErrors: selectMoveErrors(state),
+		hand: selectHand(state),
 	}),
 )(
 	({
@@ -43,6 +47,7 @@ export const PlaceTileButtonsComp = connect(
 		bag,
 		moveScore,
 		moveErrors,
+		hand,
 		dispatch,
 	}: PlaceTileButtonsCompProps) => {
 		return (
@@ -103,6 +108,25 @@ export const PlaceTileButtonsComp = connect(
 				>
 					{`Új játék`}
 				</button>
+				{/* {fieldIndex != null && hand != null && (
+					<button
+						onClick={e => {
+							alert(
+								getPotentialWordsInLine(
+									getRowLine(board, fieldIndex),
+									hand,
+								).concat(
+									getPotentialWordsInLine(
+										getColumnLine(board, fieldIndex),
+										hand,
+									),
+								),
+							)
+						}}
+					>
+						{`Tipp`}
+					</button>
+				)} */}
 				{get(() => board[fieldIndex!].tile!.isJoker) && (
 					<select
 						value={board[fieldIndex!].tile!.letter}
