@@ -32,7 +32,8 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"serve": "node --watch build server.js"
+		"serve": "node --watch build server.js",
+		"order-words": "node ./order-words.js ./src/res/words.json"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
