@@ -11,8 +11,9 @@ export function createBag(): TBag {
 			withInterface<ITile>({
 				letter,
 				score,
-				isOwned: false,
-				isJoker: letter === ' ',
+				isOwned: undefined,
+				isJoker: letter === ' ' || undefined,
+				isLast: undefined,
 			}),
 		),
 	)

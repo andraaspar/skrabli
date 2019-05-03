@@ -17,6 +17,7 @@ export function TileComp({
 					'tile',
 					!neverOwned && tile.isOwned && 'is-owned',
 					tile.isJoker && 'is-joker',
+					tile.isLast && 'is-last',
 				]
 					.filter(Boolean)
 					.join(' ')}

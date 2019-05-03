@@ -14,6 +14,10 @@
 .tile.is-owned {
 	background-color: white;
 }
+.tile.is-last {
+	background-color: burlywood;
+	border-color: peru;
+}
 .tile.is-joker .tile-letter {
 	font-style: italic;
 }

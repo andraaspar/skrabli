@@ -94,7 +94,12 @@ export const appStateReducer = produce(
 			case disownTiles.type: {
 				for (const field of state.board) {
 					if (field.tile) {
-						field.tile.isOwned = false
+						if (field.tile.isOwned) {
+							field.tile.isOwned = undefined
+							field.tile.isLast = true
+						} else if (field.tile.isLast) {
+							field.tile.isLast = undefined
+						}
 					}
 				}
 				break
