@@ -8,11 +8,16 @@ export function getPotentialWordsInLine(
 	hand: THand,
 ): string[] {
 	if (!line.find(field => !!field.tile)) return []
-	const letters: string[] = hand
-		.map(tile => (tile ? tile.letter : ''))
-		.filter(letter => !!letter && letter !== ' ')
-		.sort((a, b) => a.length - b.length)
-	const lettersRe = `(${letters.join('|')})`
+	const lettersSet = new Set<string>()
+	hand.forEach(tile => {
+		if (tile && tile.letter !== ' ') {
+			lettersSet.add(tile.letter)
+		}
+	})
+	const letters: string[] = Array.from(lettersSet).sort(
+		(a, b) => a.length - b.length,
+	)
+	const lettersRe = `(?:${letters.join('|')})`
 
 	let parts: (string | number)[] = []
 	let wasGap = false
@@ -37,31 +42,58 @@ export function getPotentialWordsInLine(
 			}
 		}
 	})
-	if (wasGap) {
-		parts.push(line.length - lastGapStartIndex)
-	}
+	parts.push(wasGap ? line.length - lastGapStartIndex : 0)
+	if (!isNumber(parts[0])) parts.unshift(0)
 
-	const re = partsToRegexp(lettersRe, parts)
+	const reString = partsToRegExpStrings(lettersRe, parts).join('|')
+	// return [reString]
+	const re = new RegExp(reString)
 	return words.filter(word => re.test(word))
 }
 
-export function partsToRegexp(
+export function partsToRegExpStrings(
 	lettersRe: string,
 	parts: (string | number)[],
-): RegExp {
-	const reString =
-		'^' +
-		parts
-			.map((part, index) =>
-				isNumber(part)
-					? `${lettersRe}{${
-							index === 0 || index === parts.length - 1
-								? `0,${part}`
-								: part
-					  }}`
-					: part,
-			)
-			.join('') +
-		'$'
-	return new RegExp(reString)
+): string[] {
+	const result: string[] = []
+	for (let startIndex = 0; startIndex < parts.length - 2; startIndex += 2) {
+		for (
+			let endIndex = startIndex + 2;
+			endIndex < parts.length;
+			endIndex += 2
+		) {
+			let subParts = parts.slice(startIndex, endIndex + 1)
+			if (startIndex > 0) {
+				subParts[0] = Math.max(0, (subParts[0] as number) - 1)
+			}
+			if (endIndex < parts.length - 1) {
+				const end = subParts.length - 1
+				subParts[end] = Math.max(0, (subParts[end] as number) - 1)
+			}
+			result.push(partsToRegExpString(lettersRe, subParts))
+		}
+	}
+	return result
+}
+
+export function partsToRegExpString(
+	lettersRe: string,
+	parts: (string | number)[],
+): string {
+	let reString = '^'
+	parts.forEach((part, index) => {
+		if (isNumber(part)) {
+			if (part > 0) {
+				if (index === 0 || index === parts.length - 1) {
+					reString += `${lettersRe}{0,${part}}`
+				} else {
+					reString += `${lettersRe}{${part}}`
+				}
+			}
+		} else {
+			reString += part
+		}
+	})
+	reString += '$'
+	return reString
 }
