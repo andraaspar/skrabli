@@ -13,6 +13,7 @@ export function getPotentialWordsInLine(
 ): string[] {
 	if (!line.find(field => !!field.tile)) return []
 	const lettersInHandRe = getLettersInHandRe(hand)
+	if (!lettersInHandRe) return []
 	const lineParts = getLineParts(line)
 	const reStrings = linePartsToRegExpStrings(lettersInHandRe, lineParts)
 	const reStringsTrimmed = linePartsToRegExpStrings(

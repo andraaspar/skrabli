@@ -9,20 +9,28 @@ export function getHandIndicesForWord(
 	let result: number[] = []
 	let hand = originalHand.slice()
 	let re: RegExp = /./
-	let newRe: RegExp
-	let match: RegExpMatchArray | null
-	while (
-		((newRe = new RegExp(`(${getLettersInHandRe(hand)})`, 'g')),
-		(newRe.lastIndex = re.lastIndex),
-		(re = newRe),
-		(match = re.exec(word)))
-	) {
+	while (true) {
+		if (re.lastIndex >= word.length) {
+			break
+		}
+		const lettersInHandRe = getLettersInHandRe(hand)
+		if (!lettersInHandRe) {
+			throw new Error(`[pr6o04] Out of letters.`)
+		}
+		const newRe = new RegExp(`(${lettersInHandRe})`, 'g')
+		newRe.lastIndex = re.lastIndex
+		re = newRe
+		const match = re.exec(word)
+		if (!match) {
+			break
+		}
 		const letter = match[0]
 		const letterIndex = findLetterIndexInHand(letter, hand)
 		if (isNaN(letterIndex)) {
-			throw new Error(`Letter not in hand: ${letter}`)
+			throw new Error(`[pr52z1] Letter not in hand: ${letter}`)
 		} else {
 			result.push(letterIndex)
+			hand[letterIndex] = null
 		}
 	}
 	return result

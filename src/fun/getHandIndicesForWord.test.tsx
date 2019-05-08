@@ -29,4 +29,7 @@ it(`works`, () => {
 	expect(
 		getHandIndicesForWord('abc', [makeTile('a'), null, makeTile('bc')]),
 	).toEqual([0, 2])
+	expect(
+		getHandIndicesForWord('abc', [makeTile('d'), null, makeTile('e')]),
+	).toEqual([])
 })

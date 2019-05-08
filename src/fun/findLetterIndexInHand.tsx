@@ -5,6 +5,7 @@ export function findLetterIndexInHand(letter: string, hand: THand): number {
 	for (const [index, tile] of hand.entries()) {
 		if (tile != null && tile.letter === letter) {
 			result = index
+			break
 		}
 	}
 	if (isNaN(result)) {

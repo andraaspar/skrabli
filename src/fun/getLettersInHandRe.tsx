@@ -5,5 +5,9 @@ export function getLettersInHandRe(hand: THand): string {
 	const lettersInHand: string[] = Array.from(getLettersInHandSet(hand)).sort(
 		(a, b) => a.length - b.length,
 	)
-	return `(?:${lettersInHand.join('|')})`
+	if (lettersInHand.length) {
+		return `(?:${lettersInHand.join('|')})`
+	} else {
+		return ''
+	}
 }

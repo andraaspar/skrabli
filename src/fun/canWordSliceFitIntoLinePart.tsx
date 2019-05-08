@@ -16,18 +16,16 @@ export function canWordSliceFitIntoLinePart(
 		if (isNumber(linePart)) {
 			hasMissingParts = true
 			let handIndicesForWord: number[]
-			try {
-				handIndicesForWord = getHandIndicesForWord(wordPart, hand)
-			} catch (e) {
-				return false
-			}
+			handIndicesForWord = getHandIndicesForWord(wordPart, hand)
 			handIndicesForWord.forEach(index => (hand[index] = null))
 		} else if (isString(linePart)) {
 			if (wordPart !== linePart) {
-				return false
+				throw new Error(
+					`[pr52yt] Word part is not the same as line part: ${wordPart} !== ${linePart}`,
+				)
 			}
 		} else {
-			return false
+			throw new Error(`[pr52yo]`)
 		}
 	}
 	return hasMissingParts

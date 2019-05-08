@@ -12,7 +12,7 @@ function makeTile(letter: string) {
 	})
 }
 
-it(`works`, () => {
+it(`[pr5327]`, () => {
 	expect(
 		canWordSliceFitIntoLinePart(
 			['a', 'b', 'cd'],
@@ -20,6 +20,8 @@ it(`works`, () => {
 			[makeTile('a'), makeTile('c'), makeTile('d')],
 		),
 	).toBe(true)
+})
+it(`[pr5348]`, () => {
 	expect(
 		canWordSliceFitIntoLinePart(
 			['a', 'b'],
@@ -27,4 +29,22 @@ it(`works`, () => {
 			[makeTile('x'), makeTile('a')],
 		),
 	).toBe(true)
+})
+it(`[pr5335]`, () => {
+	expect(
+		canWordSliceFitIntoLinePart(
+			['a', 'b'],
+			[0, 'b'],
+			[makeTile('x'), makeTile('a')],
+		),
+	).toBe(false)
+})
+it(`[pr5323]`, () => {
+	expect(
+		canWordSliceFitIntoLinePart(
+			['a', 'b', 'a'],
+			[1, 'b', 1],
+			[makeTile('x'), makeTile('a')],
+		),
+	).toBe(false)
 })
