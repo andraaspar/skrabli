@@ -22,7 +22,7 @@ export function getHandIndicesForWord(
 		re = newRe
 		const match = re.exec(word)
 		if (!match) {
-			break
+			throw new Error(`[pr8z2l] No letter in hand matched.`)
 		}
 		const letter = match[0]
 		const letterIndex = findLetterIndexInHand(letter, hand)

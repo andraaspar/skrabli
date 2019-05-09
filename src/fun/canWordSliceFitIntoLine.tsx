@@ -11,14 +11,22 @@ export function canWordSliceFitIntoLine(
 	const firstFixedPart = parts[startMissing ? 1 : 0]
 	for (const [lineIndex, linePart] of lineParts.entries()) {
 		if (linePart === firstFixedPart) {
-			if (
-				canWordSliceFitIntoLinePart(
-					parts,
-					lineParts.slice(startMissing ? lineIndex - 1 : lineIndex),
-					hand,
-				)
-			) {
-				return true
+			try {
+				if (
+					canWordSliceFitIntoLinePart(
+						parts,
+						lineParts.slice(
+							startMissing ? lineIndex - 1 : lineIndex,
+						),
+						hand,
+					)
+				) {
+					return true
+				}
+			} catch (e) {
+				if (!/\[pr8z2l\]/.test(e + '')) {
+					throw e
+				}
 			}
 		}
 	}

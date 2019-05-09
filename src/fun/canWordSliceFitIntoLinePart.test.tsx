@@ -31,20 +31,20 @@ it(`[pr5348]`, () => {
 	).toBe(true)
 })
 it(`[pr5335]`, () => {
-	expect(
+	expect(() =>
 		canWordSliceFitIntoLinePart(
 			['a', 'b'],
 			[0, 'b'],
 			[makeTile('x'), makeTile('a')],
 		),
-	).toBe(false)
+	).toThrowError('[pr8z2l] No letter in hand matched.')
 })
 it(`[pr5323]`, () => {
-	expect(
+	expect(() =>
 		canWordSliceFitIntoLinePart(
 			['a', 'b', 'a'],
 			[1, 'b', 1],
 			[makeTile('x'), makeTile('a')],
 		),
-	).toBe(false)
+	).toThrowError('[pr8z2l] No letter in hand matched.')
 })

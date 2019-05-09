@@ -11,12 +11,22 @@ export function canWordSliceFitIntoLinePart(
 ): boolean {
 	let hasMissingParts = false
 	let hand = originalHand.slice()
+	const wordPartsEnd = wordParts.length - 1
 	for (const [index, wordPart] of wordParts.entries()) {
 		const linePart = lineParts[index]
 		if (isNumber(linePart)) {
 			hasMissingParts = true
 			let handIndicesForWord: number[]
 			handIndicesForWord = getHandIndicesForWord(wordPart, hand)
+			if (index === 0 || index === wordPartsEnd) {
+				if (handIndicesForWord.length > linePart) {
+					return false
+				}
+			} else {
+				if (handIndicesForWord.length !== linePart) {
+					return false
+				}
+			}
 			handIndicesForWord.forEach(index => (hand[index] = null))
 		} else if (isString(linePart)) {
 			if (wordPart !== linePart) {
