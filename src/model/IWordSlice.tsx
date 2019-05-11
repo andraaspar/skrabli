@@ -1,4 +1,4 @@
 export interface IWordSlice {
-	readonly startMissing: boolean
+	readonly firstIsFixed: boolean
 	readonly wordParts: ReadonlyArray<string>
 }

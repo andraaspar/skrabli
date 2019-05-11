@@ -12,13 +12,17 @@ function makeTile(letter: string) {
 	})
 }
 
-it(`works`, () => {
+it(`[prckj2]`, () => {
 	expect(
 		getHandIndicesForWord('abc', [makeTile('a'), makeTile('bc')]),
 	).toEqual([0, 1])
+})
+it(`[prckjm]`, () => {
 	expect(
 		getHandIndicesForWord('abc', [makeTile('bc'), makeTile('a')]),
 	).toEqual([1, 0])
+})
+it(`[prckkc]`, () => {
 	expect(
 		getHandIndicesForWord('abc', [
 			makeTile('a'),
@@ -26,10 +30,14 @@ it(`works`, () => {
 			makeTile('bc'),
 		]),
 	).toEqual([0, 2])
+})
+it(`[prckkf]`, () => {
 	expect(
 		getHandIndicesForWord('abc', [makeTile('a'), null, makeTile('bc')]),
 	).toEqual([0, 2])
-	expect(
-		getHandIndicesForWord('abc', [makeTile('d'), null, makeTile('e')]),
-	).toEqual([])
+})
+it(`[prckkh]`, () => {
+	expect(() => {
+		getHandIndicesForWord('abc', [makeTile('d'), null, makeTile('e')])
+	}).toThrow('[pr8z2l]')
 })

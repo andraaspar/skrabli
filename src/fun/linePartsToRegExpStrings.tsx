@@ -3,6 +3,11 @@ import { partsToRegExpString } from './partsToRegExpString'
 export function linePartsToRegExpStrings(
 	lettersInHandRe: string,
 	parts: (string | number)[],
+	{
+		trim,
+	}: {
+		trim?: boolean
+	} = {},
 ): string[] {
 	const result: string[] = []
 	for (let startIndex = 0; startIndex < parts.length - 2; startIndex += 2) {
@@ -19,7 +24,9 @@ export function linePartsToRegExpStrings(
 				const end = subParts.length - 1
 				subParts[end] = Math.max(0, (subParts[end] as number) - 1)
 			}
-			result.push(partsToRegExpString(lettersInHandRe, subParts))
+			result.push(
+				partsToRegExpString(lettersInHandRe, subParts, { trim }),
+			)
 		}
 	}
 	return result

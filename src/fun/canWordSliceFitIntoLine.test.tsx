@@ -15,7 +15,7 @@ function makeTile(letter: string) {
 it(`works`, () => {
 	expect(
 		canWordSliceFitIntoLine(
-			{ startMissing: true, wordParts: ['a', 'b'] },
+			{ firstIsFixed: false, wordParts: ['a', 'b'] },
 			[5, 'b', 5],
 			[makeTile('x'), makeTile('a')],
 		),

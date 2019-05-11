@@ -27,5 +27,6 @@ export function getLineParts(line: ReadonlyArray<IField>) {
 	})
 	parts.push(wasGap ? line.length - lastGapStartIndex : 0)
 	if (!isNumber(parts[0])) parts.unshift(0)
+	if (!isNumber(parts[parts.length - 1])) parts.push(0)
 	return parts
 }

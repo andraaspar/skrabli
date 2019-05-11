@@ -15,15 +15,15 @@ export function getWordSlices(
 				if (!r) break
 				const matchStartIndex = r.index
 				const matchEndIndex = reTrimmed.lastIndex
-				const startMissing = matchStartIndex > 0
-				const wordParts = r.slice(1, r.length)
+				const firstIsFixed = matchStartIndex === 0
+				const wordParts = r.slice(1, r.length).filter(Boolean)
 				if (matchStartIndex > 0) {
 					wordParts.unshift(word.slice(0, matchStartIndex))
 				}
 				if (matchEndIndex < word.length) {
 					wordParts.push(word.slice(matchEndIndex))
 				}
-				result.push({ startMissing, wordParts })
+				result.push({ firstIsFixed, wordParts })
 				i = matchStartIndex + 1
 			}
 		}

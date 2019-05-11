@@ -19,6 +19,7 @@ export function getPotentialWordsInLine(
 	const reStringsTrimmed = linePartsToRegExpStrings(
 		lettersInHandRe,
 		lineParts,
+		{ trim: true },
 	)
 	const re = new RegExp(reStrings.join('|'))
 	const res = reStrings.map(s => new RegExp(s))

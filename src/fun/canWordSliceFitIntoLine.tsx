@@ -4,11 +4,11 @@ import { TLineParts } from '../model/LineParts'
 import { canWordSliceFitIntoLinePart } from './canWordSliceFitIntoLinePart'
 
 export function canWordSliceFitIntoLine(
-	{ startMissing, wordParts: parts }: IWordSlice,
+	{ firstIsFixed, wordParts: parts }: IWordSlice,
 	lineParts: TLineParts,
 	hand: THand,
 ): boolean {
-	const firstFixedPart = parts[startMissing ? 1 : 0]
+	const firstFixedPart = parts[firstIsFixed ? 0 : 1]
 	for (const [lineIndex, linePart] of lineParts.entries()) {
 		if (linePart === firstFixedPart) {
 			try {
@@ -16,7 +16,7 @@ export function canWordSliceFitIntoLine(
 					canWordSliceFitIntoLinePart(
 						parts,
 						lineParts.slice(
-							startMissing ? lineIndex - 1 : lineIndex,
+							firstIsFixed ? lineIndex : lineIndex - 1,
 						),
 						hand,
 					)

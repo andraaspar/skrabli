@@ -17,7 +17,15 @@ export function canWordSliceFitIntoLinePart(
 		if (isNumber(linePart)) {
 			hasMissingParts = true
 			let handIndicesForWord: number[]
-			handIndicesForWord = getHandIndicesForWord(wordPart, hand)
+			try {
+				handIndicesForWord = getHandIndicesForWord(wordPart, hand)
+			} catch (e) {
+				if (/pr6o04|pr8z2l/.test(e)) {
+					return false
+				} else {
+					throw e
+				}
+			}
 			if (index === 0 || index === wordPartsEnd) {
 				if (handIndicesForWord.length > linePart) {
 					return false
