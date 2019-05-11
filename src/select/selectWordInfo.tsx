@@ -69,19 +69,27 @@ export const selectWordInfo = createSelector(
 				}
 			}
 			if (direction === Direction.Horizontal) {
-				firstFieldIndex =
+				firstFieldIndex = Math.min(
+					firstFieldIndex,
 					getRowIndex(firstFieldIndex) * BOARD_SIZE +
-					horizontal.startLineIndex
-				lastFieldIndex =
+						horizontal.startLineIndex,
+				)
+				lastFieldIndex = Math.max(
+					lastFieldIndex!,
 					getRowIndex(firstFieldIndex) * BOARD_SIZE +
-					horizontal.endLineIndex
+						horizontal.endLineIndex,
+				)
 			} else if (direction === Direction.Vertical) {
-				firstFieldIndex =
+				firstFieldIndex = Math.min(
+					firstFieldIndex,
 					vertical.startLineIndex * BOARD_SIZE +
-					getColumnIndex(firstFieldIndex)
-				lastFieldIndex =
+						getColumnIndex(firstFieldIndex),
+				)
+				lastFieldIndex = Math.max(
+					lastFieldIndex!,
 					vertical.endLineIndex * BOARD_SIZE +
-					getColumnIndex(firstFieldIndex)
+						getColumnIndex(firstFieldIndex),
+				)
 			}
 		}
 		if (
