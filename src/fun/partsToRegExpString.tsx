@@ -1,8 +1,9 @@
 import { isNumber } from 'util'
+import { TLineParts } from '../model/LineParts'
 
 export function partsToRegExpString(
 	lettersInHandRe: string,
-	parts: (string | number)[],
+	parts: TLineParts,
 	{
 		trim,
 	}: {

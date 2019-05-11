@@ -1,1 +1,3 @@
-export type TLineParts = ReadonlyArray<string | number>
+import { IFixedLinePart } from './IFixedLinePart'
+
+export type TLineParts = ReadonlyArray<IFixedLinePart | number>

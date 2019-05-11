@@ -1,4 +1,5 @@
 import { withInterface } from 'illa/Type'
+import { IFixedLinePart } from '../model/IFixedLinePart'
 import { ITile } from '../model/Tile'
 import { canWordSliceFitIntoLine } from './canWordSliceFitIntoLine'
 
@@ -12,11 +13,18 @@ function makeTile(letter: string) {
 	})
 }
 
-it(`works`, () => {
+function makeIFixedLinePart(text: string): IFixedLinePart {
+	return {
+		text,
+		fieldCount: text.length,
+	}
+}
+
+it(`[prcsfh]`, () => {
 	expect(
 		canWordSliceFitIntoLine(
 			{ firstIsFixed: false, wordParts: ['a', 'b'] },
-			[5, 'b', 5],
+			[5, makeIFixedLinePart('b'), 5],
 			[makeTile('x'), makeTile('a')],
 		),
 	).toBe(true)

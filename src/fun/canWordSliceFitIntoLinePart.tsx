@@ -1,4 +1,3 @@
-import { isString } from 'illa/Type'
 import { isNumber } from 'util'
 import { THand } from '../model/Hands'
 import { TLineParts } from '../model/LineParts'
@@ -36,14 +35,12 @@ export function canWordSliceFitIntoLinePart(
 				}
 			}
 			handIndicesForWord.forEach(index => (hand[index] = null))
-		} else if (isString(linePart)) {
-			if (wordPart !== linePart) {
+		} else {
+			if (wordPart !== linePart.text) {
 				throw new Error(
 					`[pr52yt] Word part is not the same as line part: ${wordPart} !== ${linePart}`,
 				)
 			}
-		} else {
-			throw new Error(`[pr52yo]`)
 		}
 	}
 	return hasMissingParts

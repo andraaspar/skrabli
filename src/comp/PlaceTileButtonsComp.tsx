@@ -112,15 +112,14 @@ export const PlaceTileButtonsComp = connect(
 					<button
 						onClick={e => {
 							alert(
-								getPotentialWordsInLine(
+								`Vízszintes: ${getPotentialWordsInLine(
 									getRowLine(board, fieldIndex),
 									hand,
-								).concat(
-									getPotentialWordsInLine(
-										getColumnLine(board, fieldIndex),
-										hand,
-									),
-								),
+								).join(', ') ||
+									'–'}\nFüggőleges: ${getPotentialWordsInLine(
+									getColumnLine(board, fieldIndex),
+									hand,
+								).join(', ') || '–'}`,
 							)
 						}}
 					>

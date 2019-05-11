@@ -1,8 +1,12 @@
+import { withInterface } from 'illa/Type'
+import { Draft } from 'immer'
 import { isNumber } from 'util'
 import { IField } from '../model/Field'
+import { IFixedLinePart } from '../model/IFixedLinePart'
+import { TLineParts } from '../model/LineParts'
 
 export function getLineParts(line: ReadonlyArray<IField>) {
-	let parts: (string | number)[] = []
+	let parts: Draft<TLineParts> = []
 	let wasGap = false
 	let lastGapStartIndex = -1
 	line.forEach((field, index) => {
@@ -13,9 +17,16 @@ export function getLineParts(line: ReadonlyArray<IField>) {
 				}
 			}
 			if (wasGap || index === 0) {
-				parts.push(field.tile.letter)
+				parts.push(
+					withInterface<IFixedLinePart>({
+						text: field.tile.letter,
+						fieldCount: 1,
+					}),
+				)
 			} else {
-				parts[parts.length - 1] += field.tile.letter
+				const fixedLinePart = parts[parts.length - 1] as IFixedLinePart
+				fixedLinePart.text += field.tile.letter
+				fixedLinePart.fieldCount++
 			}
 			wasGap = false
 		} else {
