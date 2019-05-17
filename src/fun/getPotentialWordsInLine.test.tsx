@@ -1,3 +1,4 @@
+import { range } from 'illa/ArrayUtil'
 import { withInterface } from 'illa/Type'
 import { IField } from '../model/Field'
 import { FieldKind } from '../model/FieldKind'
@@ -27,6 +28,18 @@ it(`[prcm7i]`, () => {
 			[makeTile('e'), makeTile('s')],
 		),
 	).toEqual(['est'])
+})
+it(`[preckt]`, () => {
+	expect(
+		getPotentialWordsInLine(
+			[
+				...range(7).map(() => makeField(null)),
+				makeField('l'),
+				...range(7).map(() => makeField(null)),
+			],
+			[makeTile('e')],
+		),
+	).toEqual(['le', 'el'])
 })
 
 function makeField(letter: string | null) {
