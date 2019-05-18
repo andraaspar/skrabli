@@ -23,7 +23,7 @@ export function partsToRegExpString(
 				}
 			}
 		} else {
-			reString += `(${part})`
+			reString += `(${part.text})`
 		}
 	})
 	reString += trim ? '' : '$'

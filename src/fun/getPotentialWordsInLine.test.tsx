@@ -39,7 +39,7 @@ it(`[preckt]`, () => {
 			],
 			[makeTile('e')],
 		),
-	).toEqual(['le', 'el'])
+	).toEqual(['el', 'le'])
 })
 
 function makeField(letter: string | null) {
