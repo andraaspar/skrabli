@@ -8,11 +8,11 @@ import { getWordFromLine } from './getWordFromLine'
 export function getWordsAt(board: ReadonlyArray<IField>, fieldIndex: number) {
 	return {
 		horizontal: getWordFromLine(
-			getRowLine(board, fieldIndex),
+			getRowLine(board, getRowIndex(fieldIndex)),
 			getColumnIndex(fieldIndex),
 		),
 		vertical: getWordFromLine(
-			getColumnLine(board, fieldIndex),
+			getColumnLine(board, getColumnIndex(fieldIndex)),
 			getRowIndex(fieldIndex),
 		),
 	}

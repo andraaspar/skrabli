@@ -1,16 +1,21 @@
-import { IField } from '../model/Field'
+import { TBoard } from '../model/Board'
+import { Direction } from '../model/Direction'
 import { THand } from '../model/Hands'
 import words from '../res/words.json'
 import { canWordSliceFitIntoLine } from './canWordSliceFitIntoLine'
 import { getLettersInHandRe } from './getLettersInHandRe'
+import { getLine } from './getLine'
 import { getLineParts } from './getLineParts'
 import { getWordSlices } from './getWordSlices'
 import { linePartsToRegExpStrings } from './linePartsToRegExpStrings'
 
 export function getPotentialWordsInLine(
-	line: ReadonlyArray<IField>,
+	board: TBoard,
+	lineIndex: number,
+	direction: Direction,
 	hand: THand,
 ): string[] {
+	const line = getLine(board, lineIndex, direction)
 	if (!line.find(field => !!field.tile)) return []
 	const lettersInHandRe = getLettersInHandRe(hand)
 	if (!lettersInHandRe) return []

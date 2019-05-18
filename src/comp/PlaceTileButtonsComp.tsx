@@ -113,11 +113,15 @@ export const PlaceTileButtonsComp = connect(
 						onClick={e => {
 							alert(
 								`Vízszintes: ${getPotentialWordsInLine(
-									getRowLine(board, fieldIndex),
+									board,
+									getRowIndex(fieldIndex),
+									Direction.Horizontal,
 									hand,
 								).join(', ') ||
 									'–'}\nFüggőleges: ${getPotentialWordsInLine(
-									getColumnLine(board, fieldIndex),
+									board,
+									getColumnIndex(fieldIndex),
+									Direction.Vertical,
 									hand,
 								).join(', ') || '–'}`,
 							)

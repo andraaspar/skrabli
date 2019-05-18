@@ -1,5 +1,6 @@
 import { range } from 'illa/ArrayUtil'
 import { withInterface } from 'illa/Type'
+import { Direction } from '../model/Direction'
 import { IField } from '../model/Field'
 import { FieldKind } from '../model/FieldKind'
 import { ITile } from '../model/Tile'
@@ -9,6 +10,8 @@ it(`[prckst]`, () => {
 	expect(
 		getPotentialWordsInLine(
 			[makeField('t'), makeField(null)],
+			0,
+			Direction.Horizontal,
 			[makeTile('e')],
 		),
 	).toEqual(['te'])
@@ -17,6 +20,8 @@ it(`[prcm7b]`, () => {
 	expect(
 		getPotentialWordsInLine(
 			[makeField(null), makeField('t'), makeField(null)],
+			0,
+			Direction.Horizontal,
 			[makeTile('e')],
 		),
 	).toEqual(['te'])
@@ -25,6 +30,8 @@ it(`[prcm7i]`, () => {
 	expect(
 		getPotentialWordsInLine(
 			[makeField(null), makeField(null), makeField('t')],
+			0,
+			Direction.Horizontal,
 			[makeTile('e'), makeTile('s')],
 		),
 	).toEqual(['est'])
@@ -37,6 +44,8 @@ it(`[preckt]`, () => {
 				makeField('l'),
 				...range(7).map(() => makeField(null)),
 			],
+			0,
+			Direction.Horizontal,
 			[makeTile('e')],
 		),
 	).toEqual(['el', 'le'])
