@@ -2,7 +2,7 @@ import { isUndefinedOrNull } from 'illa/Type'
 import { createSelector } from 'reselect'
 import { getColumnIndex } from '../fun/getColumnIndex'
 import { getRowIndex } from '../fun/getRowIndex'
-import { getWordsAt } from '../fun/getWordsAt'
+import { getWordAt } from '../fun/getWordAt'
 import { isThereAGap } from '../fun/isThereAGap'
 import { BOARD_SIZE } from '../model/Constants'
 import { Direction } from '../model/Direction'
@@ -60,7 +60,16 @@ export const selectWordInfo = createSelector(
 			}
 		}
 		if (!isUndefinedOrNull(firstFieldIndex)) {
-			const { horizontal, vertical } = getWordsAt(board, firstFieldIndex)
+			const horizontal = getWordAt(
+				board,
+				firstFieldIndex,
+				Direction.Horizontal,
+			)
+			const vertical = getWordAt(
+				board,
+				firstFieldIndex,
+				Direction.Vertical,
+			)
 			if (firstFieldIndex === lastFieldIndex) {
 				if (horizontal.word.length) {
 					direction = Direction.Horizontal
