@@ -6,13 +6,8 @@ import { getWordAt } from '../fun/getWordAt'
 import { isThereAGap } from '../fun/isThereAGap'
 import { BOARD_SIZE } from '../model/Constants'
 import { Direction } from '../model/Direction'
+import { IWordInfo } from '../model/IWordInfo'
 import { selectBoard } from './simpleSelectors'
-
-export interface IWordInfo {
-	firstFieldIndex: number | null
-	lastFieldIndex: number | null
-	direction: Direction | null
-}
 
 export const selectWordInfo = createSelector(
 	[selectBoard],

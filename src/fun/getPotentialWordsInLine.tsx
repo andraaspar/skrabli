@@ -42,7 +42,6 @@ export function getPotentialWordsInLine({
 			const wordPlans: IWordPlan[] = []
 			for (const wordSlice of wordSlices) {
 				const newWordPlans = canWordSliceFitIntoLine({
-					board,
 					lineIndex,
 					direction,
 					wordSlice,

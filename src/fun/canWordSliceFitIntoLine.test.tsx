@@ -1,26 +1,9 @@
-import { range } from 'illa/ArrayUtil'
 import { withInterface } from 'illa/Type'
 import { Direction } from '../model/Direction'
-import { IField } from '../model/Field'
-import { FieldKind } from '../model/FieldKind'
 import { IFixedLinePart } from '../model/IFixedLinePart'
 import { ITile } from '../model/Tile'
 import { IWordPlan } from '../model/WordPlan'
 import { canWordSliceFitIntoLine } from './canWordSliceFitIntoLine'
-
-function makeField(letter: string | null) {
-	return withInterface<IField>(
-		letter
-			? {
-					kind: FieldKind.Normal,
-					tile: makeTile(letter),
-			  }
-			: {
-					kind: FieldKind.Normal,
-					tile: null,
-			  },
-	)
-}
 
 function makeTile(letter: string) {
 	return withInterface<ITile>({
@@ -42,11 +25,6 @@ function makeIFixedLinePart(text: string): IFixedLinePart {
 it(`[prcsfh]`, () => {
 	expect(
 		canWordSliceFitIntoLine({
-			board: [
-				...range(5).map(_ => makeField(null)),
-				makeField('b'),
-				...range(5).map(_ => makeField(null)),
-			],
 			direction: Direction.Horizontal,
 			lineIndex: 0,
 			wordSlice: { firstIsFixed: false, wordParts: ['a', 'b'] },

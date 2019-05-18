@@ -1,5 +1,4 @@
 import { isNumber } from 'util'
-import { TBoard } from '../model/Board'
 import { BOARD_SIZE } from '../model/Constants'
 import { Direction } from '../model/Direction'
 import { THand } from '../model/Hands'
@@ -8,7 +7,6 @@ import { IWordPlan } from '../model/WordPlan'
 import { getHandIndicesForWord } from './getHandIndicesForWord'
 
 export function canWordSliceFitIntoLinePart({
-	board,
 	lineIndex,
 	lineTileIndex,
 	direction,
@@ -16,7 +14,6 @@ export function canWordSliceFitIntoLinePart({
 	lineParts,
 	hand: originalHand,
 }: {
-	board: TBoard
 	lineIndex: number
 	lineTileIndex: number
 	direction: Direction

@@ -1,6 +1,5 @@
 import { isNumber } from 'illa/Type'
 import { Direction } from 'tty'
-import { TBoard } from '../model/Board'
 import { THand } from '../model/Hands'
 import { IWordSlice } from '../model/IWordSlice'
 import { TLineParts } from '../model/LineParts'
@@ -9,14 +8,12 @@ import { add } from './add'
 import { canWordSliceFitIntoLinePart } from './canWordSliceFitIntoLinePart'
 
 export function canWordSliceFitIntoLine({
-	board,
 	lineIndex,
 	direction,
 	wordSlice: { firstIsFixed, wordParts },
 	lineParts,
 	hand,
 }: {
-	board: TBoard
 	lineIndex: number
 	direction: Direction
 	wordSlice: IWordSlice
@@ -32,7 +29,6 @@ export function canWordSliceFitIntoLine({
 		} else {
 			if (linePart.text === firstFixedPart) {
 				let wordPlan = canWordSliceFitIntoLinePart({
-					board,
 					lineIndex,
 					lineTileIndex: (firstIsFixed
 						? lineTileIndices
