@@ -3,7 +3,7 @@ import { Direction } from '../model/Direction'
 import { IFixedLinePart } from '../model/IFixedLinePart'
 import { ITile } from '../model/Tile'
 import { IWordPlan } from '../model/WordPlan'
-import { canWordSliceFitIntoLinePart } from './canWordSliceFitIntoLinePart'
+import { wordSliceAndLinePartsToWordPlan } from './wordSliceAndLinePartsToWordPlan'
 
 function makeTile(letter: string) {
 	return withInterface<ITile>({
@@ -22,23 +22,22 @@ function makeIFixedLinePart(text: string): IFixedLinePart {
 	}
 }
 
-it(`[pr5327]`, () => {
+it(`[prcsfh]`, () => {
 	expect(
-		canWordSliceFitIntoLinePart({
+		wordSliceAndLinePartsToWordPlan({
+			direction: Direction.Horizontal,
 			lineIndex: 0,
-			lineTileIndex: 0,
-			direction: Direction.Horizontal,
-			wordParts: ['a', 'b', 'cd'],
-			lineParts: [1, makeIFixedLinePart('b'), 2],
-			hand: [makeTile('a'), makeTile('c'), makeTile('d')],
+			wordSlice: { firstIsFixed: false, wordParts: ['a', 'b'] },
+			lineParts: [5, makeIFixedLinePart('b'), 5],
+			hand: [makeTile('x'), makeTile('a')],
 		}),
-	).toEqual(
+	).toEqual([
 		withInterface<IWordPlan>({
-			word: 'abcd',
-			fieldIndex: 0,
+			word: 'ab',
 			direction: Direction.Horizontal,
-			tiles: [0, NaN, 1, 2],
+			fieldIndex: 4,
+			tiles: [1, NaN],
 			score: NaN,
 		}),
-	)
+	])
 })

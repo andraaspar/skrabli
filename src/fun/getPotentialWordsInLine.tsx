@@ -3,12 +3,12 @@ import { Direction } from '../model/Direction'
 import { THand } from '../model/Hands'
 import { IWordPlan } from '../model/WordPlan'
 import words from '../res/words.json'
-import { canWordSliceFitIntoLine } from './canWordSliceFitIntoLine'
 import { getLettersInHandRe } from './getLettersInHandRe'
 import { getLine } from './getLine'
 import { getLineParts } from './getLineParts'
 import { getWordSlices } from './getWordSlices'
 import { linePartsToRegExpStrings } from './linePartsToRegExpStrings'
+import { wordSliceAndLinePartsToWordPlan } from './wordSliceAndLinePartsToWordPlan'
 
 export function getPotentialWordsInLine({
 	board,
@@ -41,7 +41,7 @@ export function getPotentialWordsInLine({
 			const wordSlices = getWordSlices(word, res, resTrimmed)
 			const wordPlans: IWordPlan[] = []
 			for (const wordSlice of wordSlices) {
-				const newWordPlans = canWordSliceFitIntoLine({
+				const newWordPlans = wordSliceAndLinePartsToWordPlan({
 					lineIndex,
 					direction,
 					wordSlice,

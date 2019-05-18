@@ -5,9 +5,9 @@ import { IWordSlice } from '../model/IWordSlice'
 import { TLineParts } from '../model/LineParts'
 import { IWordPlan } from '../model/WordPlan'
 import { add } from './add'
-import { canWordSliceFitIntoLinePart } from './canWordSliceFitIntoLinePart'
+import { wordSliceAndLinePartsToWordPlanInternal } from './wordSliceAndLinePartsToWordPlanInternal'
 
-export function canWordSliceFitIntoLine({
+export function wordSliceAndLinePartsToWordPlan({
 	lineIndex,
 	direction,
 	wordSlice: { firstIsFixed, wordParts },
@@ -23,31 +23,35 @@ export function canWordSliceFitIntoLine({
 	const firstFixedPart = wordParts[firstIsFixed ? 0 : 1]
 	const wordPlans: IWordPlan[] = []
 	let lineTileIndices: number[] = []
+	let linePartStartIndex = -1
 	for (const [linePartIndex, linePart] of lineParts.entries()) {
 		if (isNumber(linePart)) {
 			lineTileIndices.push(linePart)
 		} else {
 			if (linePart.text === firstFixedPart) {
-				let wordPlan = canWordSliceFitIntoLinePart({
-					lineIndex,
-					lineTileIndex: (firstIsFixed
-						? lineTileIndices
-						: lineTileIndices.slice(0, lineTileIndices.length - 1)
-					).reduce(add, 0),
-					direction,
-					wordParts,
-					lineParts: lineParts.slice(
-						firstIsFixed ? linePartIndex : linePartIndex - 1,
-					),
-					hand,
-				})
-				if (wordPlan) {
-					wordPlans.push(wordPlan)
-				}
+				linePartStartIndex = linePartIndex
 				break
 			} else {
 				lineTileIndices.push(linePart.fieldCount)
 			}
+		}
+	}
+	if (linePartStartIndex >= 0) {
+		let wordPlan = wordSliceAndLinePartsToWordPlanInternal({
+			lineIndex,
+			lineTileIndex: (firstIsFixed
+				? lineTileIndices
+				: lineTileIndices.slice(0, lineTileIndices.length - 1)
+			).reduce(add, 0),
+			direction,
+			wordParts,
+			lineParts: lineParts.slice(
+				firstIsFixed ? linePartStartIndex : linePartStartIndex - 1,
+			),
+			hand,
+		})
+		if (wordPlan) {
+			wordPlans.push(wordPlan)
 		}
 	}
 	return wordPlans

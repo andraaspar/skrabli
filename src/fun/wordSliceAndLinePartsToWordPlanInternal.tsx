@@ -6,7 +6,7 @@ import { TLineParts } from '../model/LineParts'
 import { IWordPlan } from '../model/WordPlan'
 import { getHandIndicesForWord } from './getHandIndicesForWord'
 
-export function canWordSliceFitIntoLinePart({
+export function wordSliceAndLinePartsToWordPlanInternal({
 	lineIndex,
 	lineTileIndex,
 	direction,
