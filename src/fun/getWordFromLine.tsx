@@ -19,7 +19,7 @@ export function getWordFromLine(
 	index = lineIndex + 1
 	while (index < BOARD_SIZE) {
 		const field = line[index]
-		if (!field.tile) break
+		if (!field || !field.tile) break
 		word.push(field)
 		endLineIndex = index
 		index++

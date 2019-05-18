@@ -6,8 +6,14 @@ import words from '../res/words.json'
 import { getLettersInHandRe } from './getLettersInHandRe'
 import { getLine } from './getLine'
 import { getLineParts } from './getLineParts'
+import { getFieldIndexOffset } from './getNextFieldIndex'
+import { getWordAt } from './getWordAt'
 import { getWordSlices } from './getWordSlices'
+import { getWordString } from './getWordString'
+import { isWordStringValid } from './isWordStringValid'
 import { linePartsToRegExpStrings } from './linePartsToRegExpStrings'
+import { theOtherDirection } from './theOtherDirection'
+import { wordPlanToBoard } from './wordPlanToBoard'
 import { wordSliceAndLinePartsToWordPlan } from './wordSliceAndLinePartsToWordPlan'
 
 export function getPotentialWordsInLine({
@@ -55,4 +61,29 @@ export function getPotentialWordsInLine({
 			return wordPlans
 		})
 		.reduce((sum, arr) => sum.concat(arr), []) // flatMap not supported until Node 11
+		.filter(wordPlan => {
+			const boardPlan = wordPlanToBoard(board, hand, wordPlan)
+			for (
+				let fieldIndex = wordPlan.fieldIndex,
+					lastFieldIndex =
+						fieldIndex +
+						wordPlan.tiles.length *
+							getFieldIndexOffset(wordPlan.direction);
+				fieldIndex < lastFieldIndex;
+				fieldIndex += getFieldIndexOffset(wordPlan.direction)
+			) {
+				const word = getWordAt(
+					boardPlan,
+					fieldIndex,
+					theOtherDirection(wordPlan.direction),
+				)
+				if (
+					word.word.length > 1 &&
+					!isWordStringValid(getWordString(word.word))
+				) {
+					return false
+				}
+			}
+			return true
+		})
 }

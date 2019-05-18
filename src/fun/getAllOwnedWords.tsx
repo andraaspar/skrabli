@@ -11,7 +11,6 @@ export function getAllOwnedWords(
 	{ firstFieldIndex, lastFieldIndex, direction }: IWordInfo,
 ): IField[][] {
 	const words: IField[][] = []
-	let mainWord: IField[] | null = null
 	if (
 		!isUndefinedOrNull(firstFieldIndex) &&
 		!isUndefinedOrNull(lastFieldIndex) &&
