@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ab58a01c93c93ad495158f782bbc300d",
+    "revision": "32700db2821cfa1a530feb7f20b230c3",
     "url": "/skrabli/index.html"
   },
   {
-    "revision": "8407de6031b7d5eb36bc",
+    "revision": "040e2fa7e7a38835ef68",
     "url": "/skrabli/static/css/2.764ccc25.chunk.css"
   },
   {
-    "revision": "6da47f7d625f51005eaf",
+    "revision": "401ecb9f45a8996c4789",
     "url": "/skrabli/static/css/main.fea4788d.chunk.css"
   },
   {
-    "revision": "8407de6031b7d5eb36bc",
-    "url": "/skrabli/static/js/2.7bfec96e.chunk.js"
+    "revision": "040e2fa7e7a38835ef68",
+    "url": "/skrabli/static/js/2.1a6cfc80.chunk.js"
   },
   {
-    "revision": "6da47f7d625f51005eaf",
-    "url": "/skrabli/static/js/main.655d9bb6.chunk.js"
+    "revision": "401ecb9f45a8996c4789",
+    "url": "/skrabli/static/js/main.7dd3307d.chunk.js"
   },
   {
     "revision": "d13cd337d331aeda72d8",
