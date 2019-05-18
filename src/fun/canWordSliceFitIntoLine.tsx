@@ -1,27 +1,58 @@
 import { isNumber } from 'illa/Type'
+import { Direction } from 'tty'
+import { TBoard } from '../model/Board'
 import { THand } from '../model/Hands'
 import { IWordSlice } from '../model/IWordSlice'
 import { TLineParts } from '../model/LineParts'
+import { IWordPlan } from '../model/WordPlan'
+import { add } from './add'
 import { canWordSliceFitIntoLinePart } from './canWordSliceFitIntoLinePart'
 
-export function canWordSliceFitIntoLine(
-	{ firstIsFixed, wordParts }: IWordSlice,
-	lineParts: TLineParts,
-	hand: THand,
-): boolean {
+export function canWordSliceFitIntoLine({
+	board,
+	lineIndex,
+	direction,
+	wordSlice: { firstIsFixed, wordParts },
+	lineParts,
+	hand,
+}: {
+	board: TBoard
+	lineIndex: number
+	direction: Direction
+	wordSlice: IWordSlice
+	lineParts: TLineParts
+	hand: THand
+}): IWordPlan[] {
 	const firstFixedPart = wordParts[firstIsFixed ? 0 : 1]
-	for (const [lineIndex, linePart] of lineParts.entries()) {
-		if (!isNumber(linePart) && linePart.text === firstFixedPart) {
-			if (
-				canWordSliceFitIntoLinePart(
+	const wordPlans: IWordPlan[] = []
+	let lineTileIndices: number[] = []
+	for (const [linePartIndex, linePart] of lineParts.entries()) {
+		if (isNumber(linePart)) {
+			lineTileIndices.push(linePart)
+		} else {
+			if (linePart.text === firstFixedPart) {
+				let wordPlan = canWordSliceFitIntoLinePart({
+					board,
+					lineIndex,
+					lineTileIndex: (firstIsFixed
+						? lineTileIndices
+						: lineTileIndices.slice(0, lineTileIndices.length - 1)
+					).reduce(add, 0),
+					direction,
 					wordParts,
-					lineParts.slice(firstIsFixed ? lineIndex : lineIndex - 1),
+					lineParts: lineParts.slice(
+						firstIsFixed ? linePartIndex : linePartIndex - 1,
+					),
 					hand,
-				)
-			) {
-				return true
+				})
+				if (wordPlan) {
+					wordPlans.push(wordPlan)
+				}
+				break
+			} else {
+				lineTileIndices.push(linePart.fieldCount)
 			}
 		}
 	}
-	return false
+	return wordPlans
 }

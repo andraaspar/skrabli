@@ -1,16 +1,33 @@
 import { isNumber } from 'util'
+import { TBoard } from '../model/Board'
+import { BOARD_SIZE } from '../model/Constants'
+import { Direction } from '../model/Direction'
 import { THand } from '../model/Hands'
 import { TLineParts } from '../model/LineParts'
+import { IWordPlan } from '../model/WordPlan'
 import { getHandIndicesForWord } from './getHandIndicesForWord'
 
-export function canWordSliceFitIntoLinePart(
-	wordParts: ReadonlyArray<string>,
-	lineParts: TLineParts,
-	originalHand: THand,
-): boolean {
+export function canWordSliceFitIntoLinePart({
+	board,
+	lineIndex,
+	lineTileIndex,
+	direction,
+	wordParts,
+	lineParts,
+	hand: originalHand,
+}: {
+	board: TBoard
+	lineIndex: number
+	lineTileIndex: number
+	direction: Direction
+	wordParts: ReadonlyArray<string>
+	lineParts: TLineParts
+	hand: THand
+}): IWordPlan | null {
 	let hasMissingParts = false
 	let hand = originalHand.slice()
 	const wordPartsEnd = wordParts.length - 1
+	let tiles: number[] = []
 	for (const [index, wordPart] of wordParts.entries()) {
 		const linePart = lineParts[index]
 		if (isNumber(linePart)) {
@@ -20,20 +37,24 @@ export function canWordSliceFitIntoLinePart(
 				handIndicesForWord = getHandIndicesForWord(wordPart, hand)
 			} catch (e) {
 				if (/pr6o04|pr8z2l/.test(e)) {
-					return false
+					return null
 				} else {
 					throw e
 				}
 			}
 			if (index === 0 || index === wordPartsEnd) {
 				if (handIndicesForWord.length > linePart) {
-					return false
+					return null
 				}
 			} else {
 				if (handIndicesForWord.length !== linePart) {
-					return false
+					return null
 				}
 			}
+			if (index === 0) {
+				lineTileIndex += linePart - handIndicesForWord.length
+			}
+			tiles.push(...handIndicesForWord)
 			handIndicesForWord.forEach(index => (hand[index] = null))
 		} else {
 			if (wordPart !== linePart.text) {
@@ -41,7 +62,22 @@ export function canWordSliceFitIntoLinePart(
 					`[pr52yt] Word part is not the same as line part: ${wordPart} !== ${linePart}`,
 				)
 			}
+			for (let i = 0; i < linePart.fieldCount; i++) {
+				tiles.push(NaN)
+			}
 		}
 	}
-	return hasMissingParts
+	if (!hasMissingParts) {
+		return null
+	}
+	return {
+		word: wordParts.join(''),
+		fieldIndex:
+			direction === Direction.Horizontal
+				? lineIndex * BOARD_SIZE + lineTileIndex
+				: lineTileIndex * BOARD_SIZE + lineIndex,
+		direction,
+		tiles,
+		score: NaN,
+	}
 }

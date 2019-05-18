@@ -1,7 +1,25 @@
 import { withInterface } from 'illa/Type'
+import { Direction } from '../model/Direction'
+import { IField } from '../model/Field'
+import { FieldKind } from '../model/FieldKind'
 import { IFixedLinePart } from '../model/IFixedLinePart'
 import { ITile } from '../model/Tile'
+import { IWordPlan } from '../model/WordPlan'
 import { canWordSliceFitIntoLinePart } from './canWordSliceFitIntoLinePart'
+
+function makeField(letter: string | null) {
+	return withInterface<IField>(
+		letter
+			? {
+					kind: FieldKind.Normal,
+					tile: makeTile(letter),
+			  }
+			: {
+					kind: FieldKind.Normal,
+					tile: null,
+			  },
+	)
+}
 
 function makeTile(letter: string) {
 	return withInterface<ITile>({
@@ -22,37 +40,27 @@ function makeIFixedLinePart(text: string): IFixedLinePart {
 
 it(`[pr5327]`, () => {
 	expect(
-		canWordSliceFitIntoLinePart(
-			['a', 'b', 'cd'],
-			[1, makeIFixedLinePart('b'), 2],
-			[makeTile('a'), makeTile('c'), makeTile('d')],
-		),
-	).toBe(true)
-})
-it(`[pr5348]`, () => {
-	expect(
-		canWordSliceFitIntoLinePart(
-			['a', 'b'],
-			[3, makeIFixedLinePart('b')],
-			[makeTile('x'), makeTile('a')],
-		),
-	).toBe(true)
-})
-it(`[pr5335]`, () => {
-	expect(
-		canWordSliceFitIntoLinePart(
-			['a', 'b'],
-			[0, makeIFixedLinePart('b')],
-			[makeTile('x'), makeTile('a')],
-		),
-	).toBe(false)
-})
-it(`[pr5323]`, () => {
-	expect(
-		canWordSliceFitIntoLinePart(
-			['a', 'b', 'a'],
-			[1, makeIFixedLinePart('b'), 1],
-			[makeTile('x'), makeTile('a')],
-		),
-	).toBe(false)
+		canWordSliceFitIntoLinePart({
+			board: [
+				makeField(null),
+				makeField('b'),
+				makeField(null),
+				makeField(null),
+			],
+			lineIndex: 0,
+			lineTileIndex: 0,
+			direction: Direction.Horizontal,
+			wordParts: ['a', 'b', 'cd'],
+			lineParts: [1, makeIFixedLinePart('b'), 2],
+			hand: [makeTile('a'), makeTile('c'), makeTile('d')],
+		}),
+	).toEqual(
+		withInterface<IWordPlan>({
+			word: 'abcd',
+			fieldIndex: 0,
+			direction: Direction.Horizontal,
+			tiles: [0, NaN, 1, 2],
+			score: NaN,
+		}),
+	)
 })

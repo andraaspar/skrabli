@@ -112,18 +112,24 @@ export const PlaceTileButtonsComp = connect(
 					<button
 						onClick={e => {
 							alert(
-								`Vízszintes: ${getPotentialWordsInLine(
+								`Vízszintes: ${getPotentialWordsInLine({
 									board,
-									getRowIndex(fieldIndex),
-									Direction.Horizontal,
+									lineIndex: getRowIndex(fieldIndex),
+									direction: Direction.Horizontal,
 									hand,
-								).join(', ') ||
+								})
+									.map(_ => _.word)
+									.join(', ') ||
 									'–'}\nFüggőleges: ${getPotentialWordsInLine(
-									board,
-									getColumnIndex(fieldIndex),
-									Direction.Vertical,
-									hand,
-								).join(', ') || '–'}`,
+									{
+										board,
+										lineIndex: getColumnIndex(fieldIndex),
+										direction: Direction.Vertical,
+										hand,
+									},
+								)
+									.map(_ => _.word)
+									.join(', ') || '–'}`,
 							)
 						}}
 					>
