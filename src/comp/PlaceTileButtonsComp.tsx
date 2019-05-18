@@ -5,9 +5,7 @@ import { collectTiles, setJokerLetter, setMode } from '../action/actions'
 import { doneThunk } from '../action/doneThunk'
 import { newGameThunk } from '../action/newGameThunk'
 import { skipThunk } from '../action/skipThunk'
-import { getColumnIndex } from '../fun/getColumnIndex'
-import { getPotentialWordsInLine } from '../fun/getPotentialWordsInLine'
-import { getRowIndex } from '../fun/getRowIndex'
+import { getPotentialWords } from '../fun/getPotentialWords'
 import { IAppState } from '../model/AppState'
 import { TBag } from '../model/Bag'
 import { TBoard } from '../model/Board'
@@ -112,26 +110,22 @@ export const PlaceTileButtonsComp = connect(
 				>
 					{`Új játék`}
 				</button>
-				{fieldIndex != null && hand != null && (
+				{hand != null && (
 					<button
 						onClick={e => {
 							alert(
-								`Vízszintes: ${getPotentialWordsInLine({
+								`Vízszintes: ${getPotentialWords({
 									board,
-									lineIndex: getRowIndex(fieldIndex),
 									direction: Direction.Horizontal,
 									hand,
 								})
 									.map(_ => _.word)
 									.join(', ') ||
-									'–'}\nFüggőleges: ${getPotentialWordsInLine(
-									{
-										board,
-										lineIndex: getColumnIndex(fieldIndex),
-										direction: Direction.Vertical,
-										hand,
-									},
-								)
+									'–'}\nFüggőleges: ${getPotentialWords({
+									board,
+									direction: Direction.Vertical,
+									hand,
+								})
 									.map(_ => _.word)
 									.join(', ') || '–'}`,
 							)

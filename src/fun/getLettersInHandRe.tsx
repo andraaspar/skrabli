@@ -1,10 +1,8 @@
 import { THand } from '../model/Hands'
-import { getLettersInHandSet } from './getLettersInHandSet'
+import { getLettersInHand } from './getLettersInHand'
 
 export function getLettersInHandRe(hand: THand): string {
-	const lettersInHand: string[] = Array.from(getLettersInHandSet(hand)).sort(
-		(a, b) => a.length - b.length,
-	)
+	const lettersInHand: string[] = getLettersInHand(hand)
 	if (lettersInHand.length) {
 		return `(?:${lettersInHand.join('|')})`
 	} else {

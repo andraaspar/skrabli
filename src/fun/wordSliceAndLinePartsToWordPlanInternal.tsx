@@ -25,6 +25,10 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 	let hand = originalHand.slice()
 	const wordPartsEnd = wordParts.length - 1
 	let tiles: number[] = []
+	const word = wordParts.join('')
+	// if (word === 'aggkor') {
+	// 	console.log('.')
+	// }
 	for (const [index, wordPart] of wordParts.entries()) {
 		const linePart = lineParts[index]
 		if (isNumber(linePart)) {
@@ -68,7 +72,7 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 		return null
 	}
 	return {
-		word: wordParts.join(''),
+		word,
 		fieldIndex:
 			direction === Direction.Horizontal
 				? lineIndex * BOARD_SIZE + lineTileIndex
