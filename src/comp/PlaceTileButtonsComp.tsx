@@ -5,9 +5,13 @@ import { collectTiles, setJokerLetter, setMode } from '../action/actions'
 import { doneThunk } from '../action/doneThunk'
 import { newGameThunk } from '../action/newGameThunk'
 import { skipThunk } from '../action/skipThunk'
+import { getColumnIndex } from '../fun/getColumnIndex'
+import { getPotentialWordsInLine } from '../fun/getPotentialWordsInLine'
+import { getRowIndex } from '../fun/getRowIndex'
 import { IAppState } from '../model/AppState'
 import { TBag } from '../model/Bag'
 import { TBoard } from '../model/Board'
+import { Direction } from '../model/Direction'
 import { THand } from '../model/Hands'
 import { Mode } from '../model/Mode'
 import { MoveError } from '../model/MoveError'
@@ -108,7 +112,7 @@ export const PlaceTileButtonsComp = connect(
 				>
 					{`Új játék`}
 				</button>
-				{/* {fieldIndex != null && hand != null && (
+				{fieldIndex != null && hand != null && (
 					<button
 						onClick={e => {
 							alert(
@@ -135,7 +139,7 @@ export const PlaceTileButtonsComp = connect(
 					>
 						{`Tipp`}
 					</button>
-				)} */}
+				)}
 				{get(() => board[fieldIndex!].tile!.isJoker) && (
 					<select
 						value={board[fieldIndex!].tile!.letter}
