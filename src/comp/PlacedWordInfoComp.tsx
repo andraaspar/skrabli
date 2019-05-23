@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { AddWordContext } from '../model/AddWordContext'
 import { IAppState } from '../model/AppState'
 import { IValidAndInvalidWords } from '../model/IValidAndInvalidWords'
 import { selectPlacedValidAndInvalidWords } from '../select/selectPlacedValidAndInvalidWords'
@@ -26,6 +27,7 @@ export const PlacedWordInfoComp = connect(
 					<WordListComp
 						words={words.valid}
 						label={`Szavak a választott mezőn`}
+						addWordContext={AddWordContext.Flag}
 					/>
 				</div>
 			)}

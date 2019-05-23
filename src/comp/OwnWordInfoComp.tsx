@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { AddWordContext } from '../model/AddWordContext'
 import { IAppState } from '../model/AppState'
 import { IValidAndInvalidWords } from '../model/IValidAndInvalidWords'
 import { selectOwnValidAndInvalidWords } from '../select/selectOwnValidAndInvalidWords'
@@ -29,11 +30,13 @@ export const OwnWordInfoComp = connect(
 						showScore
 						wordClassName='valid-word'
 						scoreClassName='word-score'
+						addWordContext={AddWordContext.Flag}
 					/>
 					<WordListComp
 						words={words.invalid}
 						label={`Érvényetelen szavak`}
 						wordClassName='invalid-word'
+						addWordContext={AddWordContext.Request}
 					/>
 				</div>
 			)}
