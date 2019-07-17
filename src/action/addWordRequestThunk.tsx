@@ -44,7 +44,23 @@ FONTOS:
 					)
 				})
 				.catch(e => {
-					window.alert((e + '').replace(/^Error:\s*/g, ''))
+					const eString = e + ''
+					if (eString.startsWith('[pusoac]')) {
+						switch (context) {
+							case AddWordContext.Flag:
+								window.alert(
+									`Ezt a szót már jelezték nekem, de én elfogadhatónak tartom.`,
+								)
+								return
+							case AddWordContext.Request:
+								window.alert(
+									`Ezt a szót már javasolták nekem, de én nem tartom elfogadhatónak.`,
+								)
+								return
+							default:
+						}
+					}
+					window.alert(eString.replace(/^Error:\s*/g, ''))
 				})
 		}
 	}
