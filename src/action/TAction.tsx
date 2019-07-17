@@ -1,3 +1,2 @@
-export type TAction = ReturnType<
-	(typeof import('./actions'))[keyof typeof import('./actions')]
->
+type TActionsModule = typeof import('./actions')
+export type TAction = ReturnType<TActionsModule[keyof TActionsModule]>
