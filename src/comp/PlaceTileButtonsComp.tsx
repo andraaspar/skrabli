@@ -134,7 +134,9 @@ export const PlaceTileButtonsComp = connect(
 						{`Tipp`}
 					</button>
 				)}
-				{get(() => board[fieldIndex!].tile!.isJoker) && (
+				{(tile => tile && tile.isJoker && tile.isOwned)(
+					get(() => board[fieldIndex!].tile),
+				) && (
 					<select
 						value={board[fieldIndex!].tile!.letter}
 						onChange={e => {
