@@ -1,4 +1,4 @@
-import { isNumber } from 'util'
+import { isNumber } from 'illa/Type'
 import { TLineParts } from '../model/LineParts'
 
 export function partsToRegExpString(

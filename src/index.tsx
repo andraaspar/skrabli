@@ -1,8 +1,7 @@
+import { configureStore } from '@reduxjs/toolkit'
 import 'normalize.css'
-import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
-import { configureStore } from 'redux-starter-kit'
 import { AppComp } from './comp/AppComp'
 import './index.css'
 import { appStateReducer } from './model/AppState'
@@ -12,11 +11,11 @@ export const store = configureStore({
 	reducer: appStateReducer,
 })
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root')!)
+root.render(
 	<Provider store={store}>
 		<AppComp />
 	</Provider>,
-	document.getElementById('root'),
 )
 
 serviceWorker.register()

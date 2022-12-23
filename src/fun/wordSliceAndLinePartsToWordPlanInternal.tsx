@@ -1,4 +1,4 @@
-import { isNumber } from 'util'
+import { isNumber } from 'illa/Type'
 import { BOARD_SIZE } from '../model/Constants'
 import { Direction } from '../model/Direction'
 import { THand } from '../model/Hands'
@@ -37,7 +37,7 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 			try {
 				handIndicesForWord = getHandIndicesForWord(wordPart, hand)
 			} catch (e) {
-				if (/pr6o04|pr8z2l/.test(e)) {
+				if (/pr6o04|pr8z2l/.test(e + '')) {
 					return null
 				} else {
 					throw e
@@ -56,7 +56,7 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 				lineTileIndex += linePart - handIndicesForWord.length
 			}
 			tiles.push(...handIndicesForWord)
-			handIndicesForWord.forEach(index => (hand[index] = null))
+			handIndicesForWord.forEach((index) => (hand[index] = null))
 		} else {
 			if (wordPart !== linePart.text) {
 				throw new Error(

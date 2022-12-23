@@ -1,6 +1,5 @@
-import { withInterface } from 'illa/Type'
+import { isNumber, withInterface } from 'illa/Type'
 import { Draft } from 'immer'
-import { isNumber } from 'util'
 import { IField } from '../model/Field'
 import { IFixedLinePart } from '../model/IFixedLinePart'
 import { TLineParts } from '../model/LineParts'

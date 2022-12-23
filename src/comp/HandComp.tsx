@@ -1,6 +1,4 @@
-import * as React from 'react'
 import { connect } from 'react-redux'
-import { isNullOrUndefined } from 'util'
 import { selectHandThunk } from '../action/selectHandThunk'
 import { IAppState } from '../model/AppState'
 import { TBoard } from '../model/Board'
@@ -52,7 +50,7 @@ export const HandComp = connect(
 	}: HandCompProps) => {
 		return (
 			<>
-				{!isNullOrUndefined(playerIndex) && (
+				{playerIndex != null && (
 					<div className='hand'>
 						{hands[playerIndex].map((tile, aHandIndex) => (
 							<div
@@ -60,19 +58,16 @@ export const HandComp = connect(
 								className={[
 									'hand-slot',
 									handIndex === aHandIndex && 'is-selected',
-									handIndicesToReplace[aHandIndex] &&
-										'is-to-be-replaced',
+									handIndicesToReplace[aHandIndex] && 'is-to-be-replaced',
 								]
 									.filter(Boolean)
 									.join(' ')}
-								onClick={e => {
+								onClick={(e) => {
 									dispatch(selectHandThunk(aHandIndex))
 								}}
 							>
 								<AspectComp width={1} height={1}>
-									{tile && (
-										<TileComp tile={tile} neverOwned />
-									)}
+									{tile && <TileComp tile={tile} neverOwned />}
 								</AspectComp>
 							</div>
 						))}
