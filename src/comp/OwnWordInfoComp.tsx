@@ -1,15 +1,20 @@
-import * as React from 'react'
+import { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { AddWordContext } from '../model/AddWordContext'
+import { setWordsValidity } from '../action/actions'
+import { getWordString } from '../fun/getWordString'
+import { loadWordsValidity } from '../fun/loadWordsValidity'
 import { IAppState } from '../model/AppState'
+import { IField } from '../model/Field'
 import { IValidAndInvalidWords } from '../model/IValidAndInvalidWords'
+import { selectAllOwnedWords } from '../select/selectAllOwnedWords'
 import { selectOwnValidAndInvalidWords } from '../select/selectOwnValidAndInvalidWords'
 import { DispatchProp } from './DispatchProp'
 import './OwnWordInfoComp.css'
 import { WordListComp } from './WordListComp'
 
 export interface OwnWordInfoCompPropsFromStore {
-	words: IValidAndInvalidWords | null
+	words: IField[][]
+	wordsValidAndInvalid: IValidAndInvalidWords | null
 }
 export interface OwnWordInfoCompProps
 	extends OwnWordInfoCompPropsFromStore,
@@ -17,26 +22,48 @@ export interface OwnWordInfoCompProps
 
 export const OwnWordInfoComp = connect(
 	(state: IAppState): OwnWordInfoCompPropsFromStore => ({
-		words: selectOwnValidAndInvalidWords(state),
+		words: selectAllOwnedWords(state),
+		wordsValidAndInvalid: selectOwnValidAndInvalidWords(state),
 	}),
-)(({ words, dispatch }: OwnWordInfoCompProps) => {
+)(({ words, wordsValidAndInvalid, dispatch }: OwnWordInfoCompProps) => {
+	useEffect(() => {
+		let aborted = false
+		;(async () => {
+			dispatch(setWordsValidity(Date.now()))
+			try {
+				const wordsValidity = await loadWordsValidity(
+					words.map((word) => getWordString(word)),
+				)
+				if (!aborted) {
+					dispatch(setWordsValidity({ loaded: wordsValidity }))
+				}
+			} catch (e) {
+				console.error(e)
+				if (!aborted) {
+					dispatch(setWordsValidity(e + ''))
+				}
+			}
+		})()
+
+		return () => {
+			aborted = true
+		}
+	}, [words, dispatch])
 	return (
 		<>
-			{words && (
+			{wordsValidAndInvalid && (
 				<div className='own-word-info'>
 					<WordListComp
-						words={words.valid}
+						words={wordsValidAndInvalid.valid}
 						label={`Érvényes szavak`}
 						showScore
 						wordClassName='valid-word'
 						scoreClassName='word-score'
-						addWordContext={AddWordContext.Flag}
 					/>
 					<WordListComp
-						words={words.invalid}
+						words={wordsValidAndInvalid.invalid}
 						label={`Érvényetelen szavak`}
 						wordClassName='invalid-word'
-						addWordContext={AddWordContext.Request}
 					/>
 				</div>
 			)}

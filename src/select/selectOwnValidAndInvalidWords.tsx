@@ -1,17 +1,19 @@
 import { createSelector } from 'reselect'
 import { getWordString } from '../fun/getWordString'
-import { isWordStringValid } from '../fun/isWordStringValid'
+import { isLoaded } from '../fun/isLoaded'
 import { IField } from '../model/Field'
 import { IValidAndInvalidWords } from '../model/IValidAndInvalidWords'
 import { selectAllOwnedWords } from './selectAllOwnedWords'
+import { selectWordsValidity } from './simpleSelectors'
 
 export const selectOwnValidAndInvalidWords = createSelector(
-	[selectAllOwnedWords],
-	(words: IField[][]): IValidAndInvalidWords | null => {
+	[selectAllOwnedWords, selectWordsValidity],
+	(words: IField[][], wordsValidity): IValidAndInvalidWords | null => {
+		if (!isLoaded(wordsValidity)) return null
 		const valid: IField[][] = []
 		const invalid: IField[][] = []
 		for (let word of words) {
-			if (isWordStringValid(getWordString(word))) {
+			if (wordsValidity.loaded.validWords.includes(getWordString(word))) {
 				valid.push(word)
 			} else {
 				invalid.push(word)

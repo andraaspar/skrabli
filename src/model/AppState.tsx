@@ -1,5 +1,6 @@
 import { isUndefinedOrNull } from 'illa/Type'
-import { Draft, produce } from 'immer'
+import { Draft, castDraft, produce } from 'immer'
+import { TAction } from '../action/TAction'
 import {
 	addTilesToBag,
 	collectTiles,
@@ -19,22 +20,24 @@ import {
 	setMode,
 	setPlayerName,
 	setSelectedField,
+	setWordsValidity,
 	swapHandAndBoard,
 	swapHands,
 	swapTiles,
 	toggleHandIndexToReplace,
 } from '../action/actions'
-import { TAction } from '../action/TAction'
 import { getHandTileCount } from '../fun/getHandTileCount'
-import { createBag, TBag } from './Bag'
-import { createBoard, TBoard } from './Board'
+import { TBag, createBag } from './Bag'
+import { TBoard, createBoard } from './Board'
 import {
-	createHandIndicesToReplace,
 	THandIndicesToReplace,
+	createHandIndicesToReplace,
 } from './HandIndicesToReplace'
-import { createHands, THands } from './Hands'
+import { THands, createHands } from './Hands'
+import { IWordsValidity } from './IWordsValidity'
 import { Mode } from './Mode'
-import { createPlayers, TPlayers } from './Player'
+import { TPlayers, createPlayers } from './Player'
+import { TLoadable } from './TLoadable'
 import { ITile } from './Tile'
 
 export interface IAppState {
@@ -50,6 +53,7 @@ export interface IAppState {
 	readonly startingHandCount: number | null
 	readonly skipCount: number | null
 	readonly playerBonuses: ReadonlyArray<number> | null
+	readonly wordsValidity: TLoadable<IWordsValidity>
 }
 
 export function createAppState(): IAppState {
@@ -66,6 +70,7 @@ export function createAppState(): IAppState {
 		startingHandCount: null,
 		skipCount: null,
 		playerBonuses: null,
+		wordsValidity: null,
 	}
 }
 
@@ -107,20 +112,14 @@ export const appStateReducer = produce(
 			case fillHand.type: {
 				const { bag, hands, playerIndex } = state
 				const hand = hands[playerIndex!]
-				const count = Math.min(
-					bag.length,
-					hand.length - getHandTileCount(hand),
-				)
+				const count = Math.min(bag.length, hand.length - getHandTileCount(hand))
 				const tiles: ITile[] = []
 				for (let i = 0; i < count; i++) {
-					const tile = bag.splice(
-						Math.floor(Math.random() * bag.length),
-						1,
-					)[0]
+					const tile = bag.splice(Math.floor(Math.random() * bag.length), 1)[0]
 					tile.isOwned = true
 					tiles.push(tile)
 				}
-				const newHand = (state.hands[playerIndex!] = hand.map(tile =>
+				const newHand = (state.hands[playerIndex!] = hand.map((tile) =>
 					tile ? tile : tiles.shift() || null,
 				))
 				state.startingHandCount = getHandTileCount(newHand)
@@ -128,9 +127,7 @@ export const appStateReducer = produce(
 			}
 			case nextPlayer.type: {
 				const { playerIndex } = state
-				state.playerIndex = isUndefinedOrNull(playerIndex)
-					? 0
-					: 1 - playerIndex
+				state.playerIndex = isUndefinedOrNull(playerIndex) ? 0 : 1 - playerIndex
 				state.fieldIndex = null
 				state.handIndex = null
 				break
@@ -177,8 +174,7 @@ export const appStateReducer = produce(
 				const hand = hands[playerIndex!]
 				const tileOnBoard = field.tile
 				const tileInHand = hand[handIndex]
-				state.fieldIndex =
-					tileInHand && tileInHand.isJoker ? fieldIndex : null
+				state.fieldIndex = tileInHand && tileInHand.isJoker ? fieldIndex : null
 				state.handIndex = null
 				field.tile = tileInHand
 				hand[handIndex] = tileOnBoard
@@ -211,9 +207,7 @@ export const appStateReducer = produce(
 			case toggleHandIndexToReplace.type: {
 				const { handIndicesToReplace } = state
 				const { handIndex } = action.payload
-				handIndicesToReplace[handIndex] = !handIndicesToReplace[
-					handIndex
-				]
+				handIndicesToReplace[handIndex] = !handIndicesToReplace[handIndex]
 				break
 			}
 			case removeTilesToReplaceFromHand.type: {
@@ -247,6 +241,10 @@ export const appStateReducer = produce(
 				state.players.forEach((player, playerIndex) => {
 					player.score += action.payload[playerIndex]
 				})
+				break
+			}
+			case setWordsValidity.type: {
+				state.wordsValidity = castDraft(action.payload)
 				break
 			}
 			default:

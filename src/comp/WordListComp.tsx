@@ -1,7 +1,5 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { AddWordContext } from '../model/AddWordContext'
-import { addWordRequestThunk } from '../action/addWordRequestThunk'
 import { getWordScore } from '../fun/getWordScore'
 import { getWordString } from '../fun/getWordString'
 import { IAppState } from '../model/AppState'
@@ -16,8 +14,7 @@ export interface WordListCompProps
 	showScore?: boolean
 	wordClassName?: string
 	scoreClassName?: string
-	addWordContext?: AddWordContext
-	label: React.ReactChild
+	label: React.ReactNode
 }
 
 export const WordListComp = connect(
@@ -28,9 +25,7 @@ export const WordListComp = connect(
 		showScore,
 		wordClassName,
 		scoreClassName,
-		addWordContext,
 		label,
-		dispatch,
 	}: WordListCompProps) => {
 		return (
 			<>
@@ -43,16 +38,51 @@ export const WordListComp = connect(
 							return (
 								<React.Fragment key={index}>
 									{index > 0 && <>{`, `}</>}
-									<a
-										className={wordClassName}
-										href={`http://ertelmezo.oszk.hu/kereses.php?csakcimben=on&kereses=${encodeURIComponent(
-											`"${wordString}"`,
-										)}`}
-										target='_blank'
-										rel='noopener noreferrer'
-									>
-										{wordString.replace(' ', ' ')}
-									</a>
+									{wordString.replace(' ', ' ')}{' '}
+									<small>
+										(
+										<a
+											className={wordClassName}
+											href={`http://ertelmezo.oszk.hu/kereses.php?csakcimben=on&kereses=${encodeURIComponent(
+												`"${wordString}"`,
+											)}`}
+											target='_blank'
+											rel='noopener noreferrer'
+										>
+											MÉK
+										</a>{' '}
+										<a
+											className={wordClassName}
+											href={`https://hu.wiktionary.org/w/index.php?search=${encodeURIComponent(
+												wordString,
+											)}`}
+											target='_blank'
+											rel='noopener noreferrer'
+										>
+											Wiktionary
+										</a>{' '}
+										<a
+											className={wordClassName}
+											href={`https://hu.wikipedia.org/w/index.php?search=${encodeURIComponent(
+												wordString,
+											)}`}
+											target='_blank'
+											rel='noopener noreferrer'
+										>
+											Wikipedia
+										</a>{' '}
+										<a
+											className={wordClassName}
+											href={`https://www.google.hu/search?q=${encodeURIComponent(
+												`"${wordString}"`,
+											)}`}
+											target='_blank'
+											rel='noopener noreferrer'
+										>
+											Google
+										</a>
+										)
+									</small>
 									{showScore && (
 										<>
 											{` `}
@@ -61,26 +91,6 @@ export const WordListComp = connect(
 												{` `}
 												{`pont`}
 											</span>
-										</>
-									)}
-									{addWordContext && (
-										<>
-											{` `}
-											<button
-												onClick={() => {
-													dispatch(
-														addWordRequestThunk(
-															addWordContext,
-															wordString,
-														),
-													)
-												}}
-											>
-												{addWordContext ===
-												AddWordContext.Request
-													? `Kérem`
-													: `Jelzem`}
-											</button>
 										</>
 									)}
 								</React.Fragment>

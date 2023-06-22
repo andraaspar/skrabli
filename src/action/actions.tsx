@@ -1,5 +1,7 @@
 import { IAppState } from '../model/AppState'
+import { IWordsValidity } from '../model/IWordsValidity'
 import { Mode } from '../model/Mode'
+import { TLoadable } from '../model/TLoadable'
 import { ITile } from '../model/Tile'
 
 export const setGame = createAction<'setGame', { game: IAppState }>('setGame')
@@ -56,22 +58,24 @@ export const toggleHandIndexToReplace = createAction<
 		handIndex: number
 	}
 >('toggleHandIndexToReplace')
-export const removeTilesToReplaceFromHand = createAction<
-	'removeTilesToReplaceFromHand'
->('removeTilesToReplaceFromHand')
+export const removeTilesToReplaceFromHand =
+	createAction<'removeTilesToReplaceFromHand'>('removeTilesToReplaceFromHand')
 export const deselectTilesToReplace = createAction<'deselectTilesToReplace'>(
 	'deselectTilesToReplace',
 )
 export const addTilesToBag = createAction<'addTilesToBag', { tiles: ITile[] }>(
 	'addTilesToBag',
 )
-export const incrementSkipCount = createAction<'incrementSkipCount'>(
-	'incrementSkipCount',
-)
+export const incrementSkipCount =
+	createAction<'incrementSkipCount'>('incrementSkipCount')
 export const resetSkipCount = createAction<'resetSkipCount'>('resetSkipCount')
 export const scoreBonuses = createAction<'scoreBonuses', ReadonlyArray<number>>(
 	'scoreBonuses',
 )
+export const setWordsValidity = createAction<
+	'wordsValidity',
+	TLoadable<IWordsValidity>
+>('wordsValidity')
 
 function createAction<T extends string, P = void>(type: T) {
 	const a = (payload: P) => ({ type, payload })

@@ -18,3 +18,4 @@ export const selectHandIndex = (state: IAppState) => state.handIndex
 export const selectFieldIndex = (state: IAppState) => state.fieldIndex
 export const selectStartingHandCount = (state: IAppState) =>
 	state.startingHandCount
+export const selectWordsValidity = (state: IAppState) => state.wordsValidity

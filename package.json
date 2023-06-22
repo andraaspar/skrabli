@@ -3,6 +3,7 @@
 	"homepage": "https://andraaspar.github.io/skrabli",
 	"version": "0.1.0",
 	"private": true,
+	"proxy": "http://localhost:8080",
 	"dependencies": {
 		"@reduxjs/toolkit": "^1.9.1",
 		"@types/jest": "29.2.4",

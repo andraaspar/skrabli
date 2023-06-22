@@ -1,7 +1,5 @@
 import { isUndefinedOrNull } from 'illa/Type'
 import { createSelector } from 'reselect'
-import { getWordString } from '../fun/getWordString'
-import { isWordStringValid } from '../fun/isWordStringValid'
 import { CENTER_FIELD_INDEX } from '../model/Constants'
 import { FieldKind } from '../model/FieldKind'
 import { MoveError } from '../model/MoveError'
@@ -28,9 +26,9 @@ export const selectMoveErrors = createSelector(
 					let touchesStart = false
 					let touchesUnowned = false
 					for (const word of words) {
-						if (!isWordStringValid(getWordString(word))) {
-							errors.add(MoveError.InvalidWord)
-						}
+						// if (!isWordStringValid(getWordString(word))) {
+						// 	errors.add(MoveError.InvalidWord)
+						// }
 						for (const field of word) {
 							if (field.kind === FieldKind.Start) {
 								touchesStart = true

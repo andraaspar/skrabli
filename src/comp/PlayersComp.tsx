@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { connect } from 'react-redux'
 import { setPlayerName } from '../action/actions'
 import { saveGameThunk } from '../action/saveGameThunk'
@@ -43,7 +42,7 @@ export const PlayersComp = connect(
 								{isEnabled ? (
 									<button
 										className='player-name-button'
-										onClick={e => {
+										onClick={(e) => {
 											const name = prompt(`Mi a neved?`)
 											if (name && name.trim()) {
 												dispatch(
@@ -62,9 +61,7 @@ export const PlayersComp = connect(
 									player.name
 								)}
 							</td>
-							{isEnabled && (
-								<td>{aPlayerIndex === playerIndex && `•`}</td>
-							)}
+							<td>{aPlayerIndex === playerIndex && `•`}</td>
 							<td>
 								{player.score}
 								{` `}
@@ -73,9 +70,7 @@ export const PlayersComp = connect(
 							{playerBonuses && (
 								<td>
 									<div className='player-bonus'>
-										{numberToSignedString(
-											playerBonuses[aPlayerIndex],
-										)}
+										{numberToSignedString(playerBonuses[aPlayerIndex])}
 										{` `}
 										{`pont`}
 									</div>

@@ -4,5 +4,5 @@ export enum MoveError {
 	NoDirection,
 	NoStart,
 	NoConnection,
-	InvalidWord,
+	// InvalidWord,
 }

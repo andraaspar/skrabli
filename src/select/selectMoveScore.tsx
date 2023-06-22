@@ -1,18 +1,25 @@
 import { createSelector } from 'reselect'
 import { getWordScore } from '../fun/getWordScore'
+import { getWordString } from '../fun/getWordString'
+import { isLoaded } from '../fun/isLoaded'
 import { BINGO_SCORE } from '../model/Constants'
+import { selectAllOwnedWords } from './selectAllOwnedWords'
 import { selectIsBingo } from './selectIsBingo'
-import { selectOwnValidAndInvalidWords } from './selectOwnValidAndInvalidWords'
+import { selectWordsValidity } from './simpleSelectors'
 
 export const selectMoveScore = createSelector(
-	[selectOwnValidAndInvalidWords, selectIsBingo],
-	(words, isBingo): number => {
+	[selectWordsValidity, selectAllOwnedWords, selectIsBingo],
+	(wordsValidity, ownedWords, isBingo): number => {
 		let score = 0
-		if (words) {
-			for (let word of words.valid) {
-				score += getWordScore(word)
+		if (isLoaded(wordsValidity)) {
+			let hasValidWord = false
+			for (let word of ownedWords) {
+				if (wordsValidity.loaded.validWords.includes(getWordString(word))) {
+					hasValidWord = true
+					score += getWordScore(word)
+				}
 			}
-			if (words.valid.length && isBingo) score += BINGO_SCORE
+			if (hasValidWord && isBingo) score += BINGO_SCORE
 		}
 		return score
 	},

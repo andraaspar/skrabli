@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { connect } from 'react-redux'
 import { IAppState } from '../model/AppState'
 import { MoveError } from '../model/MoveError'
@@ -23,10 +22,10 @@ export const ErrorsComp = connect(
 			{errors.length > 0 && (
 				<div className='errors'>
 					{Array.from(errors)
-						.map(e => {
+						.map((e) => {
 							switch (e) {
-								case MoveError.InvalidWord:
-									return `Van egy érvénytelen szavad!`
+								// case MoveError.InvalidWord:
+								// 	return `Van egy érvénytelen szavad!`
 								case MoveError.NoConnection:
 									return `Kapcsolódnod kell a meglévő lapkákhoz!`
 								case MoveError.NoDirection:

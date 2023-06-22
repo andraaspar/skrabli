@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import { AppComp } from './comp/AppComp'
 import './index.css'
 import { appStateReducer } from './model/AppState'
-import * as serviceWorker from './serviceWorker'
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
 export const store = configureStore({
 	reducer: appStateReducer,
@@ -18,4 +18,4 @@ root.render(
 	</Provider>,
 )
 
-serviceWorker.register()
+serviceWorkerRegistration.register()
