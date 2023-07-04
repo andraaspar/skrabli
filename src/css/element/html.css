@@ -1,0 +1,9 @@
+html {
+	font-family: sans-serif, /* macOS emoji */ 'Apple Color Emoji',
+		/* Windows emoji */ 'Segoe UI Emoji', /* Windows emoji */ 'Segoe UI Symbol',
+		/* Linux emoji */ 'Noto Color Emoji';
+	font-size: 4vmin;
+	user-select: none;
+	background-color: #222;
+	color: white;
+}

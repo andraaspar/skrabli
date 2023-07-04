@@ -1,4 +1,4 @@
-import { IWordsValidity } from '../model/IWordsValidity'
+import { type IWordsValidity } from '../model/IWordsValidity'
 
 export async function loadWordsValidity(
 	words: string[],

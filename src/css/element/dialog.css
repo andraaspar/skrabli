@@ -1,0 +1,16 @@
+dialog[open] {
+	display: flex;
+	flex-flow: column;
+	overflow: auto;
+	padding: 8vmin;
+	gap: 8vmin;
+	background-color: #444;
+	color: white;
+	border: 1px solid white;
+	border-radius: 4vmin;
+	text-align: center;
+}
+dialog::backdrop {
+	background-color: rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(1vmin);
+}

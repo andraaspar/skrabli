@@ -1,0 +1,7 @@
+a {
+	color: skyblue;
+}
+
+a:visited {
+	color: violet;
+}

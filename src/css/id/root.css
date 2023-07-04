@@ -1,0 +1,10 @@
+#app {
+	display: flex;
+	flex-direction: column;
+}
+
+@media (min-aspect-ratio: 4/3) {
+	#app {
+		flex-direction: row;
+	}
+}
