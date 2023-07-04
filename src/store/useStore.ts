@@ -423,8 +423,8 @@ W--l---W---l--W
 			this.handIndex = null
 		},
 
-		score(score: number) {
-			this.players[this.playerIndex!].score += score
+		score() {
+			this.players[this.playerIndex!].score += this.moveScore
 		},
 
 		setJokerLetter(letter: string) {

@@ -24,7 +24,7 @@ function onPlayerClicked(playerIndex: number) {
 			</button>
 			<div class="score">
 				<template v-if="store.playerIndex === playerIndex">👈</template>
-				{{ player.score }} pont
+				{{ player.score || 0 }} pont
 				<div v-if="store.mode === Mode.Ended" class="player-bonus">
 					{{ numberToSignedString(store.playerBonuses[playerIndex]) }} pont
 				</div>

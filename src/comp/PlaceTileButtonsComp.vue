@@ -41,9 +41,6 @@ const okButtonLabel = computed(() => {
 	if (isError.value) return '❌ Hiba!'
 	return '✅ Oké'
 })
-const isJoker = computed(
-	() => !!(store.tile && store.tile.isJoker && store.tile.isOwned),
-)
 
 function swapTiles() {
 	store.collectTiles()
@@ -68,11 +65,24 @@ function showHints() {
 	store.collectTiles()
 	hintsAreOpen.value = true
 }
+
+function done() {
+	store.score()
+	store.disownTiles()
+	store.resetSkipCount()
+	if (store.bag.length || store.handCount) {
+		store.fillHand()
+		store.nextPlayer()
+		store.saveGame()
+	} else {
+		store.endGame()
+	}
+}
 </script>
 
 <template>
 	<ButtonsComp>
-		<button :disabled="okButtonDisabled">
+		<button :disabled="okButtonDisabled" @click="done">
 			{{ okButtonLabel
 			}}<span v-if="store.moveScore > 0" class="score"
 				>: {{ store.moveScore }}&nbsp;pont</span
