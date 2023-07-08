@@ -2,14 +2,20 @@
 import { getWordScore } from '@/fun/getWordScore'
 import { getWordString } from '@/fun/getWordString'
 import type { IField } from '@/model/IField'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import DialogComp from './DialogComp.vue'
+import ButtonsComp from './ButtonsComp.vue'
 
-const props = defineProps<{
-	words: IField[][]
-	showScore?: boolean
-	validity?: boolean
-}>()
+const props = withDefaults(
+	defineProps<{
+		words: IField[][]
+		showScore?: boolean
+		validity?: boolean
+	}>(),
+	{
+		validity: undefined,
+	},
+)
 
 const wordStrings = computed(() =>
 	props.words.map((word) => getWordString(word)),
@@ -72,32 +78,36 @@ const openWordIndex = ref(-1)
 			>
 				{{ wordStrings[openWordIndex] }}
 			</div>
-			<div>
+			<ButtonsComp>
 				<a
+					class="button"
 					:href="makeMekLink(wordStrings[openWordIndex])"
 					target="_blank"
 					rel="noopener noreferrer"
 					>MÉK</a
 				>
 				<a
+					class="button"
 					:href="makeWiktionaryLink(wordStrings[openWordIndex])"
 					target="_blank"
 					rel="noopener noreferrer"
 					>Wiktionary</a
 				>
 				<a
+					class="button"
 					:href="makeWikipediaLink(wordStrings[openWordIndex])"
 					target="_blank"
 					rel="noopener noreferrer"
 					>Wikipedia</a
 				>
 				<a
+					class="button"
 					:href="makeGoogleLink(wordStrings[openWordIndex])"
 					target="_blank"
 					rel="noopener noreferrer"
 					>Google</a
 				>
-			</div>
+			</ButtonsComp>
 			<div>
 				<button @click="openWordIndex = -1">Zárd be</button>
 			</div>

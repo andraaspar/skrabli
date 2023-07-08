@@ -1,4 +1,5 @@
-button {
+button,
+.button {
 	background-image: linear-gradient(
 			to right,
 			white 1px,
@@ -22,9 +23,12 @@ button {
 	text-shadow: -1px -1px 0 #333;
 	padding: 2vmin;
 	position: relative;
+	text-align: center;
+	text-decoration: none;
 }
 
-button:active {
+button:active,
+.button:active {
 	background-image: linear-gradient(
 			to right,
 			#555 1px,
@@ -44,11 +48,13 @@ button:active {
 	border-top-color: #111;
 }
 
-button:focus-visible {
+button:focus-visible,
+.button:focus-visible {
 	text-shadow: 0 0 1vmin white;
 }
 
-button:disabled {
+button:disabled,
+.button:disabled {
 	text-shadow: -1px -1px 0 #333;
 	background: #666;
 	color: #bbb;
@@ -57,7 +63,9 @@ button:disabled {
 }
 
 button::before,
-button::after {
+.button::before,
+button::after,
+.button::after {
 	position: absolute;
 	content: '';
 	left: -0.25vmin;
@@ -65,23 +73,29 @@ button::after {
 	height: 0.5vmin;
 	transform: skewX(45deg);
 }
-button::before {
+button::before,
+.button::before {
 	top: -0.5vmin;
 	background: linear-gradient(to right, white 1px, rgba(255, 255, 255, 0) 1px);
 }
-button::after {
+button::after,
+.button::after {
 	bottom: -0.5vmin;
 	background: linear-gradient(to left, black 1px, rgba(0, 0, 0, 0) 1px);
 }
 
-button:active::before {
+button:active::before,
+.button:active::before {
 	background: linear-gradient(to right, black 1px, rgba(0, 0, 0, 0) 1px);
 }
-button:active::after {
+button:active::after,
+.button:active::after {
 	background: linear-gradient(to left, #ccc 1px, rgba(204, 204, 204, 0) 1px);
 }
 
 button:disabled::before,
-button:disabled::after {
+.button.disabled::before,
+button:disabled::after,
+.button.disabled::after {
 	content: none;
 }
