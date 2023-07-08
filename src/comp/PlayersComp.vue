@@ -6,10 +6,7 @@ import { useStore } from '@/store/useStore'
 const store = useStore()
 
 function onPlayerClicked(playerIndex: number) {
-	const name = prompt(
-		`Mi a neved?`,
-		store.playerIndex == null ? '' : store.players[store.playerIndex].name,
-	)
+	const name = prompt(`Mi a neved?`, store.players[playerIndex].name)
 	if (name && name.trim()) {
 		store.players[playerIndex].name = name.trim()
 		store.saveGame()
