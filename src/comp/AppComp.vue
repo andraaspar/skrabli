@@ -63,11 +63,13 @@ const showSetJokerLetter = ref(false)
 
 <style scoped>
 .tools {
-	flex: 0 0 auto;
+	flex: 0 1 100%;
 }
 
 .bingo {
-	font-weight: bold;
+	padding: 8vmin 2vmin;
+	font-size: 1.5rem;
 	color: hotpink;
+	text-align: center;
 }
 </style>

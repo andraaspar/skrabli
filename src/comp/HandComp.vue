@@ -32,6 +32,7 @@ const store = useStore()
 	background: #444;
 	padding: 1vmin;
 	border: 1px solid transparent;
+	aspect-ratio: 1 / 1;
 }
 
 .hand-slot.is-selected {
