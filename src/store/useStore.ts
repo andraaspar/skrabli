@@ -7,7 +7,7 @@ import { theOtherDirection } from '@/fun/theOtherDirection'
 import type { IValidAndInvalidWords } from '@/model/IValidAndInvalidWords'
 import { LocalStorageKey } from '@/model/LocalStorageKey'
 import { MoveError } from '@/model/MoveError'
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { getColumnIndex } from '../fun/getColumnIndex'
 import { getHandTileCount } from '../fun/getHandTileCount'
 import { getRowIndex } from '../fun/getRowIndex'
@@ -580,3 +580,7 @@ W--l---W---l--W
 		},
 	},
 })
+
+if (import.meta.hot) {
+	import.meta.hot.accept(acceptHMRUpdate(useStore, import.meta.hot))
+}
