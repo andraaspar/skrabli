@@ -3,6 +3,9 @@ import type { ITile } from '@/model/ITile'
 import { Mode } from '@/model/Mode'
 import { useStore } from '@/store/useStore'
 import ButtonsComp from './ButtonsComp.vue'
+import IconComp from './IconComp.vue'
+import changeIcon from 'bootstrap-icons/icons/arrow-down-up.svg?raw'
+import cancelIcon from 'bootstrap-icons/icons/x-circle.svg?raw'
 
 const store = useStore()
 
@@ -29,8 +32,12 @@ function cancel() {
 
 <template>
 	<ButtonsComp>
-		<button @click="replaceTiles">🔄 Csere</button>
-		<button @click="cancel">🚫 Mégse</button>
+		<button @click="replaceTiles">
+			<IconComp :icon="changeIcon" color="#0df" /> Csere
+		</button>
+		<button @click="cancel">
+			<IconComp :icon="cancelIcon" color="#f89" /> Mégse
+		</button>
 	</ButtonsComp>
 </template>
 

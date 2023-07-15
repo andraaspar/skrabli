@@ -36,7 +36,7 @@ function onLetterClicked(letterIndex: number) {
 .options {
 	display: grid;
 	grid-template-columns: repeat(5, 10vmin);
-	grid-gap: 2vmin;
+	grid-gap: var(--gap);
 }
 .option {
 	display: flex;

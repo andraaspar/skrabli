@@ -12,15 +12,20 @@ const store = useStore()
 		<template v-else>{{ store.winnersNames }} győzött!</template>
 	</div>
 	<PlayersComp />
-	<ButtonsComp>
-		<button @click="store.newGame">⭐ Új játék</button>
-	</ButtonsComp>
+	<div class="buttons">
+		<RouterLink class="button" :to="{ name: 'menu' }">Oké</RouterLink>
+	</div>
 </template>
 
 <style scoped>
 .result {
-	padding: 6vmin 2vmin;
+	padding: 6vmin var(--gap);
 	text-align: center;
 	font-size: 6vmin;
+}
+.buttons {
+	display: flex;
+	align-content: center;
+	padding: var(--gap);
 }
 </style>

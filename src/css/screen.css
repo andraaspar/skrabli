@@ -3,10 +3,11 @@
 @import './element/any.css';
 @import './element/root.css';
 @import './element/html.css';
+@import './element/body.css';
 @import './element/a.css';
 @import './element/button.css';
 @import './element/dialog.css';
 
-@import './id/root.css';
+@import './id/app.css';
 
 @import './regular/score.css';

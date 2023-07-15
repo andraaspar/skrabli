@@ -26,6 +26,9 @@ button,
 	text-align: center;
 	text-decoration: none;
 }
+.button:visited {
+	color: white;
+}
 
 button:active,
 .button:active {

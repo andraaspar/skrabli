@@ -119,7 +119,7 @@ const openWordIndex = ref(-1)
 .word-list {
 	display: flex;
 	flex-flow: column;
-	gap: 2vmin;
+	gap: var(--gap);
 	text-align: center;
 }
 .words {

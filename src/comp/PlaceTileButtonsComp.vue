@@ -7,6 +7,15 @@ import { useQuery } from '@tanstack/vue-query'
 import { computed, ref } from 'vue'
 import ButtonsComp from './ButtonsComp.vue'
 import HintsComp from './HintsComp.vue'
+import IconComp from './IconComp.vue'
+import stopwatchIcon from 'bootstrap-icons/icons/stopwatch.svg?raw'
+import errorIcon from 'bootstrap-icons/icons/exclamation-triangle-fill.svg?raw'
+import okIcon from 'bootstrap-icons/icons/check-circle-fill.svg?raw'
+import notOkIcon from 'bootstrap-icons/icons/x-circle-fill.svg?raw'
+import collectIcon from 'bootstrap-icons/icons/eject-fill.svg?raw'
+import changeIcon from 'bootstrap-icons/icons/arrow-down-up.svg?raw'
+import skipIcon from 'bootstrap-icons/icons/arrow-right-square-fill.svg?raw'
+import hintIcon from 'bootstrap-icons/icons/magic.svg?raw'
 
 defineEmits(['setJokerLetter'])
 
@@ -37,9 +46,22 @@ const okButtonDisabled = computed(() => {
 	)
 })
 const okButtonLabel = computed(() => {
-	if (isLoading.value) return '⌚'
-	if (isError.value) return '❌ Hiba!'
-	return '✅ Oké'
+	if (isLoading.value) return ''
+	if (isError.value) return ' Hiba!'
+	if (okButtonDisabled.value) return ' Nem jó!'
+	return ' Oké'
+})
+const okButtonIcon = computed(() => {
+	if (isLoading.value) return stopwatchIcon
+	if (isError.value) return errorIcon
+	if (okButtonDisabled.value) return notOkIcon
+	return okIcon
+})
+const okButtonIconColor = computed(() => {
+	if (isLoading.value) return undefined
+	if (isError.value) return '#f78'
+	if (okButtonDisabled.value) return undefined
+	return 'lightgreen'
 })
 
 function swapTiles() {
@@ -50,12 +72,6 @@ function swapTiles() {
 function skip() {
 	if (window.confirm(`Biztos hogy nem teszel semmit?`)) {
 		store.skip()
-	}
-}
-
-function newGame() {
-	if (window.confirm(`Biztos hogy új játékot akarsz kezdeni?`)) {
-		store.newGame()
 	}
 }
 
@@ -83,16 +99,19 @@ function done() {
 <template>
 	<ButtonsComp>
 		<button :disabled="okButtonDisabled" @click="done">
-			{{ okButtonLabel
+			<IconComp :icon="okButtonIcon" :color="okButtonIconColor" />{{
+				okButtonLabel
 			}}<span v-if="store.moveScore > 0" class="score"
 				>: {{ store.moveScore }}&nbsp;pont</span
 			></button
-		><button @click="store.collectTiles">⏏ Szedd össze</button
+		><button @click="store.collectTiles">
+			<IconComp :icon="collectIcon" color="#fd0" /> Szedd össze</button
 		><button :disabled="store.bag.length < 7" @click="swapTiles">
-			🔄&nbsp;Csere</button
-		><button @click="skip">💁‍♀️ Kihagyom</button
-		><button @click="newGame">⭐ Új játék</button
-		><button v-if="store.hand" @click="showHints">🪄 Tipp</button
+			<IconComp :icon="changeIcon" color="#0df" /> Csere</button
+		><button @click="skip">
+			<IconComp :icon="skipIcon" color="#f78" /> Kihagyom</button
+		><button v-if="store.hand" @click="showHints">
+			<IconComp :icon="hintIcon" color="#f7f" /> Tipp</button
 		><button
 			v-if="store.tile?.isOwned && store.tile.isJoker"
 			@click="$emit('setJokerLetter')"

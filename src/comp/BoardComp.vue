@@ -80,6 +80,7 @@ function onFieldClicked(fieldIndex: number) {
 	grid-template-columns: repeat(15, calc((100vmin - 14px) / 15));
 	grid-template-rows: repeat(15, calc((100vmin - 14px) / 15));
 	grid-gap: 1px;
+	margin: 0 auto;
 }
 
 .board-field {

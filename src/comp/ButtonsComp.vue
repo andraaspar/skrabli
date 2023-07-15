@@ -8,8 +8,8 @@
 .buttons {
 	display: flex;
 	flex-flow: row wrap;
-	gap: 2vmin;
-	padding: 2vmin;
+	gap: var(--gap);
+	padding: var(--gap);
 }
 .buttons > * {
 	flex: 1 0 auto;

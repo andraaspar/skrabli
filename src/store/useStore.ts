@@ -418,7 +418,10 @@ W--l---W---l--W
 		},
 
 		nextPlayer() {
-			this.playerIndex = this.playerIndex == null ? 0 : 1 - this.playerIndex
+			this.playerIndex = this.playerIndex == null ? 0 : this.playerIndex + 1
+			if (this.playerIndex >= this.players.length) {
+				this.playerIndex = 0
+			}
 			this.fieldIndex = null
 			this.handIndex = null
 		},
@@ -529,10 +532,10 @@ W--l---W---l--W
 			names.forEach((name, playerIndex) => {
 				this.players[playerIndex].name = name
 			})
-			this.nextPlayer()
-			this.fillHand()
-			this.nextPlayer()
-			this.fillHand()
+			this.players.forEach(() => {
+				this.nextPlayer()
+				this.fillHand()
+			})
 			this.mode = Mode.PlaceTile
 			this.nextPlayer()
 			this.saveGame()
@@ -565,7 +568,7 @@ W--l---W---l--W
 
 		skip() {
 			this.incrementSkipCount()
-			if ((this.skipCount || 0) > 3) {
+			if ((this.skipCount || 0) >= this.players.length * 2) {
 				this.endGame()
 			} else {
 				this.collectTiles()

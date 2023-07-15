@@ -5,6 +5,10 @@ import type { IWordPlans } from '@/model/IWordPlans'
 import { computed, ref, watch, unref } from 'vue'
 import DialogComp from './DialogComp.vue'
 import { jsonClone } from '@/fun/jsonClone'
+import stopwatchIcon from 'bootstrap-icons/icons/stopwatch.svg?raw'
+import IconComp from './IconComp.vue'
+import horizontalIcon from 'bootstrap-icons/icons/arrow-right-square.svg?raw'
+import verticalIcon from 'bootstrap-icons/icons/arrow-down-square.svg?raw'
 
 const props = defineProps<{ isOpen: boolean }>()
 const isOpen = computed(() => props.isOpen)
@@ -57,13 +61,19 @@ watch([isOpen, store.board, store.hand], () => {
 
 <template>
 	<DialogComp :isOpen="isOpen">
-		<div class="result">
-			<template v-if="hints == null">⌚</template>
+		<div class="results">
+			<IconComp v-if="hints == null" :icon="stopwatchIcon"></IconComp>
 			<template v-else>
-				<div class="title">Vízszintes</div>
-				<div>{{ hintsTexts.horizontal || '‑' }}</div>
-				<div class="title">Függőleges</div>
-				<div>{{ hintsTexts.vertical || '‑' }}</div>
+				<div class="result">
+					<div class="title">
+						<IconComp :icon="horizontalIcon" /> Vízszintes
+					</div>
+					<div>{{ hintsTexts.horizontal || '‑' }}</div>
+				</div>
+				<div class="result">
+					<div class="title"><IconComp :icon="verticalIcon" /> Függőleges</div>
+					<div>{{ hintsTexts.vertical || '‑' }}</div>
+				</div>
 			</template>
 		</div>
 		<div>
@@ -73,6 +83,12 @@ watch([isOpen, store.board, store.hand], () => {
 </template>
 
 <style scoped>
+.results {
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	gap: 4vmin;
+}
 .result {
 	display: flex;
 	flex-flow: column;

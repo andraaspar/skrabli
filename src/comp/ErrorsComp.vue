@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { MoveError } from '@/model/MoveError'
 import { useStore } from '@/store/useStore'
+import IconComp from './IconComp.vue'
+import errorIcon from 'bootstrap-icons/icons/exclamation-triangle-fill.svg?raw'
 
 const store = useStore()
 
@@ -27,7 +29,7 @@ function errorToString(error: MoveError) {
 <template>
 	<div v-if="store.moveErrors.length > 0" class="errors">
 		<div v-for="error of store.moveErrors">
-			⚠️&nbsp;{{ errorToString(error) }}
+			<IconComp :icon="errorIcon" color="#f70" /> {{ errorToString(error) }}
 		</div>
 	</div>
 </template>
@@ -36,10 +38,10 @@ function errorToString(error: MoveError) {
 .errors {
 	display: flex;
 	flex-flow: column;
-	padding: 2vmin;
-	gap: 2vmin;
+	padding: var(--gap);
+	gap: var(--gap);
 	text-align: center;
-	color: lightpink;
+	color: #fa6;
 	font-weight: bold;
 }
 </style>

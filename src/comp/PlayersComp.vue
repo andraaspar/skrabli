@@ -2,6 +2,10 @@
 import { numberToSignedString } from '@/fun/numberToSignedString'
 import { Mode } from '@/model/Mode'
 import { useStore } from '@/store/useStore'
+import IconComp from './IconComp.vue'
+import handIcon from 'bootstrap-icons/icons/hand-index-thumb-fill.svg?raw'
+import bagFullIcon from 'bootstrap-icons/icons/bag-fill.svg?raw'
+import bagEmptyIcon from 'bootstrap-icons/icons/bag-x.svg?raw'
 
 const store = useStore()
 
@@ -20,7 +24,12 @@ function onPlayerClicked(playerIndex: number) {
 				{{ player.name }}
 			</button>
 			<div class="score">
-				<template v-if="store.playerIndex === playerIndex">👈</template>
+				<IconComp
+					v-if="store.playerIndex === playerIndex"
+					:icon="handIcon"
+					color="lightgreen"
+					rotate90-and-flip
+				/>
 				{{ player.score || 0 }} pont
 				<div v-if="store.mode === Mode.Ended" class="player-bonus">
 					{{ numberToSignedString(store.playerBonuses[playerIndex]) }} pont
@@ -28,7 +37,8 @@ function onPlayerClicked(playerIndex: number) {
 			</div>
 		</div>
 		<div v-if="store.mode !== Mode.Ended" class="bag" title="Lapkák a zsákban">
-			💰{{ store.bag.length }}
+			<IconComp :icon="store.bag.length > 0 ? bagFullIcon : bagEmptyIcon" />
+			{{ store.bag.length }}
 		</div>
 	</div>
 </template>
@@ -36,8 +46,8 @@ function onPlayerClicked(playerIndex: number) {
 .players {
 	display: flex;
 	flex-flow: row wrap;
-	padding: 2vmin;
-	gap: 2vmin;
+	padding: var(--gap);
+	gap: var(--gap);
 	align-items: baseline;
 	width: 100%;
 }
