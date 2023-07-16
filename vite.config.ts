@@ -20,6 +20,9 @@ export default defineConfig({
 			includeAssets: [
 				'favicon.ico' /* , 'apple-touch-icon.png', 'masked-icon.svg' */,
 			],
+			workbox: {
+				navigateFallbackDenylist: [new RegExp('/api/')],
+			},
 			manifest: {
 				name: 'Skrabli',
 				short_name: 'Skrabli',
