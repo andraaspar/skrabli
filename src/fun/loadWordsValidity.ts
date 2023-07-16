@@ -1,9 +1,10 @@
-import { WORDS } from '@/model/WORDS'
 import { type IWordsValidity } from '../model/IWordsValidity'
+import { getKnownWords } from './getKnownWords'
 
 export async function loadWordsValidity(
 	words: string[],
 ): Promise<IWordsValidity> {
+	const knownValidWords = await getKnownWords()
 	const invalidWords = new Set<string>()
 	const validWords = new Set<string>()
 	// const wordsToCheck = new Set<string>()
@@ -13,7 +14,7 @@ export async function loadWordsValidity(
 		} else if (word.includes(' ')) {
 			console.log(`[rxhf5v] Word has blank joker:`, word)
 			invalidWords.add(word)
-		} else if (WORDS.includes(word)) {
+		} else if (knownValidWords.includes(word)) {
 			console.log(`[rxhf6r] Word is in list:`, word)
 			validWords.add(word)
 		}

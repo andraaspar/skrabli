@@ -6,6 +6,7 @@ import type { THand } from '../model/THand'
 import { getPotentialWordsInLine } from './getPotentialWordsInLine'
 
 export function getPotentialWords(options: {
+	words: string[]
 	board: TBoard
 	direction: Direction
 	hand: THand

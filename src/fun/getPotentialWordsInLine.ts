@@ -2,7 +2,6 @@ import { Direction } from '../model/Direction'
 import type { IWordPlan } from '../model/IWordPlan'
 import type { TBoard } from '../model/TBoard'
 import type { THand } from '../model/THand'
-import { WORDS } from '../model/WORDS'
 import { getLettersInHandRe } from './getLettersInHandRe'
 import { getLine } from './getLine'
 import { getLineParts } from './getLineParts'
@@ -16,11 +15,13 @@ import { wordPlanToBoard } from './wordPlanToBoard'
 import { wordSliceAndLinePartsToWordPlan } from './wordSliceAndLinePartsToWordPlan'
 
 export function getPotentialWordsInLine({
+	words,
 	board,
 	lineIndex,
 	direction,
 	hand,
 }: {
+	words: string[]
 	board: TBoard
 	lineIndex: number
 	direction: Direction
@@ -40,7 +41,8 @@ export function getPotentialWordsInLine({
 	const re = new RegExp(reStrings.join('|'))
 	const res = reStrings.map((s) => new RegExp(s))
 	const resTrimmed = reStringsTrimmed.map((s) => new RegExp(s, 'g'))
-	return WORDS.filter((word) => re.test(word))
+	return words
+		.filter((word) => re.test(word))
 		.map((word) => {
 			const wordSlices = getWordSlices(word, res, resTrimmed)
 			const wordPlans: IWordPlan[] = []
@@ -74,7 +76,7 @@ export function getPotentialWordsInLine({
 					fieldIndex,
 					theOtherDirection(wordPlan.direction),
 				)
-				if (word.word.length > 1 && !WORDS.includes(getWordString(word.word))) {
+				if (word.word.length > 1 && !words.includes(getWordString(word.word))) {
 					return false
 				}
 			}

@@ -11,6 +11,7 @@ import { withInterface } from './withInterface'
 it(`[prckst]`, () => {
 	expect(
 		getPotentialWordsInLine({
+			words: ['én', 'te', 'ő'],
 			board: [makeField('t'), makeField(null)],
 			lineIndex: 0,
 			direction: Direction.Horizontal,
@@ -29,6 +30,7 @@ it(`[prckst]`, () => {
 it(`[prcm7b]`, () => {
 	expect(
 		getPotentialWordsInLine({
+			words: ['én', 'te', 'ő'],
 			board: [makeField(null), makeField('t'), makeField(null)],
 			lineIndex: 0,
 			direction: Direction.Horizontal,
@@ -47,6 +49,7 @@ it(`[prcm7b]`, () => {
 it(`[prcm7i]`, () => {
 	expect(
 		getPotentialWordsInLine({
+			words: ['reggel', 'dél', 'est'],
 			board: [makeField(null), makeField(null), makeField('t')],
 			lineIndex: 0,
 			direction: Direction.Horizontal,
@@ -65,6 +68,7 @@ it(`[prcm7i]`, () => {
 it(`[preckt]`, () => {
 	expect(
 		getPotentialWordsInLine({
+			words: ['el', 'le', 'ell', 'lle', 'lel'],
 			board: [
 				...range(7).map(() => makeField(null)),
 				makeField('l'),

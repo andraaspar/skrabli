@@ -2,9 +2,8 @@
 import { getWordScore } from '@/fun/getWordScore'
 import { getWordString } from '@/fun/getWordString'
 import type { IField } from '@/model/IField'
-import { computed, ref, watch } from 'vue'
-import DialogComp from './DialogComp.vue'
-import ButtonsComp from './ButtonsComp.vue'
+import { computed, ref } from 'vue'
+import WordInfoComp from './WordInfoComp.vue'
 
 const props = withDefaults(
 	defineProps<{
@@ -20,36 +19,6 @@ const props = withDefaults(
 const wordStrings = computed(() =>
 	props.words.map((word) => getWordString(word)),
 )
-
-function makeMekLink(wordString: string) {
-	return `http://ertelmezo.oszk.hu/kereses.php?csakcimben=on&kereses=${encodeURIComponent(
-		`"${wordString}"`,
-	)}`
-}
-
-function makeWiktionaryLink(wordString: string) {
-	return `https://hu.wiktionary.org/w/index.php?search=${encodeURIComponent(
-		wordString,
-	)}`
-}
-
-function makeWikipediaLink(wordString: string) {
-	return `https://hu.wikipedia.org/w/index.php?search=${encodeURIComponent(
-		wordString,
-	)}`
-}
-
-function makeGoogleLink(wordString: string) {
-	return `https://www.google.hu/search?q=${encodeURIComponent(
-		`"${wordString}"`,
-	)}`
-}
-
-function makeMtaLink(wordString: string) {
-	return `https://helyesiras.mta.hu/helyesiras/default/suggest?q=${encodeURIComponent(
-		wordString,
-	)}`
-}
 
 const openWordIndex = ref(-1)
 </script>
@@ -75,56 +44,11 @@ const openWordIndex = ref(-1)
 				>
 			</button>
 		</div>
-		<DialogComp :isOpen="openWordIndex >= 0">
-			<div
-				:class="{
-					'valid-word': props.validity,
-					'invalid-word': props.validity === false,
-				}"
-			>
-				{{ wordStrings[openWordIndex] }}
-			</div>
-			<ButtonsComp>
-				<a
-					class="button"
-					:href="makeMekLink(wordStrings[openWordIndex])"
-					target="_blank"
-					rel="noopener noreferrer"
-					>MÉK</a
-				>
-				<a
-					class="button"
-					:href="makeWiktionaryLink(wordStrings[openWordIndex])"
-					target="_blank"
-					rel="noopener noreferrer"
-					>Wiktionary</a
-				>
-				<a
-					class="button"
-					:href="makeWikipediaLink(wordStrings[openWordIndex])"
-					target="_blank"
-					rel="noopener noreferrer"
-					>Wikipedia</a
-				>
-				<a
-					class="button"
-					:href="makeGoogleLink(wordStrings[openWordIndex])"
-					target="_blank"
-					rel="noopener noreferrer"
-					>Google</a
-				>
-				<a
-					class="button"
-					:href="makeMtaLink(wordStrings[openWordIndex])"
-					target="_blank"
-					rel="noopener noreferrer"
-					>MTA</a
-				>
-			</ButtonsComp>
-			<div>
-				<button @click="openWordIndex = -1">Zárd be</button>
-			</div>
-		</DialogComp>
+		<WordInfoComp
+			:word="wordStrings[openWordIndex]"
+			:isValid="props.validity"
+			@close="openWordIndex = -1"
+		/>
 	</div>
 </template>
 

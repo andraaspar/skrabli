@@ -9,6 +9,7 @@ import stopwatchIcon from 'bootstrap-icons/icons/stopwatch.svg?raw'
 import IconComp from './IconComp.vue'
 import horizontalIcon from 'bootstrap-icons/icons/arrow-right-square.svg?raw'
 import verticalIcon from 'bootstrap-icons/icons/arrow-down-square.svg?raw'
+import { getKnownWords } from '@/fun/getKnownWords'
 
 const props = defineProps<{ isOpen: boolean }>()
 const isOpen = computed(() => props.isOpen)
@@ -29,6 +30,7 @@ const hintsTexts = computed(() => {
 
 async function loadHints() {
 	try {
+		const words = await getKnownWords()
 		hints.value = await new Promise<IWordPlans>((resolve, reject) => {
 			hints.value = null
 			if (worker) worker.terminate()
@@ -42,6 +44,7 @@ async function loadHints() {
 			worker.postMessage({
 				hand: jsonClone(store.hand),
 				board: jsonClone(store.board),
+				words: words,
 			})
 		})
 	} catch (e) {
