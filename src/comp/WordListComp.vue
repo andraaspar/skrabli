@@ -45,6 +45,12 @@ function makeGoogleLink(wordString: string) {
 	)}`
 }
 
+function makeMtaLink(wordString: string) {
+	return `https://helyesiras.mta.hu/helyesiras/default/suggest?q=${encodeURIComponent(
+		wordString,
+	)}`
+}
+
 const openWordIndex = ref(-1)
 </script>
 
@@ -106,6 +112,13 @@ const openWordIndex = ref(-1)
 					target="_blank"
 					rel="noopener noreferrer"
 					>Google</a
+				>
+				<a
+					class="button"
+					:href="makeMtaLink(wordStrings[openWordIndex])"
+					target="_blank"
+					rel="noopener noreferrer"
+					>MTA</a
 				>
 			</ButtonsComp>
 			<div>
