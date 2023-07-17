@@ -162,7 +162,7 @@ const label = computed(() => {
 </script>
 
 <template>
-	<DialogComp v-if="props.word" isOpen>
+	<DialogComp :isOpen="!!props.word">
 		<div>
 			{{ label }}
 			<span
@@ -174,7 +174,7 @@ const label = computed(() => {
 				{{ props.word }}
 			</span>
 		</div>
-		<ButtonsComp>
+		<ButtonsComp v-if="props.word">
 			<a
 				class="button"
 				:href="makeMekLink(props.word)"
