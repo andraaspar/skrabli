@@ -50,25 +50,27 @@ const {
 </script>
 
 <template>
-	<div class="menu">
-		<button
-			v-if="store.mode !== Mode.NotStarted || savedGameExists()"
-			@click="continueGame"
-		>
-			<IconComp :icon="playIcon" color="#0bd" /> Folytatás
-		</button>
-		<button @click="startNewGame">
-			<IconComp :icon="starIcon" color="#fc0" /> Új játék
-		</button>
-		<ErrorComp :error="loadAllWordsValidityError" />
-		<button
-			v-if="allWordsValidityUpdated < Date.now() - 1000 * 60 * 60 * 24 * 30"
-			@click="loadAllWordsValidity"
-			:disabled="loadAllWordsValidityIsLoading"
-		>
-			<IconComp :icon="loadAllWordsValidityIcon" />
-			{{ loadAllWordsValidityLabel }}
-		</button>
+	<div class="screen">
+		<div class="menu">
+			<button
+				v-if="store.mode !== Mode.NotStarted || savedGameExists()"
+				@click="continueGame"
+			>
+				<IconComp :icon="playIcon" color="#0bd" /> Folytatás
+			</button>
+			<button @click="startNewGame">
+				<IconComp :icon="starIcon" color="#fc0" /> Új játék
+			</button>
+			<ErrorComp :error="loadAllWordsValidityError" />
+			<button
+				v-if="allWordsValidityUpdated < Date.now() - 1000 * 60 * 60 * 24 * 30"
+				@click="loadAllWordsValidity"
+				:disabled="loadAllWordsValidityIsLoading"
+			>
+				<IconComp :icon="loadAllWordsValidityIcon" />
+				{{ loadAllWordsValidityLabel }}
+			</button>
+		</div>
 	</div>
 </template>
 

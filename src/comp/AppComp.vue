@@ -12,7 +12,9 @@ queryClient.setQueryDefaults([], {
 </script>
 
 <template>
-	<RouterView></RouterView>
+	<router-view v-slot="{ Component }">
+		<transition appear>
+			<component :is="Component" />
+		</transition>
+	</router-view>
 </template>
-
-<style scoped></style>

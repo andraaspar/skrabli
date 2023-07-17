@@ -85,6 +85,7 @@ function onFieldClicked(fieldIndex: number) {
 }
 
 .board-field {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -92,11 +93,22 @@ function onFieldClicked(fieldIndex: number) {
 	color: white;
 	text-align: center;
 	font-size: 0.5rem;
-	border: 1px solid transparent;
+	border: 1px solid #9bff6900;
 	cursor: pointer;
 	white-space: pre-wrap;
 	aspect-ratio: 1 / 1;
 	line-height: 1.2;
+	transition: border-color 0.5s;
+}
+.board-field::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	box-shadow: inset 0 0 0 0 #1f5d0080;
+	transition: box-shadow 0.5s ease-out;
 }
 
 .board-field.is-start,
@@ -117,6 +129,9 @@ function onFieldClicked(fieldIndex: number) {
 }
 
 .board-field.is-selected {
-	border-color: hotpink;
+	border-color: #9bff69;
+}
+.board-field.is-selected::after {
+	box-shadow: inset 0 0 0 1vmin #1f5d0080;
 }
 </style>

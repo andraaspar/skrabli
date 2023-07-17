@@ -14,3 +14,17 @@ dialog::backdrop {
 	background-color: rgba(0, 0, 0, 0.4);
 	backdrop-filter: blur(1vmin);
 }
+
+dialog[open].v-enter-active,
+dialog[open].v-leave-active,
+dialog.v-enter-active::backdrop,
+dialog.v-leave-active::backdrop {
+	transition: opacity 0.5s ease;
+}
+
+dialog[open].v-enter-from,
+dialog[open].v-leave-to,
+dialog.v-enter-from::backdrop,
+dialog.v-leave-to::backdrop {
+	opacity: 0;
+}

@@ -12,18 +12,20 @@ watch([isOpen, dialogVnode], () => {
 		if (dialogVnode.value.open !== shouldBeOpen) {
 			if (shouldBeOpen) {
 				dialogVnode.value.showModal()
-			} else {
+			} /*  else {
 				dialogVnode.value.close()
-			}
+			} */
 		}
 	}
 })
 </script>
 
 <template>
-	<dialog ref="dialogVnode" @close.prevent>
-		<slot></slot>
-	</dialog>
+	<Transition appear>
+		<dialog v-if="isOpen" ref="dialogVnode" @close.prevent>
+			<slot></slot>
+		</dialog>
+	</Transition>
 </template>
 
 <style scoped></style>

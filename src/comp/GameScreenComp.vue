@@ -28,33 +28,35 @@ if (store.mode === Mode.NotStarted) {
 </script>
 
 <template>
-	<div class="menu-row">
-		<RouterLink class="button" :to="{ name: 'menu' }" replace
-			><IconComp :icon="listSvg"></IconComp
-		></RouterLink>
-	</div>
-	<BoardComp @setJokerLetter="showSetJokerLetter = true" />
-	<div class="tools">
-		<template v-if="store.mode === Mode.PlaceTile">
-			<PlayersComp />
+	<div class="screen">
+		<div class="menu-row">
+			<RouterLink class="button" :to="{ name: 'menu' }" replace
+				><IconComp :icon="listSvg"></IconComp
+			></RouterLink>
+		</div>
+		<BoardComp @setJokerLetter="showSetJokerLetter = true" />
+		<div class="tools">
+			<template v-if="store.mode === Mode.PlaceTile">
+				<PlayersComp />
 
-			<HandComp />
-			<div v-if="store.isBingo" class="bingo">+{{ BINGO_SCORE }} pont!</div>
-			<OwnWordInfoComp />
-			<ErrorsComp />
-			<PlaceTileButtonsComp @setJokerLetter="showSetJokerLetter = true" />
-			<PlacedWordInfoComp />
-		</template>
-		<template v-else-if="store.mode === Mode.ReplaceTiles">
-			<HandComp />
-			<ReplaceTilesButtonsComp />
-		</template>
-		<GameEndedComp v-else-if="store.mode === Mode.Ended" />
+				<HandComp />
+				<div v-if="store.isBingo" class="bingo">+{{ BINGO_SCORE }} pont!</div>
+				<OwnWordInfoComp />
+				<ErrorsComp />
+				<PlaceTileButtonsComp @setJokerLetter="showSetJokerLetter = true" />
+				<PlacedWordInfoComp />
+			</template>
+			<template v-else-if="store.mode === Mode.ReplaceTiles">
+				<HandComp />
+				<ReplaceTilesButtonsComp />
+			</template>
+			<GameEndedComp v-else-if="store.mode === Mode.Ended" />
+		</div>
+		<SetJokerLetterComp
+			:isOpen="showSetJokerLetter"
+			@close="showSetJokerLetter = false"
+		/>
 	</div>
-	<SetJokerLetterComp
-		:isOpen="showSetJokerLetter"
-		@close="showSetJokerLetter = false"
-	/>
 </template>
 
 <style scoped>

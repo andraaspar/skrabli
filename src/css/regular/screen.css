@@ -1,0 +1,19 @@
+.screen {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	flex-flow: column;
+}
+
+.screen.v-enter-active,
+.screen.v-leave-active {
+	transition: opacity 0.5s ease;
+}
+
+.screen.v-enter-from,
+.screen.v-leave-to {
+	opacity: 0;
+}
