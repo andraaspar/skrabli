@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import { savedGameExists } from '@/fun/savedGameExists'
 import { BINGO_SCORE } from '@/model/Constants'
+import listSvg from 'bootstrap-icons/icons/list.svg?raw'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { Mode } from '../model/Mode'
 import { useStore } from '../store/useStore'
 import BoardComp from './BoardComp.vue'
 import ErrorsComp from './ErrorsComp.vue'
 import GameEndedComp from './GameEndedComp.vue'
 import HandComp from './HandComp.vue'
+import IconComp from './IconComp.vue'
 import OwnWordInfoComp from './OwnWordInfoComp.vue'
 import PlaceTileButtonsComp from './PlaceTileButtonsComp.vue'
 import PlacedWordInfoComp from './PlacedWordInfoComp.vue'
 import PlayersComp from './PlayersComp.vue'
 import ReplaceTilesButtonsComp from './ReplaceTilesButtonsComp.vue'
 import SetJokerLetterComp from './SetJokerLetterComp.vue'
-import listSvg from 'bootstrap-icons/icons/list.svg?raw'
-import IconComp from './IconComp.vue'
-import { useRouter } from 'vue-router'
 
 const store = useStore()
 const router = useRouter()

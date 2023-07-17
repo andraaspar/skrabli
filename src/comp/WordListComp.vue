@@ -29,7 +29,11 @@ const openWordIndex = ref(-1)
 			<slot name="label"></slot>
 		</div>
 		<div class="words">
-			<button v-for="(word, index) of words" @click="openWordIndex = index">
+			<button
+				v-for="(word, index) of words"
+				:key="index"
+				@click="openWordIndex = index"
+			>
 				<span
 					:class="{
 						'valid-word': props.validity,

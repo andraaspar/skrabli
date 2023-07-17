@@ -17,7 +17,7 @@ export function linePartsToRegExpStrings(
 			endIndex < parts.length;
 			endIndex += 2
 		) {
-			let subParts = parts.slice(startIndex, endIndex + 1)
+			const subParts = parts.slice(startIndex, endIndex + 1)
 			if (startIndex > 0) {
 				subParts[0] = Math.max(0, (subParts[0] as number) - 1)
 			}

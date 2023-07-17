@@ -28,7 +28,7 @@ function errorToString(error: MoveError) {
 
 <template>
 	<div v-if="store.moveErrors.length > 0" class="errors">
-		<div v-for="error of store.moveErrors">
+		<div v-for="(error, index) of store.moveErrors" :key="index">
 			<IconComp :icon="errorIcon" color="#f70" /> {{ errorToString(error) }}
 		</div>
 	</div>

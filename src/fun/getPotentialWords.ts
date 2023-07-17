@@ -11,7 +11,7 @@ export function getPotentialWords(options: {
 	direction: Direction
 	hand: THand
 }) {
-	let wordPlans: IWordPlan[] = []
+	const wordPlans: IWordPlan[] = []
 	for (let lineIndex = 0; lineIndex < BOARD_SIZE; lineIndex++) {
 		wordPlans.push(
 			...getPotentialWordsInLine({

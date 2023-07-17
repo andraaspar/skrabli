@@ -19,7 +19,11 @@ function onPlayerClicked(playerIndex: number) {
 </script>
 <template>
 	<div class="players">
-		<div v-for="(player, playerIndex) of store.players" class="player">
+		<div
+			v-for="(player, playerIndex) of store.players"
+			:key="playerIndex"
+			class="player"
+		>
 			<button class="player-name-button" @click="onPlayerClicked(playerIndex)">
 				{{ player.name }}
 			</button>

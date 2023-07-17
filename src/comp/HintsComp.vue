@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useStore } from '@/store/useStore'
+import { getKnownWords } from '@/fun/getKnownWords'
+import { jsonClone } from '@/fun/jsonClone'
 import HintsWorker from '@/hints.worker?worker'
 import type { IWordPlans } from '@/model/IWordPlans'
-import { computed, ref, watch, unref } from 'vue'
-import DialogComp from './DialogComp.vue'
-import { jsonClone } from '@/fun/jsonClone'
-import stopwatchIcon from 'bootstrap-icons/icons/stopwatch.svg?raw'
-import IconComp from './IconComp.vue'
-import horizontalIcon from 'bootstrap-icons/icons/arrow-right-square.svg?raw'
+import { useStore } from '@/store/useStore'
 import verticalIcon from 'bootstrap-icons/icons/arrow-down-square.svg?raw'
-import { getKnownWords } from '@/fun/getKnownWords'
+import horizontalIcon from 'bootstrap-icons/icons/arrow-right-square.svg?raw'
+import stopwatchIcon from 'bootstrap-icons/icons/stopwatch.svg?raw'
+import { computed, ref, watch } from 'vue'
+import DialogComp from './DialogComp.vue'
+import IconComp from './IconComp.vue'
 
 const props = defineProps<{ isOpen: boolean }>()
 const isOpen = computed(() => props.isOpen)

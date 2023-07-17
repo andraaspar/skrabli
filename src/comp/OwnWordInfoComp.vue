@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { useStore } from '@/store/useStore'
-import WordListComp from './WordListComp.vue'
-import { QueryKey } from '@/model/QueryKey'
-import { toRaw } from 'vue'
-import { useQuery } from '@tanstack/vue-query'
-import { loadWordsValidity } from '@/fun/loadWordsValidity'
-import { computed } from 'vue'
-import type { IField } from '@/model/IField'
 import { getWordString } from '@/fun/getWordString'
+import { loadWordsValidity } from '@/fun/loadWordsValidity'
+import type { IField } from '@/model/IField'
 import type { IValidAndInvalidWords } from '@/model/IValidAndInvalidWords'
+import { QueryKey } from '@/model/QueryKey'
+import { useStore } from '@/store/useStore'
+import { useQuery } from '@tanstack/vue-query'
+import { computed } from 'vue'
+import WordListComp from './WordListComp.vue'
 
 const store = useStore()
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useStore } from '@/store/useStore'
 import PlayersComp from './PlayersComp.vue'
-import ButtonsComp from './ButtonsComp.vue'
 
 const store = useStore()
 </script>

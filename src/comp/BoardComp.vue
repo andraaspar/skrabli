@@ -56,6 +56,7 @@ function onFieldClicked(fieldIndex: number) {
 	<div class="board">
 		<div
 			v-for="(field, fieldIndex) in store.board"
+			:key="fieldIndex"
 			:class="{
 				'board-field': true,
 				'is-selected': fieldIndex === store.fieldIndex,

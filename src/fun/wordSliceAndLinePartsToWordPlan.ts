@@ -22,7 +22,7 @@ export function wordSliceAndLinePartsToWordPlan({
 }): IWordPlan[] {
 	const firstFixedPart = wordParts[firstIsFixed ? 0 : 1]
 	const wordPlans: IWordPlan[] = []
-	let lineTileIndices: number[] = []
+	const lineTileIndices: number[] = []
 	let linePartStartIndex = -1
 	for (const [linePartIndex, linePart] of lineParts.entries()) {
 		if (isNumber(linePart)) {
@@ -37,7 +37,7 @@ export function wordSliceAndLinePartsToWordPlan({
 		}
 	}
 	if (linePartStartIndex >= 0) {
-		let wordPlan = wordSliceAndLinePartsToWordPlanInternal({
+		const wordPlan = wordSliceAndLinePartsToWordPlanInternal({
 			lineIndex,
 			lineTileIndex: (firstIsFixed
 				? lineTileIndices

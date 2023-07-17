@@ -8,6 +8,7 @@ const store = useStore()
 	<div v-if="store.playerIndex != null" class="hand">
 		<div
 			v-for="(tile, tileIndex) of store.hands[store.playerIndex]"
+			:key="tileIndex"
 			:class="{
 				'hand-slot': true,
 				'is-selected': tileIndex === store.handIndex,

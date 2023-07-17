@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed, onUpdated } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{ isOpen: boolean }>()
 

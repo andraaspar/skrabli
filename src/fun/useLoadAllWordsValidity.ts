@@ -18,7 +18,9 @@ export function useLoadAllWordsValidity(onSuccess?: () => void) {
 			await loadAllWordsValidityFromServer()
 			try {
 				localStorage[LocalStorageKey.AllWordsValidityUpdated] = Date.now()
-			} catch (e) {}
+			} catch (e) {
+				// Ignore error
+			}
 			queryClient.invalidateQueries([QueryKey.AreWordsValid])
 			await onSuccess?.()
 		} catch (e) {

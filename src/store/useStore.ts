@@ -56,13 +56,13 @@ export const useStore = defineStore('game', {
 				score: 0,
 			},
 		],
-		hands: range(2).map((_) => range(7).map((_) => null)),
+		hands: range(2).map(() => range(7).map(() => null)),
 		playerIndex: null,
 		fieldIndex: null,
 		handIndex: null,
 		startingHandCount: null,
 		skipCount: null,
-		handIndicesToReplace: range(7).map((_) => false),
+		handIndicesToReplace: range(7).map(() => false),
 		board: `
 W--l---W---l--W
 -w---L---L---w-
@@ -91,7 +91,7 @@ W--l---W---l--W
 				),
 			),
 		bag: LETTERS.flatMap(({ count, letter, score }) =>
-			range(count).map((_) =>
+			range(count).map(() =>
 				withInterface<ITile>({
 					letter,
 					score,
@@ -292,7 +292,7 @@ W--l---W---l--W
 
 		moveScore(): number {
 			let score = 0
-			for (let word of this.allOwnedWords) {
+			for (const word of this.allOwnedWords) {
 				score += getWordScore(word)
 			}
 			if (this.isBingo) score += BINGO_SCORE
@@ -341,7 +341,7 @@ W--l---W---l--W
 			if (this.mode !== Mode.Ended) return []
 			let winningScore = -1
 			let winners: IPlayer[] = []
-			for (let player of this.players) {
+			for (const player of this.players) {
 				if (player.score > winningScore) {
 					winningScore = player.score
 					winners = [player]

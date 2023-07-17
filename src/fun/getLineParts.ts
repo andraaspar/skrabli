@@ -5,7 +5,7 @@ import { isNumber } from './isNumber'
 import { withInterface } from './withInterface'
 
 export function getLineParts(line: ReadonlyArray<IField>) {
-	let parts: TLineParts = []
+	const parts: TLineParts = []
 	let wasGap = false
 	let lastGapStartIndex = -1
 	line.forEach((field, index) => {

@@ -23,6 +23,7 @@ function onLetterClicked(letterIndex: number) {
 		<div class="options">
 			<button
 				v-for="(letter, letterIndex) of LETTERS"
+				:key="letterIndex"
 				@click="onLetterClicked(letterIndex)"
 				class="option"
 			>

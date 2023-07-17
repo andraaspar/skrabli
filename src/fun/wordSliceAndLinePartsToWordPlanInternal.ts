@@ -22,9 +22,9 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 	hand: THand
 }): IWordPlan | null {
 	let hasMissingParts = false
-	let hand = originalHand.slice()
+	const hand = originalHand.slice()
 	const wordPartsEnd = wordParts.length - 1
-	let tiles: number[] = []
+	const tiles: number[] = []
 	const word = wordParts.join('')
 	// if (word === 'aggkor') {
 	// 	console.log('.')
