@@ -8,11 +8,11 @@ export default defineConfig({
 	base: './',
 	plugins: [
 		vue({
-			template: {
-				compilerOptions: {
-					whitespace: 'preserve',
-				},
-			},
+			// template: {
+			// 	compilerOptions: {
+			// 		whitespace: 'preserve',
+			// 	},
+			// },
 		}),
 		VitePWA({
 			registerType: 'autoUpdate',
