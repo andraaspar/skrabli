@@ -7,7 +7,6 @@ import { Mode } from '../model/Mode'
 import { useStore } from '../store/useStore'
 import BoardComp from './BoardComp.vue'
 import ErrorsComp from './ErrorsComp.vue'
-import GameEndedComp from './GameEndedComp.vue'
 import HandComp from './HandComp.vue'
 import IconComp from './IconComp.vue'
 import OwnWordInfoComp from './OwnWordInfoComp.vue'
@@ -16,6 +15,7 @@ import PlacedWordInfoComp from './PlacedWordInfoComp.vue'
 import PlayersComp from './PlayersComp.vue'
 import ReplaceTilesButtonsComp from './ReplaceTilesButtonsComp.vue'
 import SetJokerLetterComp from './SetJokerLetterComp.vue'
+import ButtonsComp from './ButtonsComp.vue'
 
 const store = useStore()
 const router = useRouter()
@@ -30,15 +30,14 @@ if (store.mode === Mode.NotStarted) {
 <template>
 	<div class="screen">
 		<div class="menu-row">
-			<RouterLink class="button" :to="{ name: 'menu' }" replace
-				><IconComp :icon="listSvg"></IconComp
-			></RouterLink>
+			<RouterLink class="button" :to="{ name: 'menu' }" replace>
+				<IconComp :icon="listSvg"></IconComp>
+			</RouterLink>
 		</div>
 		<BoardComp @setJokerLetter="showSetJokerLetter = true" />
 		<div class="tools">
 			<template v-if="store.mode === Mode.PlaceTile">
 				<PlayersComp />
-
 				<HandComp />
 				<div v-if="store.isBingo" class="bingo">+{{ BINGO_SCORE }} pont!</div>
 				<OwnWordInfoComp />
@@ -50,7 +49,16 @@ if (store.mode === Mode.NotStarted) {
 				<HandComp />
 				<ReplaceTilesButtonsComp />
 			</template>
-			<GameEndedComp v-else-if="store.mode === Mode.Ended" />
+			<template v-else-if="store.mode === Mode.Ended">
+				<div class="result">
+					<template v-if="store.isGameDrawn">Döntetlen!</template>
+					<template v-else>{{ store.winnersNames }} győzött!</template>
+				</div>
+				<PlayersComp />
+				<ButtonsComp>
+					<RouterLink class="button" :to="{ name: 'menu' }">Oké</RouterLink>
+				</ButtonsComp>
+			</template>
 		</div>
 		<SetJokerLetterComp
 			:isOpen="showSetJokerLetter"
@@ -84,5 +92,12 @@ if (store.mode === Mode.NotStarted) {
 	font-size: 1.5rem;
 	color: hotpink;
 	text-align: center;
+}
+
+.result {
+	padding: 6vmin var(--gap);
+	text-align: center;
+	font-size: 6vmin;
+	color: hotpink;
 }
 </style>
