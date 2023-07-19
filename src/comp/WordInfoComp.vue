@@ -67,7 +67,7 @@ async function suggestWord() {
 			}” ${
 				props.isValid
 					? `szó nem szabályos.`
-					: `szót szeretnéd érvényessé tenni a játékban.`
+					: `szót szeretnéd szabályossá tenni a játékban.`
 			}
 
 FONTOS:
@@ -112,23 +112,22 @@ const suggestWordLabel = computed(() => {
 	} else if (suggestWordData.value) {
 		const res = suggestWordData.value
 		if ('valid' in res) {
-			const extra =
-				res.valid === props.isValid ? ' Fellebezésnek helye nincs.' : ''
+			const extra = res.valid === props.isValid ? 'Már elbíráltam: ' : ''
 			if (res.valid) {
-				return 'A szó érvényes!' + extra
+				return extra + 'A szó szabályos!'
 			} else {
-				return 'A szó érvénytelen!' + extra
+				return extra + 'A szó szabálytalan!'
 			}
 		} else if ('alreadySuggested' in res) {
 			return 'Már kérték, rajta vagyok!'
 		} else if ('alreadyRejected' in res) {
-			return 'Már kérték, de sajnos nem érvényes!'
+			return 'Már kérték, de sajnos nem szabályos!'
 		}
 		return 'Sikerült! Egy következő játékban ismét megpróbálhatod.'
 	}
 	return props.isValid
-		? 'Jelzem ezt a szót, mert érvénytelen!'
-		: 'Kérem ezt a szót, mert érvényes!'
+		? 'Jelzem ezt a szót, mert szabálytalan!'
+		: 'Kérem ezt a szót, mert szabályos!'
 })
 
 const suggestWordIcon = computed(() => {
@@ -152,9 +151,9 @@ const suggestWordIcon = computed(() => {
 
 const label = computed(() => {
 	if (props.isValid === true) {
-		return 'Érvényes szó:'
+		return 'Szabályos szó:'
 	} else if (props.isValid === false) {
-		return 'Érvénytelen szó:'
+		return 'Szabálytalan szó:'
 	} else {
 		return 'Szó:'
 	}

@@ -48,10 +48,10 @@ const validity = computed((): IValidAndInvalidWords | null => {
 <template>
 	<div v-if="validity" class="own-word-info">
 		<WordListComp :words="validity.valid" :validity="true" :showScore="true">
-			<template v-slot:label>Érvényes szavak</template>
+			<template v-slot:label>Szabályos szavak</template>
 		</WordListComp>
 		<WordListComp :words="validity.invalid" :validity="false"
-			><template v-slot:label>Érvényetelen szavak</template></WordListComp
+			><template v-slot:label>Szabálytalan szavak</template></WordListComp
 		>
 	</div>
 </template>

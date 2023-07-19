@@ -9,7 +9,7 @@ const store = useStore()
 function errorToString(error: MoveError) {
 	switch (error) {
 		// case MoveError.InvalidWord:
-		// 	return `Van egy érvénytelen szavad!`
+		// 	return `Van egy szabálytalan szavad!`
 		case MoveError.NoConnection:
 			return `Kapcsolódnod kell a meglévő lapkákhoz!`
 		case MoveError.NoDirection:
@@ -19,7 +19,7 @@ function errorToString(error: MoveError) {
 		case MoveError.NoTile:
 			return `Tégy le egy lapkát!`
 		case MoveError.OneTile:
-			return `Egy érvényes szóhoz legalább két lapka kell!`
+			return `Egy szabályos szóhoz legalább két lapka kell!`
 		default:
 			return `[ppy6tx]: ${error}`
 	}
