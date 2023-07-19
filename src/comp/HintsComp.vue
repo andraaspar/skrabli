@@ -44,6 +44,7 @@ async function loadHints() {
 			worker.postMessage({
 				hand: jsonClone(store.hand),
 				board: jsonClone(store.board),
+				boardSize: jsonClone(store.boardSize),
 				words: words,
 			})
 		})
@@ -55,7 +56,7 @@ async function loadHints() {
 	}
 }
 
-watch([isOpen, store.board, store.hand], () => {
+watch([isOpen, store.board, store.boardSize, store.hand], () => {
 	if (isOpen.value) {
 		loadHints()
 	}

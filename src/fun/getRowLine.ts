@@ -1,10 +1,11 @@
-import { BOARD_SIZE } from '../model/Constants'
+import type { IBoardSize } from '@/model/IBoardSize'
 import { type IField } from '../model/IField'
 
 export function getRowLine(
 	board: ReadonlyArray<IField>,
+	boardSize: IBoardSize,
 	lineIndex: number,
 ): IField[] {
-	const firstFieldIndex = lineIndex * BOARD_SIZE
-	return board.slice(firstFieldIndex, firstFieldIndex + BOARD_SIZE)
+	const firstFieldIndex = lineIndex * boardSize.width
+	return board.slice(firstFieldIndex, firstFieldIndex + boardSize.width)
 }

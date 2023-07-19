@@ -31,6 +31,7 @@ it(`[prcsfh]`, () => {
 			wordSlice: { firstIsFixed: false, wordParts: ['a', 'b'] },
 			lineParts: [5, makeIFixedLinePart('b'), 5],
 			hand: [makeTile('x'), makeTile('a')],
+			boardSize: { width: 2, height: 1 },
 		}),
 	).toEqual([
 		withInterface<IWordPlan>({

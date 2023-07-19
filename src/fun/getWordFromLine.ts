@@ -1,4 +1,3 @@
-import { BOARD_SIZE } from '../model/Constants'
 import { type IField } from '../model/IField'
 
 export function getWordFromLine(
@@ -17,7 +16,7 @@ export function getWordFromLine(
 		index--
 	}
 	index = lineIndex + 1
-	while (index < BOARD_SIZE) {
+	while (index < line.length) {
 		const field = line[index]
 		if (!field || !field.tile) break
 		word.push(field)

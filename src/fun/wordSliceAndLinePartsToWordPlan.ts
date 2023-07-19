@@ -1,3 +1,4 @@
+import type { IBoardSize } from '@/model/IBoardSize'
 import type { Direction } from '../model/Direction'
 import type { IWordPlan } from '../model/IWordPlan'
 import type { IWordSlice } from '../model/IWordSlice'
@@ -13,12 +14,14 @@ export function wordSliceAndLinePartsToWordPlan({
 	wordSlice: { firstIsFixed, wordParts },
 	lineParts,
 	hand,
+	boardSize,
 }: {
 	lineIndex: number
 	direction: Direction
 	wordSlice: IWordSlice
 	lineParts: TLineParts
 	hand: THand
+	boardSize: IBoardSize
 }): IWordPlan[] {
 	const firstFixedPart = wordParts[firstIsFixed ? 0 : 1]
 	const wordPlans: IWordPlan[] = []
@@ -49,6 +52,7 @@ export function wordSliceAndLinePartsToWordPlan({
 				firstIsFixed ? linePartStartIndex : linePartStartIndex - 1,
 			),
 			hand,
+			boardSize,
 		})
 		if (wordPlan) {
 			wordPlans.push(wordPlan)

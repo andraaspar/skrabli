@@ -4,6 +4,7 @@ import { getNoError } from '@/fun/getNoError'
 import { getWordScore } from '@/fun/getWordScore'
 import { getWordString } from '@/fun/getWordString'
 import { theOtherDirection } from '@/fun/theOtherDirection'
+import type { IBoardSize } from '@/model/IBoardSize'
 import type { IValidAndInvalidWords } from '@/model/IValidAndInvalidWords'
 import { LocalStorageKey } from '@/model/LocalStorageKey'
 import { MoveError } from '@/model/MoveError'
@@ -34,6 +35,7 @@ export interface IState {
 	players: IPlayer[]
 	playerIndex: number | null
 	board: TBoard
+	boardSize: IBoardSize
 	bag: TBag
 	fieldIndex: number | null
 	handIndex: number | null
@@ -90,6 +92,7 @@ W--l---W---l--W
 					}),
 				),
 			),
+		boardSize: { width: BOARD_SIZE, height: BOARD_SIZE },
 		bag: LETTERS.flatMap(({ count, letter, score }) =>
 			range(count).map(() =>
 				withInterface<ITile>({
@@ -117,11 +120,11 @@ W--l---W---l--W
 						// First field
 						firstFieldIndex = fieldIndex
 						lastFieldIndex = fieldIndex
-						colIndex = getColumnIndex(fieldIndex)
-						rowIndex = getRowIndex(fieldIndex)
+						colIndex = getColumnIndex(fieldIndex, this.boardSize)
+						rowIndex = getRowIndex(fieldIndex, this.boardSize)
 					} else {
-						const newColIndex = getColumnIndex(fieldIndex)
-						const newRowIndex = getRowIndex(fieldIndex)
+						const newColIndex = getColumnIndex(fieldIndex, this.boardSize)
+						const newRowIndex = getRowIndex(fieldIndex, this.boardSize)
 						if (lastFieldIndex === firstFieldIndex) {
 							// Second field
 							if (colIndex === newColIndex) {
@@ -148,11 +151,13 @@ W--l---W---l--W
 			if (firstFieldIndex != null) {
 				const horizontal = getWordAt(
 					this.board,
+					this.boardSize,
 					firstFieldIndex,
 					Direction.Horizontal,
 				)
 				const vertical = getWordAt(
 					this.board,
+					this.boardSize,
 					firstFieldIndex,
 					Direction.Vertical,
 				)
@@ -166,23 +171,26 @@ W--l---W---l--W
 				if (direction === Direction.Horizontal) {
 					firstFieldIndex = Math.min(
 						firstFieldIndex,
-						getRowIndex(firstFieldIndex) * BOARD_SIZE +
+						getRowIndex(firstFieldIndex, this.boardSize) *
+							this.boardSize.width +
 							horizontal.startLineIndex,
 					)
 					lastFieldIndex = Math.max(
 						lastFieldIndex!,
-						getRowIndex(firstFieldIndex) * BOARD_SIZE + horizontal.endLineIndex,
+						getRowIndex(firstFieldIndex, this.boardSize) *
+							this.boardSize.width +
+							horizontal.endLineIndex,
 					)
 				} else if (direction === Direction.Vertical) {
 					firstFieldIndex = Math.min(
 						firstFieldIndex,
-						vertical.startLineIndex * BOARD_SIZE +
-							getColumnIndex(firstFieldIndex),
+						vertical.startLineIndex * this.boardSize.width +
+							getColumnIndex(firstFieldIndex, this.boardSize),
 					)
 					lastFieldIndex = Math.max(
 						lastFieldIndex!,
-						vertical.endLineIndex * BOARD_SIZE +
-							getColumnIndex(firstFieldIndex),
+						vertical.endLineIndex * this.boardSize.width +
+							getColumnIndex(firstFieldIndex, this.boardSize),
 					)
 				}
 			}
@@ -190,7 +198,13 @@ W--l---W---l--W
 				firstFieldIndex != null &&
 				lastFieldIndex != null &&
 				direction != null &&
-				isThereAGap(this.board, firstFieldIndex, lastFieldIndex, direction)
+				isThereAGap(
+					this.board,
+					this.boardSize,
+					firstFieldIndex,
+					lastFieldIndex,
+					direction,
+				)
 			) {
 				direction = null
 			}
@@ -209,17 +223,24 @@ W--l---W---l--W
 				lastFieldIndex != null &&
 				direction != null
 			) {
-				words.push(getWordAt(this.board, firstFieldIndex, direction).word)
+				words.push(
+					getWordAt(this.board, this.boardSize, firstFieldIndex, direction)
+						.word,
+				)
 				let fieldIndex = firstFieldIndex
 				let field = this.board[fieldIndex]
 				while (field && field.tile) {
 					if (field.tile.isOwned) {
 						words.push(
-							getWordAt(this.board, fieldIndex, theOtherDirection(direction))
-								.word,
+							getWordAt(
+								this.board,
+								this.boardSize,
+								fieldIndex,
+								theOtherDirection(direction),
+							).word,
 						)
 					}
-					fieldIndex += getFieldIndexOffset(direction)
+					fieldIndex += getFieldIndexOffset(direction, this.boardSize)
 					if (fieldIndex > lastFieldIndex) break
 					field = this.board[fieldIndex]
 				}
@@ -328,8 +349,18 @@ W--l---W---l--W
 			if (this.fieldIndex == null || !this.tile || this.tile.isOwned)
 				return null
 			const words = [
-				getWordAt(this.board, this.fieldIndex, Direction.Horizontal).word,
-				getWordAt(this.board, this.fieldIndex, Direction.Vertical).word,
+				getWordAt(
+					this.board,
+					this.boardSize,
+					this.fieldIndex,
+					Direction.Horizontal,
+				).word,
+				getWordAt(
+					this.board,
+					this.boardSize,
+					this.fieldIndex,
+					Direction.Vertical,
+				).word,
 			].filter((word) => word.length > 1)
 			return {
 				valid: words,
@@ -512,6 +543,9 @@ W--l---W---l--W
 			)
 			if (savedGame) {
 				console.log(`Game loaded.`)
+				if (!savedGame.boardSize) {
+					savedGame.boardSize = { width: BOARD_SIZE, height: BOARD_SIZE }
+				}
 				this.$patch(savedGame)
 			} else {
 				console.log(`Game could not be loaded.`)

@@ -13,6 +13,7 @@ it(`[prckst]`, () => {
 		getPotentialWordsInLine({
 			words: ['én', 'te', 'ő'],
 			board: [makeField('t'), makeField(null)],
+			boardSize: { width: 2, height: 1 },
 			lineIndex: 0,
 			direction: Direction.Horizontal,
 			hand: [makeTile('e')],
@@ -32,6 +33,7 @@ it(`[prcm7b]`, () => {
 		getPotentialWordsInLine({
 			words: ['én', 'te', 'ő'],
 			board: [makeField(null), makeField('t'), makeField(null)],
+			boardSize: { width: 3, height: 1 },
 			lineIndex: 0,
 			direction: Direction.Horizontal,
 			hand: [makeTile('e')],
@@ -51,6 +53,7 @@ it(`[prcm7i]`, () => {
 		getPotentialWordsInLine({
 			words: ['reggel', 'dél', 'est'],
 			board: [makeField(null), makeField(null), makeField('t')],
+			boardSize: { width: 3, height: 1 },
 			lineIndex: 0,
 			direction: Direction.Horizontal,
 			hand: [makeTile('e'), makeTile('s')],
@@ -74,6 +77,7 @@ it(`[preckt]`, () => {
 				makeField('l'),
 				...range(7).map(() => makeField(null)),
 			],
+			boardSize: { width: 15, height: 1 },
 			lineIndex: 0,
 			direction: Direction.Horizontal,
 			hand: [makeTile('e')],
@@ -91,6 +95,39 @@ it(`[preckt]`, () => {
 			direction: Direction.Horizontal,
 			fieldIndex: 7,
 			tiles: [NaN, 0],
+			score: NaN,
+		}),
+	])
+})
+it(`[ry1jh1]`, () => {
+	expect(
+		getPotentialWordsInLine({
+			words: ['ló', 'ól'],
+			board: [
+				...range(8).map(() => makeField(null)),
+				makeField('l'),
+				makeField(null),
+				makeField('ó'),
+				...range(4).map(() => makeField(null)),
+			],
+			boardSize: { width: 1, height: 15 },
+			lineIndex: 0,
+			direction: Direction.Vertical,
+			hand: 'rámlóge'.split('').map((letter) => makeTile(letter)),
+		}),
+	).toEqual([
+		withInterface<IWordPlan>({
+			word: 'ól',
+			direction: Direction.Vertical,
+			fieldIndex: 7,
+			tiles: [4, NaN],
+			score: NaN,
+		}),
+		withInterface<IWordPlan>({
+			word: 'ól',
+			direction: Direction.Vertical,
+			fieldIndex: 10,
+			tiles: [NaN, 3],
 			score: NaN,
 		}),
 	])

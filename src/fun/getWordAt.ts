@@ -1,3 +1,4 @@
+import type { IBoardSize } from '@/model/IBoardSize'
 import { Direction } from '../model/Direction'
 import { type IField } from '../model/IField'
 import { getColumnIndex } from './getColumnIndex'
@@ -8,16 +9,17 @@ import { getWordFromLine } from './getWordFromLine'
 
 export function getWordAt(
 	board: ReadonlyArray<IField>,
+	boardSize: IBoardSize,
 	fieldIndex: number,
 	direction: Direction,
 ) {
 	return direction === Direction.Horizontal
 		? getWordFromLine(
-				getRowLine(board, getRowIndex(fieldIndex)),
-				getColumnIndex(fieldIndex),
+				getRowLine(board, boardSize, getRowIndex(fieldIndex, boardSize)),
+				getColumnIndex(fieldIndex, boardSize),
 		  )
 		: getWordFromLine(
-				getColumnLine(board, getColumnIndex(fieldIndex)),
-				getRowIndex(fieldIndex),
+				getColumnLine(board, boardSize, getColumnIndex(fieldIndex, boardSize)),
+				getRowIndex(fieldIndex, boardSize),
 		  )
 }

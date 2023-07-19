@@ -1,15 +1,14 @@
-import { BOARD_SIZE } from '../model/Constants'
+import type { IBoardSize } from '@/model/IBoardSize'
 import type { IField } from '../model/IField'
-import { getColumnIndex } from './getColumnIndex'
 
 export function getColumnLine(
 	board: ReadonlyArray<IField>,
-	fieldIndex: number,
+	boardSize: IBoardSize,
+	columnIndex: number,
 ): IField[] {
-	const columnIndex = getColumnIndex(fieldIndex)
 	const column: IField[] = []
-	for (let rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
-		column.push(board[rowIndex * BOARD_SIZE + columnIndex])
+	for (let rowIndex = 0; rowIndex < boardSize.height; rowIndex++) {
+		column.push(board[rowIndex * boardSize.width + columnIndex])
 	}
 	return column
 }

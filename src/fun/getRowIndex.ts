@@ -1,5 +1,5 @@
-import { BOARD_SIZE } from '../model/Constants'
+import type { IBoardSize } from '@/model/IBoardSize'
 
-export function getRowIndex(fieldIndex: number) {
-	return Math.floor(fieldIndex / BOARD_SIZE)
+export function getRowIndex(fieldIndex: number, boardSize: IBoardSize) {
+	return Math.floor(fieldIndex / boardSize.width)
 }

@@ -1,4 +1,4 @@
-import { BOARD_SIZE } from '../model/Constants'
+import type { IBoardSize } from '@/model/IBoardSize'
 import { Direction } from '../model/Direction'
 import type { IWordPlan } from '../model/IWordPlan'
 import type { THand } from '../model/THand'
@@ -13,6 +13,7 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 	wordParts,
 	lineParts,
 	hand: originalHand,
+	boardSize,
 }: {
 	lineIndex: number
 	lineTileIndex: number
@@ -20,6 +21,7 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 	wordParts: ReadonlyArray<string>
 	lineParts: TLineParts
 	hand: THand
+	boardSize: IBoardSize
 }): IWordPlan | null {
 	let hasMissingParts = false
 	const hand = originalHand.slice()
@@ -75,8 +77,8 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 		word,
 		fieldIndex:
 			direction === Direction.Horizontal
-				? lineIndex * BOARD_SIZE + lineTileIndex
-				: lineTileIndex * BOARD_SIZE + lineIndex,
+				? lineIndex * boardSize.width + lineTileIndex
+				: lineTileIndex * boardSize.width + lineIndex,
 		direction,
 		tiles,
 		score: NaN,

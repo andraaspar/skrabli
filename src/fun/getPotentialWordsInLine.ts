@@ -1,3 +1,4 @@
+import type { IBoardSize } from '@/model/IBoardSize'
 import { Direction } from '../model/Direction'
 import type { IWordPlan } from '../model/IWordPlan'
 import type { TBoard } from '../model/TBoard'
@@ -17,17 +18,19 @@ import { wordSliceAndLinePartsToWordPlan } from './wordSliceAndLinePartsToWordPl
 export function getPotentialWordsInLine({
 	words,
 	board,
+	boardSize,
 	lineIndex,
 	direction,
 	hand,
 }: {
 	words: string[]
 	board: TBoard
+	boardSize: IBoardSize
 	lineIndex: number
 	direction: Direction
 	hand: THand
 }): IWordPlan[] {
-	const line = getLine(board, lineIndex, direction)
+	const line = getLine(board, boardSize, lineIndex, direction)
 	if (!line.find((field) => !!field.tile)) return []
 	const lettersInHandRe = getLettersInHandRe(hand)
 	if (!lettersInHandRe) return []
@@ -43,7 +46,7 @@ export function getPotentialWordsInLine({
 	const resTrimmed = reStringsTrimmed.map((s) => new RegExp(s, 'g'))
 	return words
 		.filter((word) => re.test(word))
-		.map((word) => {
+		.flatMap((word) => {
 			const wordSlices = getWordSlices(word, res, resTrimmed)
 			const wordPlans: IWordPlan[] = []
 			for (const wordSlice of wordSlices) {
@@ -53,6 +56,7 @@ export function getPotentialWordsInLine({
 					wordSlice,
 					lineParts,
 					hand,
+					boardSize,
 				})
 				if (newWordPlans.length) {
 					wordPlans.push(...newWordPlans)
@@ -60,19 +64,25 @@ export function getPotentialWordsInLine({
 			}
 			return wordPlans
 		})
-		.reduce((sum, arr) => sum.concat(arr), []) // flatMap not supported until Node 11
 		.filter((wordPlan) => {
-			const boardPlan = wordPlanToBoard(board, hand, wordPlan)
+			const boardPlan = wordPlanToBoard(board, boardSize, hand, wordPlan)
 			for (
 				let fieldIndex = wordPlan.fieldIndex,
 					lastFieldIndex =
 						fieldIndex +
-						wordPlan.tiles.length * getFieldIndexOffset(wordPlan.direction);
+						wordPlan.tiles.length *
+							getFieldIndexOffset(wordPlan.direction, boardSize);
 				fieldIndex < lastFieldIndex;
-				fieldIndex += getFieldIndexOffset(wordPlan.direction)
+				fieldIndex += getFieldIndexOffset(wordPlan.direction, boardSize)
 			) {
+				if (!boardPlan[fieldIndex]?.tile?.isOwned) {
+					// Don't check cross words that the player does not own: avoid issue
+					// with unknown words already on board
+					continue
+				}
 				const word = getWordAt(
 					boardPlan,
+					boardSize,
 					fieldIndex,
 					theOtherDirection(wordPlan.direction),
 				)

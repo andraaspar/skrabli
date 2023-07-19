@@ -1,3 +1,4 @@
+import type { IBoardSize } from '@/model/IBoardSize'
 import type { IWordPlan } from '../model/IWordPlan'
 import type { TBoard } from '../model/TBoard'
 import type { THand } from '../model/THand'
@@ -5,6 +6,7 @@ import { getFieldIndexOffset } from './getNextFieldIndex'
 
 export function wordPlanToBoard(
 	board: TBoard,
+	boardSize: IBoardSize,
 	hand: THand,
 	wordPlan: IWordPlan,
 ): TBoard {
@@ -17,7 +19,7 @@ export function wordPlanToBoard(
 		if (tile) {
 			const fieldIndex =
 				wordPlan.fieldIndex +
-				tileIndex * getFieldIndexOffset(wordPlan.direction)
+				tileIndex * getFieldIndexOffset(wordPlan.direction, boardSize)
 			boardDraft[fieldIndex].tile = tile
 		}
 	}

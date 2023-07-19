@@ -32,6 +32,7 @@ it(`[pr5327]`, () => {
 			wordParts: ['a', 'b', 'cd'],
 			lineParts: [1, makeIFixedLinePart('b'), 2],
 			hand: [makeTile('a'), makeTile('c'), makeTile('d')],
+			boardSize: { width: 4, height: 1 },
 		}),
 	).toEqual(
 		withInterface<IWordPlan>({
