@@ -41,7 +41,7 @@ function errorToString(error: MoveError) {
 	padding: var(--gap);
 	gap: var(--gap);
 	text-align: center;
-	color: #fa6;
+	color: #f70;
 	font-weight: bold;
 }
 </style>

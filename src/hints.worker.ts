@@ -5,6 +5,10 @@ import type { IWordPlans } from './model/IWordPlans'
 import type { TBoard } from './model/TBoard'
 import type { THand } from './model/THand'
 
+self.addEventListener('unhandledrejection', (event) => {
+	throw event.reason
+})
+
 self.onmessage = async (event) => {
 	const { board, boardSize, hand, words } = event.data as {
 		board: TBoard

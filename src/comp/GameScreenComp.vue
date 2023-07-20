@@ -16,6 +16,7 @@ import PlayersComp from './PlayersComp.vue'
 import ReplaceTilesButtonsComp from './ReplaceTilesButtonsComp.vue'
 import SetJokerLetterComp from './SetJokerLetterComp.vue'
 import ButtonsComp from './ButtonsComp.vue'
+import logoSvg from '../asset/logo.svg?raw'
 
 const store = useStore()
 const router = useRouter()
@@ -30,6 +31,7 @@ if (store.mode === Mode.NotStarted) {
 <template>
 	<div class="screen">
 		<div class="menu-row">
+			<IconComp :icon="logoSvg" class="logo" />
 			<RouterLink class="button" :to="{ name: 'menu' }" replace>
 				<IconComp :icon="listSvg"></IconComp>
 			</RouterLink>
@@ -68,13 +70,19 @@ if (store.mode === Mode.NotStarted) {
 </template>
 
 <style scoped>
+.logo {
+	width: 6vmin;
+	height: 6vmin;
+	transform: rotate(15deg);
+}
 .menu-row {
 	display: flex;
 	flex-flow: row wrap;
 	padding: var(--gap);
 	gap: var(--gap);
 	height: fit-content;
-	justify-content: flex-end;
+	align-items: center;
+	justify-content: space-between;
 }
 
 @media (aspect-ratio: 4 / 3) {

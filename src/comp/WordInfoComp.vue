@@ -107,8 +107,6 @@ const {
 const suggestWordLabel = computed(() => {
 	if (suggestWordIsLoading.value) {
 		return ''
-	} else if (suggestWordError.value) {
-		return 'Hiba!'
 	} else if (suggestWordData.value) {
 		const res = suggestWordData.value
 		if ('valid' in res) {
@@ -133,8 +131,6 @@ const suggestWordLabel = computed(() => {
 const suggestWordIcon = computed(() => {
 	if (suggestWordIsLoading.value) {
 		return loadingIcon
-	} else if (suggestWordError.value) {
-		return errorIcon
 	} else if (suggestWordData.value) {
 		const res = suggestWordData.value
 		if ('valid' in res) {
@@ -210,28 +206,31 @@ const label = computed(() => {
 				>MTA</a
 			>
 		</ButtonsComp>
-		<ErrorComp :error="suggestWordError" />
-		<ErrorComp :error="loadAllWordsValidityError" />
-		<ButtonsComp v-if="props.isValid != null">
-			<button
-				@click="suggestWord"
-				:disabled="!!suggestWordData || suggestWordIsLoading"
-			>
-				<IconComp :icon="suggestWordIcon" /> {{ suggestWordLabel }}
-			</button>
-			<button
-				v-if="
-					suggestWordData &&
-					'valid' in suggestWordData &&
-					suggestWordData.valid !== props.isValid
-				"
-				:disabled="loadAllWordsValidityIsLoading"
-				@click="loadAllWordsValidity"
-			>
-				<IconComp :icon="loadAllWordsValidityIcon" />
-				{{ loadAllWordsValidityLabel }}
-			</button>
-		</ButtonsComp>
+		<div class="errors-buttons">
+			<ErrorComp :error="suggestWordError" />
+			<ErrorComp :error="loadAllWordsValidityError" />
+			<ButtonsComp v-if="props.isValid != null">
+				<button
+					@click="suggestWord"
+					:disabled="!!suggestWordData || suggestWordIsLoading"
+				>
+					<IconComp :icon="suggestWordIcon" color="#f89" />
+					{{ suggestWordLabel }}
+				</button>
+				<button
+					v-if="
+						suggestWordData &&
+						'valid' in suggestWordData &&
+						suggestWordData.valid !== props.isValid
+					"
+					:disabled="loadAllWordsValidityIsLoading"
+					@click="loadAllWordsValidity"
+				>
+					<IconComp :icon="loadAllWordsValidityIcon" />
+					{{ loadAllWordsValidityLabel }}
+				</button>
+			</ButtonsComp>
+		</div>
 		<ButtonsComp>
 			<button @click="$emit('close')">
 				<IconComp :icon="closeIcon" /> Zárd be
@@ -249,5 +248,10 @@ const label = computed(() => {
 .valid-word {
 	font-weight: bold;
 	color: lightgreen;
+}
+
+.errors-buttons {
+	display: flex;
+	flex-flow: column;
 }
 </style>

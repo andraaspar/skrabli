@@ -10,6 +10,7 @@ import stopwatchIcon from 'bootstrap-icons/icons/stopwatch.svg?raw'
 import { computed, ref, watch } from 'vue'
 import DialogComp from './DialogComp.vue'
 import IconComp from './IconComp.vue'
+import ErrorComp from './ErrorComp.vue'
 
 const props = defineProps<{ isOpen: boolean }>()
 const isOpen = computed(() => props.isOpen)
@@ -20,6 +21,7 @@ const store = useStore()
 
 let worker: Worker | null = null
 const hints = ref<IWordPlans | null>(null)
+const hintsError = ref<string | null>(null)
 const hintsTexts = computed(() => {
 	if (hints.value == null) return { horizontal: '', vertical: '' }
 	return {
@@ -31,6 +33,7 @@ const hintsTexts = computed(() => {
 async function loadHints() {
 	try {
 		const words = await getKnownWords()
+		hintsError.value = null
 		hints.value = await new Promise<IWordPlans>((resolve, reject) => {
 			hints.value = null
 			if (worker) worker.terminate()
@@ -39,7 +42,7 @@ async function loadHints() {
 				resolve(event.data)
 			})
 			worker.addEventListener('error', (event) => {
-				reject(event)
+				reject(event.message)
 			})
 			worker.postMessage({
 				hand: jsonClone(store.hand),
@@ -50,6 +53,7 @@ async function loadHints() {
 		})
 	} catch (e) {
 		console.error(`[rx9sem]`, e)
+		hintsError.value = e + ''
 	} finally {
 		worker?.terminate()
 		worker = null
@@ -66,7 +70,8 @@ watch([isOpen, store.board, store.boardSize, store.hand], () => {
 <template>
 	<DialogComp :isOpen="isOpen">
 		<div class="results">
-			<IconComp v-if="hints == null" :icon="stopwatchIcon"></IconComp>
+			<ErrorComp v-if="!!hintsError" :error="hintsError" />
+			<IconComp v-else-if="hints == null" :icon="stopwatchIcon"></IconComp>
 			<template v-else>
 				<div class="result">
 					<div class="title">

@@ -11,6 +11,7 @@ import { getNoError } from '@/fun/getNoError'
 import { LocalStorageKey } from '@/model/LocalStorageKey'
 import ErrorComp from './ErrorComp.vue'
 import { ref } from 'vue'
+import logoSvg from '../asset/logo.svg?raw'
 
 const store = useStore()
 const router = useRouter()
@@ -52,34 +53,51 @@ const {
 <template>
 	<div class="screen">
 		<div class="menu">
-			<button
-				v-if="store.mode !== Mode.NotStarted || savedGameExists()"
-				@click="continueGame"
-			>
-				<IconComp :icon="playIcon" color="#0bd" /> Folytatás
-			</button>
-			<button @click="startNewGame">
-				<IconComp :icon="starIcon" color="#fc0" /> Új játék
-			</button>
-			<ErrorComp :error="loadAllWordsValidityError" />
-			<button
-				v-if="allWordsValidityUpdated < Date.now() - 1000 * 60 * 60 * 24 * 30"
-				@click="loadAllWordsValidity"
-				:disabled="loadAllWordsValidityIsLoading"
-			>
-				<IconComp :icon="loadAllWordsValidityIcon" />
-				{{ loadAllWordsValidityLabel }}
-			</button>
+			<IconComp :icon="logoSvg" class="logo" />
+			<div class="menu-buttons">
+				<button
+					v-if="store.mode !== Mode.NotStarted || savedGameExists()"
+					@click="continueGame"
+				>
+					<IconComp :icon="playIcon" color="#0bd" /> Folytatás
+				</button>
+				<button @click="startNewGame">
+					<IconComp :icon="starIcon" color="#fc0" /> Új játék
+				</button>
+			</div>
+			<div class="menu-buttons">
+				<ErrorComp :error="loadAllWordsValidityError" />
+				<button
+					v-if="allWordsValidityUpdated < Date.now() - 1000 * 60 * 60 * 24 * 30"
+					@click="loadAllWordsValidity"
+					:disabled="loadAllWordsValidityIsLoading"
+				>
+					<IconComp :icon="loadAllWordsValidityIcon" />
+					{{ loadAllWordsValidityLabel }}
+				</button>
+			</div>
 		</div>
 	</div>
 </template>
 
 <style scoped>
+.logo {
+	width: 16vmin;
+	height: 16vmin;
+	margin: 0 auto;
+	transform: rotate(15deg) translateY(-4vmin);
+}
 .menu {
+	display: flex;
+	flex-flow: column;
+	padding: 8vmin;
+	gap: 4vmin;
+	margin: auto;
+}
+.menu-buttons {
 	display: flex;
 	flex-flow: column;
 	padding: var(--gap);
 	gap: var(--gap);
-	margin: auto;
 }
 </style>

@@ -3,7 +3,7 @@ dialog[open] {
 	flex-flow: column;
 	overflow: auto;
 	padding: 8vmin;
-	gap: 8vmin;
+	gap: 4vmin;
 	background-color: #444;
 	color: white;
 	border: 1px solid white;
