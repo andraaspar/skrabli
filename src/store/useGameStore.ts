@@ -21,7 +21,7 @@ import { getHandTileCount } from '../fun/getHandTileCount'
 import { getWordAt } from '../fun/getWordAt'
 import { range } from '../fun/range'
 import { withInterface } from '../fun/withInterface'
-import { BOARD_SIZE } from '../model/Constants'
+import { BOARD_SIZE, HAND_SIZE } from '../model/Constants'
 import { Direction } from '../model/Direction'
 import { FieldKind } from '../model/FieldKind'
 import type { IField } from '../model/IField'
@@ -53,14 +53,14 @@ export const useGameStore = defineStore('game', {
 			states: [
 				{
 					mode: Mode.NotStarted,
-					playerScores: [0, 0],
-					hands: range(2).map(() => range(7).map(() => null)),
+					playerScores: playerInfos.map(() => 0),
+					hands: playerInfos.map(() => range(HAND_SIZE).map(() => null)),
 					playerIndex: null,
 					fieldIndex: null,
 					handIndex: null,
 					startingHandCount: null,
 					skipCount: null,
-					handIndicesToReplace: range(7).map(() => false),
+					handIndicesToReplace: range(HAND_SIZE).map(() => false),
 					board: `
 W--l---W---l--W
 -w---L---L---w-
