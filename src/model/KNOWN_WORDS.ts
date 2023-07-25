@@ -799,8 +799,6 @@ export const KNOWN_WORDS = [
 	'alárendelő',
 	'alárendelt',
 	'alárendeltség',
-	'alarm',
-	'alarmíroz',
 	'alássan',
 	'alászáll',
 	'alászánt',

@@ -38,7 +38,8 @@ it(`[prcsfh]`, () => {
 			word: 'ab',
 			direction: Direction.Horizontal,
 			fieldIndex: 4,
-			tiles: [1, NaN],
+			handIndices: [1, NaN],
+			jokerLetters: [null, null],
 			score: NaN,
 		}),
 	])

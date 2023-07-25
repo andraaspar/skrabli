@@ -12,6 +12,7 @@ import { getWordSlices } from './getWordSlices'
 import { getWordString } from './getWordString'
 import { linePartsToRegExpStrings } from './linePartsToRegExpStrings'
 import { theOtherDirection } from './theOtherDirection'
+import { wordPlanIncludesFieldIndex } from './wordPlanIncludesFieldIndex'
 import { wordPlanToBoard } from './wordPlanToBoard'
 import { wordSliceAndLinePartsToWordPlan } from './wordSliceAndLinePartsToWordPlan'
 
@@ -22,6 +23,7 @@ export function getPotentialWordsInLine({
 	lineIndex,
 	direction,
 	hand,
+	pinnedFieldIndex,
 }: {
 	words: string[]
 	board: TBoard
@@ -29,6 +31,7 @@ export function getPotentialWordsInLine({
 	lineIndex: number
 	direction: Direction
 	hand: THand
+	pinnedFieldIndex?: number
 }): IWordPlan[] {
 	const line = getLine(board, boardSize, lineIndex, direction)
 	if (!line.find((field) => !!field.tile)) return []
@@ -65,12 +68,19 @@ export function getPotentialWordsInLine({
 			return wordPlans
 		})
 		.filter((wordPlan) => {
+			if (pinnedFieldIndex != null) {
+				if (
+					!wordPlanIncludesFieldIndex(wordPlan, pinnedFieldIndex, boardSize)
+				) {
+					return false
+				}
+			}
 			const boardPlan = wordPlanToBoard(board, boardSize, hand, wordPlan)
 			for (
 				let fieldIndex = wordPlan.fieldIndex,
 					lastFieldIndex =
 						fieldIndex +
-						wordPlan.tiles.length *
+						wordPlan.handIndices.length *
 							getFieldIndexOffset(wordPlan.direction, boardSize);
 				fieldIndex < lastFieldIndex;
 				fieldIndex += getFieldIndexOffset(wordPlan.direction, boardSize)

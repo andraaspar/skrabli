@@ -4,6 +4,7 @@ import { getWordString } from '@/fun/getWordString'
 import type { IField } from '@/model/IField'
 import { computed, ref } from 'vue'
 import WordInfoComp from './WordInfoComp.vue'
+import ButtonsComp from './ButtonsComp.vue'
 
 const props = withDefaults(
 	defineProps<{
@@ -28,7 +29,7 @@ const openWordIndex = ref(-1)
 		<div v-if="$slots.label" class="label">
 			<slot name="label"></slot>
 		</div>
-		<div class="words">
+		<ButtonsComp>
 			<button
 				v-for="(word, index) of words"
 				:key="index"
@@ -47,7 +48,7 @@ const openWordIndex = ref(-1)
 					></template
 				>
 			</button>
-		</div>
+		</ButtonsComp>
 		<WordInfoComp
 			:word="wordStrings[openWordIndex]"
 			:isValid="props.validity"

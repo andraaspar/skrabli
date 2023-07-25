@@ -1,0 +1,1297 @@
+{
+	"bag": [
+		{
+			"letter": "a",
+			"score": 1
+		},
+		{
+			"letter": "a",
+			"score": 1
+		},
+		{
+			"letter": "a",
+			"score": 1
+		},
+		{
+			"letter": "á",
+			"score": 1
+		},
+		{
+			"letter": "á",
+			"score": 1
+		},
+		{
+			"letter": "b",
+			"score": 2
+		},
+		{
+			"letter": "b",
+			"score": 2
+		},
+		{
+			"letter": "d",
+			"score": 2
+		},
+		{
+			"letter": "e",
+			"score": 1
+		},
+		{
+			"letter": "g",
+			"score": 2
+		},
+		{
+			"letter": "gy",
+			"score": 4
+		},
+		{
+			"letter": "h",
+			"score": 3
+		},
+		{
+			"letter": "i",
+			"score": 1
+		},
+		{
+			"letter": "j",
+			"score": 4
+		},
+		{
+			"letter": "k",
+			"score": 1
+		},
+		{
+			"letter": "k",
+			"score": 1
+		},
+		{
+			"letter": "k",
+			"score": 1
+		},
+		{
+			"letter": "k",
+			"score": 1
+		},
+		{
+			"letter": "ny",
+			"score": 5
+		},
+		{
+			"letter": "o",
+			"score": 1
+		},
+		{
+			"letter": "ó",
+			"score": 2
+		},
+		{
+			"letter": "ö",
+			"score": 4
+		},
+		{
+			"letter": "r",
+			"score": 1
+		},
+		{
+			"letter": "s",
+			"score": 1
+		},
+		{
+			"letter": "t",
+			"score": 1
+		},
+		{
+			"letter": "ú",
+			"score": 7
+		},
+		{
+			"letter": "ü",
+			"score": 4
+		},
+		{
+			"letter": "ű",
+			"score": 7
+		}
+	],
+	"board": [
+		{
+			"kind": "W",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "W",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "W",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "w",
+			"tile": {
+				"letter": "h",
+				"score": 3
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "L",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "L",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "w",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "cs",
+				"score": 7
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "í",
+				"score": 5
+			}
+		},
+		{
+			"kind": "w",
+			"tile": {
+				"letter": "n",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "f",
+				"score": 4
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "w",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": {
+				"letter": "o",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "w",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"isJoker": true,
+				"letter": "i",
+				"score": 0
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "d",
+				"score": 2
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "ü",
+				"score": 4
+			}
+		},
+		{
+			"kind": "w",
+			"tile": {
+				"letter": "l",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "t",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "m",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "w",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "w",
+			"tile": {
+				"letter": "r",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "ó",
+				"score": 2
+			}
+		},
+		{
+			"kind": "L",
+			"tile": {
+				"letter": "v",
+				"score": 3
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "t",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "o",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "k",
+				"score": 1
+			}
+		},
+		{
+			"kind": "L",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "L",
+			"tile": {
+				"letter": "á",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "t",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "L",
+			"tile": {
+				"isLast": true,
+				"letter": "f",
+				"score": 4
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "s",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "ö",
+				"score": 4
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "g",
+				"score": 2
+			}
+		},
+		{
+			"kind": "l",
+			"tile": {
+				"letter": "é",
+				"score": 3
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "l",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"isLast": true,
+				"letter": "é",
+				"score": 3
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "W",
+			"tile": {
+				"letter": "t",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "gy",
+				"score": 4
+			}
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "v",
+				"score": 3
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "s",
+			"tile": {
+				"letter": "e",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "m",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"isLast": true,
+				"letter": "l",
+				"score": 1
+			}
+		},
+		{
+			"kind": "W",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": {
+				"letter": "e",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "l",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "i",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "z",
+				"score": 4
+			}
+		},
+		{
+			"kind": "l",
+			"tile": {
+				"letter": "e",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "g",
+				"score": 2
+			}
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "a",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"isJoker": true,
+				"letter": "z",
+				"score": 0
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"isLast": true,
+				"letter": "n",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "L",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "s",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "L",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "L",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "á",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "r",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "L",
+			"tile": {
+				"isLast": true,
+				"letter": "a",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "e",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "w",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "w",
+			"tile": {
+				"letter": "p",
+				"score": 4
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "i",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "m",
+				"score": 1
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "p",
+				"score": 4
+			}
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "ó",
+				"score": 2
+			}
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "n",
+				"score": 1
+			}
+		},
+		{
+			"kind": "w",
+			"tile": {
+				"letter": "ő",
+				"score": 7
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "w",
+			"tile": {
+				"letter": "zs",
+				"score": 8
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "w",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "sz",
+				"score": 3
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "e",
+				"score": 1
+			}
+		},
+		{
+			"kind": "w",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "w",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "L",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "L",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": {
+				"letter": "d",
+				"score": 2
+			}
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "w",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "W",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "W",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "l",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "-",
+			"tile": null
+		},
+		{
+			"kind": "W",
+			"tile": null
+		}
+	],
+	"boardSize": {
+		"height": 15,
+		"width": 15
+	},
+	"fieldIndex": null,
+	"handIndex": null,
+	"handIndicesToReplace": [false, false, false, false, false, false, false],
+	"hands": [
+		[
+			{
+				"isOwned": true,
+				"letter": "z",
+				"score": 4
+			},
+			{
+				"isOwned": true,
+				"letter": "c",
+				"score": 5
+			},
+			{
+				"isOwned": true,
+				"letter": "k",
+				"score": 1
+			},
+			{
+				"isOwned": true,
+				"letter": "ty",
+				"score": 10
+			},
+			{
+				"isOwned": true,
+				"letter": "j",
+				"score": 4
+			},
+			{
+				"isOwned": true,
+				"letter": "é",
+				"score": 3
+			},
+			{
+				"isOwned": true,
+				"letter": "u",
+				"score": 4
+			}
+		],
+		[
+			{
+				"isOwned": true,
+				"letter": "r",
+				"score": 1
+			},
+			{
+				"isOwned": true,
+				"letter": "ly",
+				"score": 8
+			},
+			{
+				"isOwned": true,
+				"letter": "sz",
+				"score": 3
+			},
+			{
+				"isOwned": true,
+				"letter": "a",
+				"score": 1
+			},
+			{
+				"isOwned": true,
+				"letter": "b",
+				"score": 2
+			},
+			{
+				"isOwned": true,
+				"letter": "u",
+				"score": 4
+			},
+			{
+				"isOwned": true,
+				"letter": "n",
+				"score": 1
+			}
+		]
+	],
+	"mode": "PlaceTile",
+	"playerBonuses": null,
+	"playerIndex": 0,
+	"players": [
+		{
+			"name": "Hey",
+			"score": 190
+		},
+		{
+			"name": "Ho",
+			"score": 119
+		}
+	],
+	"skipCount": 0,
+	"startingHandCount": 7
+}

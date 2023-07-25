@@ -3,7 +3,8 @@ import { Direction } from '../model/Direction'
 import type { IWordPlan } from '../model/IWordPlan'
 import type { THand } from '../model/THand'
 import type { TLineParts } from '../model/TLineParts'
-import { getHandIndicesForWord } from './getHandIndicesForWord'
+import { getLineFieldIndex } from './getLineFieldIndex'
+import { getPlacementInfo } from './getPlacementInfo'
 import { isNumber } from './isNumber'
 
 export function wordSliceAndLinePartsToWordPlanInternal({
@@ -26,18 +27,19 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 	let hasMissingParts = false
 	const hand = originalHand.slice()
 	const wordPartsEnd = wordParts.length - 1
-	const tiles: number[] = []
+	const handIndices: number[] = []
+	const jokerLetters: (string | null)[] = []
 	const word = wordParts.join('')
-	// if (word === 'aggkor') {
-	// 	console.log('.')
-	// }
 	for (const [index, wordPart] of wordParts.entries()) {
 		const linePart = lineParts[index]
 		if (isNumber(linePart)) {
 			hasMissingParts = true
 			let handIndicesForWord: number[]
+			let jokerLettersForWord: (string | null)[]
 			try {
-				handIndicesForWord = getHandIndicesForWord(wordPart, hand)
+				const placementInfo = getPlacementInfo(wordPart, hand)
+				handIndicesForWord = placementInfo.handIndices
+				jokerLettersForWord = placementInfo.jokerLetters
 			} catch (e) {
 				if (/pr6o04|pr8z2l/.test(e + '')) {
 					return null
@@ -57,7 +59,8 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 			if (index === 0) {
 				lineTileIndex += linePart - handIndicesForWord.length
 			}
-			tiles.push(...handIndicesForWord)
+			handIndices.push(...handIndicesForWord)
+			jokerLetters.push(...jokerLettersForWord)
 			handIndicesForWord.forEach((index) => (hand[index] = null))
 		} else {
 			if (wordPart !== linePart.text) {
@@ -66,7 +69,8 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 				)
 			}
 			for (let i = 0; i < linePart.fieldCount; i++) {
-				tiles.push(NaN)
+				handIndices.push(NaN)
+				jokerLetters.push(null)
 			}
 		}
 	}
@@ -75,12 +79,15 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 	}
 	return {
 		word,
-		fieldIndex:
-			direction === Direction.Horizontal
-				? lineIndex * boardSize.width + lineTileIndex
-				: lineTileIndex * boardSize.width + lineIndex,
+		fieldIndex: getLineFieldIndex(
+			boardSize,
+			direction,
+			lineIndex,
+			lineTileIndex,
+		),
 		direction,
-		tiles,
+		handIndices,
+		jokerLetters,
 		score: NaN,
 	}
 }

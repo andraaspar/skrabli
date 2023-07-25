@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { MoveError } from '@/model/MoveError'
-import { useStore } from '@/store/useStore'
+import { useGameStore } from '@/store/useGameStore'
 import IconComp from './IconComp.vue'
 import errorIcon from 'bootstrap-icons/icons/exclamation-triangle-fill.svg?raw'
 
-const store = useStore()
+const gameStore = useGameStore()
 
 function errorToString(error: MoveError) {
 	switch (error) {
@@ -27,8 +27,8 @@ function errorToString(error: MoveError) {
 </script>
 
 <template>
-	<div v-if="store.moveErrors.length > 0" class="errors">
-		<div v-for="(error, index) of store.moveErrors" :key="index">
+	<div v-if="gameStore.moveErrors.length > 0" class="errors">
+		<div v-for="(error, index) of gameStore.moveErrors" :key="index">
 			<IconComp :icon="errorIcon" color="#f70" /> {{ errorToString(error) }}
 		</div>
 	</div>

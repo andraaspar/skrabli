@@ -4,19 +4,19 @@ import { loadWordsValidity } from '@/fun/loadWordsValidity'
 import type { IField } from '@/model/IField'
 import type { IValidAndInvalidWords } from '@/model/IValidAndInvalidWords'
 import { QueryKey } from '@/model/QueryKey'
-import { useStore } from '@/store/useStore'
+import { useGameStore } from '@/store/useGameStore'
 import { useQuery } from '@tanstack/vue-query'
 import { computed } from 'vue'
 import WordListComp from './WordListComp.vue'
 
-const store = useStore()
+const gameStore = useGameStore()
 
 const queryKey = computed(() => [
 	QueryKey.AreWordsValid,
-	store.allOwnedWordStrings,
+	gameStore.allOwnedWordStrings,
 ])
 function queryFn() {
-	return loadWordsValidity(store.allOwnedWordStrings)
+	return loadWordsValidity(gameStore.allOwnedWordStrings)
 }
 const { data: response } = useQuery({
 	queryKey: queryKey,
@@ -27,7 +27,7 @@ const validity = computed((): IValidAndInvalidWords | null => {
 	if (!response.value) return null
 	const valid: IField[][] = []
 	const invalid: IField[][] = []
-	for (let word of store.allOwnedWords) {
+	for (let word of gameStore.allOwnedWords) {
 		if (response.value.validWords.includes(getWordString(word))) {
 			valid.push(word)
 		} else {

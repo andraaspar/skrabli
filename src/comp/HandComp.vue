@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import { useStore } from '@/store/useStore'
+import { useGameStore } from '@/store/useGameStore'
 import TileComp from './TileComp.vue'
 
-const store = useStore()
+const gameStore = useGameStore()
 </script>
 <template>
-	<div v-if="store.playerIndex != null" class="hand">
+	<div v-if="gameStore.state.playerIndex != null" class="hand">
 		<div
-			v-for="(tile, tileIndex) of store.hands[store.playerIndex]"
+			v-for="(tile, tileIndex) of gameStore.state.hands[
+				gameStore.state.playerIndex
+			]"
 			:key="tileIndex"
 			:class="{
 				'hand-slot': true,
-				'is-selected': tileIndex === store.handIndex,
-				'is-to-be-replaced': store.handIndicesToReplace[tileIndex],
+				'is-selected': tileIndex === gameStore.state.handIndex,
+				'is-to-be-replaced': gameStore.state.handIndicesToReplace[tileIndex],
 			}"
-			@click="store.selectHand(tileIndex)"
+			@click="gameStore.selectHand(tileIndex)"
 		>
 			<TileComp v-if="tile" :tile="tile" :neverOwned="true" />
 		</div>

@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { useStore } from '@/store/useStore'
+import { useGameStore } from '@/store/useGameStore'
 import WordListComp from './WordListComp.vue'
 
-const store = useStore()
+const gameStore = useGameStore()
 </script>
 
 <template>
-	<div v-if="!!store.placedValidAndInvalidWords" className="placed-word-info">
-		<WordListComp :words="store.placedValidAndInvalidWords.valid"
+	<div
+		v-if="!!gameStore.placedValidAndInvalidWords"
+		className="placed-word-info"
+	>
+		<WordListComp :words="gameStore.placedValidAndInvalidWords.valid"
 			><template v-slot:label>Szavak a választott mezőn</template></WordListComp
 		>
 	</div>

@@ -39,7 +39,31 @@ it(`[pr5327]`, () => {
 			word: 'abcd',
 			fieldIndex: 0,
 			direction: Direction.Horizontal,
-			tiles: [0, NaN, 1, 2],
+			handIndices: [0, NaN, 1, 2],
+			jokerLetters: [null, null, null, null],
+			score: NaN,
+		}),
+	)
+})
+
+it(`[ryb644]`, () => {
+	expect(
+		wordSliceAndLinePartsToWordPlanInternal({
+			lineIndex: 0,
+			lineTileIndex: 0,
+			direction: Direction.Horizontal,
+			wordParts: ['a', 'b', 'cd'],
+			lineParts: [makeIFixedLinePart('a'), 1, makeIFixedLinePart('cd')],
+			hand: [makeTile('a'), makeTile('b'), makeTile('c')],
+			boardSize: { width: 4, height: 1 },
+		}),
+	).toEqual(
+		withInterface<IWordPlan>({
+			word: 'abcd',
+			fieldIndex: 0,
+			direction: Direction.Horizontal,
+			handIndices: [NaN, 1, NaN, NaN],
+			jokerLetters: [null, null, null, null],
 			score: NaN,
 		}),
 	)

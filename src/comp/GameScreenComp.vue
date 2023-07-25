@@ -4,7 +4,7 @@ import listSvg from 'bootstrap-icons/icons/list.svg?raw'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Mode } from '../model/Mode'
-import { useStore } from '../store/useStore'
+import { useGameStore } from '../store/useGameStore'
 import BoardComp from './BoardComp.vue'
 import ErrorsComp from './ErrorsComp.vue'
 import HandComp from './HandComp.vue'
@@ -17,13 +17,24 @@ import ReplaceTilesButtonsComp from './ReplaceTilesButtonsComp.vue'
 import SetJokerLetterComp from './SetJokerLetterComp.vue'
 import ButtonsComp from './ButtonsComp.vue'
 import logoSvg from '../asset/logo.svg?raw'
+import { deleteGameFromDb } from '@/fun/deleteGameFromDb'
+import { useUiStore } from '@/store/useUiStore'
 
-const store = useStore()
+const gameStore = useGameStore()
+const uiStore = useUiStore()
 const router = useRouter()
 
 const showSetJokerLetter = ref(false)
 
-if (store.mode === Mode.NotStarted) {
+if (gameStore.state.mode === Mode.NotStarted) {
+	router.replace({ name: 'menu' })
+}
+
+async function endGame() {
+	await uiStore.lockWhile(async () => {
+		deleteGameFromDb(gameStore.id)
+	})
+	gameStore.newGame()
 	router.replace({ name: 'menu' })
 }
 </script>
@@ -38,27 +49,28 @@ if (store.mode === Mode.NotStarted) {
 		</div>
 		<BoardComp @setJokerLetter="showSetJokerLetter = true" />
 		<div class="tools">
-			<template v-if="store.mode === Mode.PlaceTile">
-				<PlayersComp />
+			<PlayersComp />
+			<template v-if="gameStore.state.mode === Mode.PlaceTile">
 				<HandComp />
-				<div v-if="store.isBingo" class="bingo">+{{ BINGO_SCORE }} pont!</div>
+				<div v-if="gameStore.isBingo" class="bingo">
+					+{{ BINGO_SCORE }} pont!
+				</div>
 				<OwnWordInfoComp />
 				<ErrorsComp />
 				<PlaceTileButtonsComp @setJokerLetter="showSetJokerLetter = true" />
 				<PlacedWordInfoComp />
 			</template>
-			<template v-else-if="store.mode === Mode.ReplaceTiles">
+			<template v-else-if="gameStore.state.mode === Mode.ReplaceTiles">
 				<HandComp />
 				<ReplaceTilesButtonsComp />
 			</template>
-			<template v-else-if="store.mode === Mode.Ended">
+			<template v-else-if="gameStore.state.mode === Mode.Ended">
 				<div class="result">
-					<template v-if="store.isGameDrawn">Döntetlen!</template>
-					<template v-else>{{ store.winnersNames }} győzött!</template>
+					<template v-if="gameStore.isGameDrawn">Döntetlen!</template>
+					<template v-else>{{ gameStore.winnersNames }} győzött!</template>
 				</div>
-				<PlayersComp />
 				<ButtonsComp>
-					<RouterLink class="button" :to="{ name: 'menu' }">Oké</RouterLink>
+					<button @click="endGame">Oké</button>
 				</ButtonsComp>
 			</template>
 		</div>

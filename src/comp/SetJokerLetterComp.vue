@@ -2,18 +2,18 @@
 import { computed } from 'vue'
 import DialogComp from './DialogComp.vue'
 import { LETTERS } from '@/model/LETTERS'
-import { useStore } from '@/store/useStore'
+import { useGameStore } from '@/store/useGameStore'
 
 const props = defineProps<{ isOpen: boolean }>()
 const isOpen = computed(() => props.isOpen)
 
 const emit = defineEmits(['close'])
 
-const store = useStore()
+const gameStore = useGameStore()
 
 function onLetterClicked(letterIndex: number) {
 	const letter = LETTERS[letterIndex]
-	store.setJokerLetter(letter.letter)
+	gameStore.setJokerLetter(letter.letter)
 	emit('close')
 }
 </script>
@@ -36,7 +36,7 @@ function onLetterClicked(letterIndex: number) {
 <style scoped>
 .options {
 	display: grid;
-	grid-template-columns: repeat(5, 10vmin);
+	grid-template-columns: repeat(5, 12vmin);
 	grid-gap: var(--gap);
 }
 .option {
@@ -44,6 +44,8 @@ function onLetterClicked(letterIndex: number) {
 	align-items: center;
 	justify-content: center;
 	text-align: center;
-	font-size: 4vmin;
+	font-family: serif;
+	font-style: italic;
+	font-size: 6vmin;
 }
 </style>

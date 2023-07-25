@@ -1,26 +1,28 @@
 <script setup lang="ts">
 import { numberToSignedString } from '@/fun/numberToSignedString'
 import { Mode } from '@/model/Mode'
-import { useStore } from '@/store/useStore'
+import { useGameStore } from '@/store/useGameStore'
 import IconComp from './IconComp.vue'
 import handIcon from 'bootstrap-icons/icons/hand-index-thumb-fill.svg?raw'
 import bagFullIcon from 'bootstrap-icons/icons/bag-fill.svg?raw'
 import bagEmptyIcon from 'bootstrap-icons/icons/bag-x.svg?raw'
+import { gameNameFromPlayerInfos } from '@/fun/gameNameFromPlayerInfos'
 
-const store = useStore()
+const gameStore = useGameStore()
 
 function onPlayerClicked(playerIndex: number) {
-	const name = prompt(`Mi a neved?`, store.players[playerIndex].name)
+	const name = prompt(`Mi a neved?`, gameStore.playerInfos[playerIndex].name)
 	if (name && name.trim()) {
-		store.players[playerIndex].name = name.trim()
-		store.saveGame()
+		gameStore.playerInfos[playerIndex].name = name.trim()
+		gameStore.name = gameNameFromPlayerInfos(gameStore.playerInfos)
+		gameStore.saveGame()
 	}
 }
 </script>
 <template>
 	<div class="players">
 		<div
-			v-for="(player, playerIndex) of store.players"
+			v-for="(player, playerIndex) of gameStore.playerInfos"
 			:key="playerIndex"
 			class="player"
 		>
@@ -29,20 +31,26 @@ function onPlayerClicked(playerIndex: number) {
 			</button>
 			<div class="score">
 				<IconComp
-					v-if="store.playerIndex === playerIndex"
+					v-if="gameStore.state.playerIndex === playerIndex"
 					:icon="handIcon"
 					color="lightgreen"
 					rotate90-and-flip
 				/>
-				{{ player.score || 0 }} pont
-				<div v-if="store.mode === Mode.Ended" class="player-bonus">
-					{{ numberToSignedString(store.playerBonuses[playerIndex]) }} pont
+				{{ gameStore.state.playerScores[playerIndex] || 0 }} pont
+				<div v-if="gameStore.state.mode === Mode.Ended" class="player-bonus">
+					{{ numberToSignedString(gameStore.playerBonuses[playerIndex]) }} pont
 				</div>
 			</div>
 		</div>
-		<div v-if="store.mode !== Mode.Ended" class="bag" title="Lapkák a zsákban">
-			<IconComp :icon="store.bag.length > 0 ? bagFullIcon : bagEmptyIcon" />
-			{{ store.bag.length }}
+		<div
+			v-if="gameStore.state.mode !== Mode.Ended"
+			class="bag"
+			title="Lapkák a zsákban"
+		>
+			<IconComp
+				:icon="gameStore.state.bag.length > 0 ? bagFullIcon : bagEmptyIcon"
+			/>
+			{{ gameStore.state.bag.length }}
 		</div>
 	</div>
 </template>

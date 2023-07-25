@@ -6,13 +6,15 @@ import successIcon from 'bootstrap-icons/icons/check-circle-fill.svg?raw'
 import errorIcon from 'bootstrap-icons/icons/exclamation-triangle-fill.svg?raw'
 import signalIcon from 'bootstrap-icons/icons/hand-index-fill.svg?raw'
 import slowIcon from 'bootstrap-icons/icons/hourglass-split.svg?raw'
-import loadingIcon from 'bootstrap-icons/icons/stopwatch.svg?raw'
-import closeIcon from 'bootstrap-icons/icons/x-lg.svg?raw'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import ButtonsComp from './ButtonsComp.vue'
+import DialogBodyComp from './DialogBodyComp.vue'
 import DialogComp from './DialogComp.vue'
+import DialogHeaderComp from './DialogHeaderComp.vue'
 import IconComp from './IconComp.vue'
-import ErrorComp from './ErrorComp.vue'
+import refreshIcon from 'bootstrap-icons/icons/arrow-clockwise.svg?raw'
+import { useUiStore } from '@/store/useUiStore'
+import { getKnownWords } from '@/fun/getKnownWords'
 
 const props = withDefaults(
 	defineProps<{ word: string | undefined; isValid: boolean | undefined }>(),
@@ -21,6 +23,8 @@ const props = withDefaults(
 	},
 )
 const emit = defineEmits(['close'])
+
+const uiStore = useUiStore()
 
 function makeMekLink(wordString: string) {
 	return `http://ertelmezo.oszk.hu/kereses.php?csakcimben=on&kereses=${encodeURIComponent(
@@ -52,20 +56,16 @@ function makeMtaLink(wordString: string) {
 	)}`
 }
 
-const suggestWordError = ref<unknown>()
-const suggestWordIsLoading = ref<boolean>(false)
 const suggestWordData = ref<TSuggestResponse | undefined>()
 async function suggestWord() {
+	const word = props.word
+	const isValid = isWordValid.value
 	try {
 		suggestWordData.value = undefined
-		suggestWordError.value = undefined
-		suggestWordIsLoading.value = true
-		if (!props.word) throw new Error(`[rxwcdk] No word!`)
+		if (!word) throw new Error(`[rxwcdk] No word!`)
 		if (
-			window.confirm(`Itt jelezheted nekem, hogy a kiválasztott „${
-				props.word
-			}” ${
-				props.isValid
+			window.confirm(`Itt jelezheted nekem, hogy a kiválasztott „${word}” ${
+				isValid
 					? `szó nem szabályos.`
 					: `szót szeretnéd szabályossá tenni a játékban.`
 			}
@@ -80,37 +80,26 @@ FONTOS:
 7. Időbe telik – napok, hetek, hónapok, ki tudja? Légy türelmes!
 8. Az én döntésem, hogy mit fogadok el. Légy megértő!`)
 		) {
-			suggestWordData.value = await suggestWordToServer(
-				props.word,
-				!props.isValid,
-			)
+			await uiStore.lockWhile(async () => {
+				suggestWordData.value = await suggestWordToServer(word, !isValid)
+			})
 		}
 	} catch (e) {
 		console.error(`[rxwchg]`, e)
-		suggestWordError.value = e
-	} finally {
-		suggestWordIsLoading.value = false
+		uiStore.error = e + ''
 	}
 }
 
 function onSuccess() {
 	emit('close')
 }
-const {
-	loadAllWordsValidity,
-	loadAllWordsValidityError,
-	loadAllWordsValidityIsLoading,
-	loadAllWordsValidityIcon,
-	loadAllWordsValidityLabel,
-} = useLoadAllWordsValidity(onSuccess)
+const { loadAllWordsValidity } = useLoadAllWordsValidity(onSuccess)
 
 const suggestWordLabel = computed(() => {
-	if (suggestWordIsLoading.value) {
-		return ''
-	} else if (suggestWordData.value) {
+	if (suggestWordData.value) {
 		const res = suggestWordData.value
 		if ('valid' in res) {
-			const extra = res.valid === props.isValid ? 'Már elbíráltam: ' : ''
+			const extra = res.valid === isWordValid.value ? 'Már elbíráltam: ' : ''
 			if (res.valid) {
 				return extra + 'A szó szabályos!'
 			} else {
@@ -123,15 +112,13 @@ const suggestWordLabel = computed(() => {
 		}
 		return 'Sikerült! Egy következő játékban ismét megpróbálhatod.'
 	}
-	return props.isValid
+	return isWordValid.value
 		? 'Jelzem ezt a szót, mert szabálytalan!'
 		: 'Kérem ezt a szót, mert szabályos!'
 })
 
 const suggestWordIcon = computed(() => {
-	if (suggestWordIsLoading.value) {
-		return loadingIcon
-	} else if (suggestWordData.value) {
+	if (suggestWordData.value) {
 		const res = suggestWordData.value
 		if ('valid' in res) {
 			return errorIcon
@@ -146,74 +133,86 @@ const suggestWordIcon = computed(() => {
 })
 
 const label = computed(() => {
-	if (props.isValid === true) {
+	if (isWordValid.value === true) {
 		return 'Szabályos szó:'
-	} else if (props.isValid === false) {
+	} else if (isWordValid.value === false) {
 		return 'Szabálytalan szó:'
 	} else {
 		return 'Szó:'
+	}
+})
+
+const isWordValid = ref<boolean | undefined>()
+watch([() => props.word, () => props.isValid], async () => {
+	const word = props.word
+	const isValid = props.isValid
+	if (word == null) {
+		isWordValid.value = isValid
+	} else if (isValid != null) {
+		isWordValid.value = isValid
+	} else {
+		isWordValid.value = undefined
+		const knownWords = await getKnownWords()
+		if (props.word === word) {
+			isWordValid.value = knownWords.includes(word)
+		}
 	}
 })
 </script>
 
 <template>
 	<DialogComp :isOpen="!!props.word">
-		<div>
+		<DialogHeaderComp @close="$emit('close')">
 			{{ label }}
 			<span
 				:class="{
-					'valid-word': props.isValid,
-					'invalid-word': props.isValid === false,
+					'valid-word': isWordValid,
+					'invalid-word': isWordValid === false,
 				}"
 			>
 				{{ props.word }}
 			</span>
-		</div>
-		<ButtonsComp v-if="props.word">
-			<a
-				class="button"
-				:href="makeMekLink(props.word)"
-				target="_blank"
-				rel="noopener noreferrer"
-				>MÉK</a
-			>
-			<a
-				class="button"
-				:href="makeWiktionaryLink(props.word)"
-				target="_blank"
-				rel="noopener noreferrer"
-				>Wikiszótár</a
-			>
-			<a
-				class="button"
-				:href="makeWikipediaLink(props.word)"
-				target="_blank"
-				rel="noopener noreferrer"
-				>Wikipédia</a
-			>
-			<a
-				class="button"
-				:href="makeGoogleLink(props.word)"
-				target="_blank"
-				rel="noopener noreferrer"
-				>Google</a
-			>
-			<a
-				class="button"
-				:href="makeMtaLink(props.word)"
-				target="_blank"
-				rel="noopener noreferrer"
-				>MTA</a
-			>
-		</ButtonsComp>
-		<div class="errors-buttons">
-			<ErrorComp :error="suggestWordError" />
-			<ErrorComp :error="loadAllWordsValidityError" />
-			<ButtonsComp v-if="props.isValid != null">
-				<button
-					@click="suggestWord"
-					:disabled="!!suggestWordData || suggestWordIsLoading"
+		</DialogHeaderComp>
+		<DialogBodyComp>
+			<ButtonsComp v-if="props.word">
+				<a
+					class="button"
+					:href="makeMekLink(props.word)"
+					target="_blank"
+					rel="noopener noreferrer"
+					>MÉK</a
 				>
+				<a
+					class="button"
+					:href="makeWiktionaryLink(props.word)"
+					target="_blank"
+					rel="noopener noreferrer"
+					>Wikiszótár</a
+				>
+				<a
+					class="button"
+					:href="makeWikipediaLink(props.word)"
+					target="_blank"
+					rel="noopener noreferrer"
+					>Wikipédia</a
+				>
+				<a
+					class="button"
+					:href="makeGoogleLink(props.word)"
+					target="_blank"
+					rel="noopener noreferrer"
+					>Google</a
+				>
+				<a
+					class="button"
+					:href="makeMtaLink(props.word)"
+					target="_blank"
+					rel="noopener noreferrer"
+					>MTA</a
+				>
+			</ButtonsComp>
+			<ButtonsComp v-if="isWordValid != null">
+				<button @click="suggestWord" :disabled="!!suggestWordData">
 					<IconComp :icon="suggestWordIcon" color="#f89" />
 					{{ suggestWordLabel }}
 				</button>
@@ -221,21 +220,15 @@ const label = computed(() => {
 					v-if="
 						suggestWordData &&
 						'valid' in suggestWordData &&
-						suggestWordData.valid !== props.isValid
+						suggestWordData.valid !== isWordValid
 					"
-					:disabled="loadAllWordsValidityIsLoading"
 					@click="loadAllWordsValidity"
 				>
-					<IconComp :icon="loadAllWordsValidityIcon" />
-					{{ loadAllWordsValidityLabel }}
+					<IconComp :icon="refreshIcon" />
+					Frissítsd a szavakat
 				</button>
 			</ButtonsComp>
-		</div>
-		<ButtonsComp>
-			<button @click="$emit('close')">
-				<IconComp :icon="closeIcon" /> Zárd be
-			</button>
-		</ButtonsComp>
+		</DialogBodyComp>
 	</DialogComp>
 </template>
 
@@ -248,10 +241,5 @@ const label = computed(() => {
 .valid-word {
 	font-weight: bold;
 	color: lightgreen;
-}
-
-.errors-buttons {
-	display: flex;
-	flex-flow: column;
 }
 </style>

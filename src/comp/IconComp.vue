@@ -24,7 +24,8 @@ const props = defineProps<{
 	vertical-align: -0.23em;
 	width: 1.15em;
 	height: 1.15em;
-	filter: drop-shadow(-0.1px -0.1px 0 #333);
+	/* filter: drop-shadow(-0.1px -0.1px 0 #333); */
+	overflow: hidden; /* Fix overflow edge case with DialogBodyComp */
 }
 
 .rotate-90-and-flip {

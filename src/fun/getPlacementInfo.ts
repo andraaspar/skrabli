@@ -1,12 +1,14 @@
+import type { IPlacementInfo } from '@/model/IPlacementInfo'
 import type { THand } from '../model/THand'
 import { findLetterIndexInHand } from './findLetterIndexInHand'
 import { getLettersInHand } from './getLettersInHand'
 
-export function getHandIndicesForWord(
+export function getPlacementInfo(
 	word: string,
 	originalHand: THand,
-): number[] {
-	const result: number[] = []
+): IPlacementInfo {
+	const handIndices: number[] = []
+	const jokerLetters: (string | null)[] = []
 	const hand = originalHand.slice()
 	for (let i = 0; i < word.length; ) {
 		const wordPart = word.slice(i)
@@ -28,10 +30,12 @@ export function getHandIndicesForWord(
 		if (isNaN(letterIndex)) {
 			throw new Error(`[pr52z1] Letter not in hand: ${letter}`)
 		} else {
-			result.push(letterIndex)
+			const tile = hand[letterIndex]
+			handIndices.push(letterIndex)
 			hand[letterIndex] = null
+			jokerLetters.push(tile?.isJoker ? letter : null)
 		}
 		i += letter.length
 	}
-	return result
+	return { handIndices, jokerLetters }
 }

@@ -3,7 +3,7 @@ import { getKnownWords } from '@/fun/getKnownWords'
 import { jsonClone } from '@/fun/jsonClone'
 import HintsWorker from '@/hints.worker?worker'
 import type { IWordPlans } from '@/model/IWordPlans'
-import { useStore } from '@/store/useStore'
+import { useGameStore } from '@/store/useGameStore'
 import verticalIcon from 'bootstrap-icons/icons/arrow-down-square.svg?raw'
 import horizontalIcon from 'bootstrap-icons/icons/arrow-right-square.svg?raw'
 import stopwatchIcon from 'bootstrap-icons/icons/stopwatch.svg?raw'
@@ -11,13 +11,15 @@ import { computed, ref, watch } from 'vue'
 import DialogComp from './DialogComp.vue'
 import IconComp from './IconComp.vue'
 import ErrorComp from './ErrorComp.vue'
+import DialogHeaderComp from './DialogHeaderComp.vue'
+import DialogBodyComp from './DialogBodyComp.vue'
 
 const props = defineProps<{ isOpen: boolean }>()
 const isOpen = computed(() => props.isOpen)
 
 defineEmits(['close'])
 
-const store = useStore()
+const gameStore = useGameStore()
 
 let worker: Worker | null = null
 const hints = ref<IWordPlans | null>(null)
@@ -39,15 +41,16 @@ async function loadHints() {
 			if (worker) worker.terminate()
 			worker = new HintsWorker()
 			worker.addEventListener('message', (event) => {
+				// console.log(`[ryb95u]`, event.data)
 				resolve(event.data)
 			})
 			worker.addEventListener('error', (event) => {
 				reject(event.message)
 			})
 			worker.postMessage({
-				hand: jsonClone(store.hand),
-				board: jsonClone(store.board),
-				boardSize: jsonClone(store.boardSize),
+				hand: jsonClone(gameStore.hand),
+				board: jsonClone(gameStore.state.board),
+				boardSize: jsonClone(gameStore.state.boardSize),
 				words: words,
 			})
 		})
@@ -60,34 +63,39 @@ async function loadHints() {
 	}
 }
 
-watch([isOpen, store.board, store.boardSize, store.hand], () => {
-	if (isOpen.value) {
-		loadHints()
-	}
-})
+watch(
+	[isOpen, gameStore.state.board, gameStore.state.boardSize, gameStore.hand],
+	() => {
+		if (isOpen.value) {
+			loadHints()
+		}
+	},
+)
 </script>
 
 <template>
 	<DialogComp :isOpen="isOpen">
-		<div class="results">
-			<ErrorComp v-if="!!hintsError" :error="hintsError" />
-			<IconComp v-else-if="hints == null" :icon="stopwatchIcon"></IconComp>
-			<template v-else>
-				<div class="result">
-					<div class="title">
-						<IconComp :icon="horizontalIcon" /> Vízszintes
+		<DialogHeaderComp @close="$emit('close')">Tipp</DialogHeaderComp>
+		<DialogBodyComp>
+			<div class="results">
+				<ErrorComp v-if="!!hintsError" :error="hintsError" />
+				<IconComp v-else-if="hints == null" :icon="stopwatchIcon" />
+				<template v-else>
+					<div class="result">
+						<div class="title">
+							<IconComp :icon="horizontalIcon" /> Vízszintes
+						</div>
+						<div>{{ hintsTexts.horizontal || '‑' }}</div>
 					</div>
-					<div>{{ hintsTexts.horizontal || '‑' }}</div>
-				</div>
-				<div class="result">
-					<div class="title"><IconComp :icon="verticalIcon" /> Függőleges</div>
-					<div>{{ hintsTexts.vertical || '‑' }}</div>
-				</div>
-			</template>
-		</div>
-		<div>
-			<button @click="$emit('close')">Zárd be</button>
-		</div>
+					<div class="result">
+						<div class="title">
+							<IconComp :icon="verticalIcon" /> Függőleges
+						</div>
+						<div>{{ hintsTexts.vertical || '‑' }}</div>
+					</div>
+				</template>
+			</div>
+		</DialogBodyComp>
 	</DialogComp>
 </template>
 

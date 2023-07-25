@@ -4,6 +4,7 @@ export interface IWordPlan {
 	readonly fieldIndex: number
 	readonly direction: Direction
 	readonly word: string
-	readonly tiles: number[]
+	readonly handIndices: number[]
+	readonly jokerLetters: (string | null)[]
 	readonly score: number
 }

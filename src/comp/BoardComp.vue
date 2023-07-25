@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { FieldKind } from '@/model/FieldKind'
-import { useStore } from '../store/useStore'
+import { useGameStore } from '../store/useGameStore'
 import TileComp from './TileComp.vue'
 import { Mode } from '@/model/Mode'
 
 const emit = defineEmits(['setJokerLetter'])
 
-const store = useStore()
+const gameStore = useGameStore()
 
 function fieldKindToString(fieldKind: FieldKind): string {
 	switch (fieldKind) {
@@ -28,38 +28,38 @@ function fieldKindToString(fieldKind: FieldKind): string {
 }
 
 function onFieldClicked(fieldIndex: number) {
-	if (store.mode !== Mode.PlaceTile) return
-	const fieldToSelect = store.board[fieldIndex]
+	if (gameStore.state.mode !== Mode.PlaceTile) return
+	const fieldToSelect = gameStore.state.board[fieldIndex]
 	if (
-		store.field != null &&
-		store.field.tile &&
-		store.field.tile.isOwned &&
+		gameStore.field != null &&
+		gameStore.field.tile &&
+		gameStore.field.tile.isOwned &&
 		(!fieldToSelect.tile || fieldToSelect.tile.isOwned)
 	) {
-		store.swapTiles(store.fieldIndex!, fieldIndex)
+		gameStore.swapTiles(gameStore.state.fieldIndex!, fieldIndex)
 	} else if (
-		store.handTile &&
+		gameStore.handTile &&
 		(!fieldToSelect.tile || fieldToSelect.tile.isOwned)
 	) {
-		store.swapHandAndBoard(fieldIndex, store.handIndex!)
-		if (store.board[fieldIndex].tile?.isJoker) {
+		gameStore.swapHandAndBoard(fieldIndex, gameStore.state.handIndex!)
+		if (gameStore.state.board[fieldIndex].tile?.isJoker) {
 			emit('setJokerLetter')
 		}
-	} else if (store.fieldIndex === fieldIndex) {
-		store.fieldIndex = null
+	} else if (gameStore.state.fieldIndex === fieldIndex) {
+		gameStore.state.fieldIndex = null
 	} else {
-		store.fieldIndex = fieldIndex
+		gameStore.state.fieldIndex = fieldIndex
 	}
 }
 </script>
 <template>
 	<div class="board">
 		<div
-			v-for="(field, fieldIndex) in store.board"
+			v-for="(field, fieldIndex) in gameStore.state.board"
 			:key="fieldIndex"
 			:class="{
 				'board-field': true,
-				'is-selected': fieldIndex === store.fieldIndex,
+				'is-selected': fieldIndex === gameStore.state.fieldIndex,
 				'is-normal': field.kind === FieldKind.Normal,
 				'is-double-letter': field.kind === FieldKind.DoubleLetter,
 				'is-double-word': field.kind === FieldKind.DoubleWord,

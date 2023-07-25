@@ -55,13 +55,13 @@ export async function loadWordsValidity(
 	// 	json.validWords.forEach((word: string) => validWords.add(word))
 	// 	json.invalidWords.forEach((word: string) => invalidWords.add(word))
 	// }
-	console.log(
-		`[rxhezr]`,
-		JSON.stringify({
-			validWords: Array.from(validWords),
-			invalidWords: Array.from(invalidWords),
-		}),
-	)
+	// console.log(
+	// 	`[rxhezr]`,
+	// 	JSON.stringify({
+	// 		validWords: Array.from(validWords),
+	// 		invalidWords: Array.from(invalidWords),
+	// 	}),
+	// )
 	return {
 		validWords: Array.from(validWords),
 		invalidWords: Array.from(invalidWords),

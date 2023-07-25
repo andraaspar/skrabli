@@ -1,32 +1,33 @@
 <script setup lang="ts">
 import type { ITile } from '@/model/ITile'
 import { Mode } from '@/model/Mode'
-import { useStore } from '@/store/useStore'
+import { useGameStore } from '@/store/useGameStore'
 import ButtonsComp from './ButtonsComp.vue'
 import IconComp from './IconComp.vue'
 import changeIcon from 'bootstrap-icons/icons/arrow-down-up.svg?raw'
 import cancelIcon from 'bootstrap-icons/icons/x-circle.svg?raw'
 
-const store = useStore()
+const gameStore = useGameStore()
 
 function replaceTiles() {
-	const hand = store.hands[store.playerIndex!]
+	const hand = gameStore.state.hands[gameStore.state.playerIndex!]
 	const tilesToReplace = hand.filter(
-		(tile, aHandIndex) => store.handIndicesToReplace[aHandIndex],
+		(tile, aHandIndex) => gameStore.state.handIndicesToReplace[aHandIndex],
 	) as ITile[]
-	store.removeTilesToReplaceFromHand()
-	store.deselectTilesToReplace()
-	store.fillHand()
-	store.addTilesToBag(tilesToReplace)
-	store.resetSkipCount()
-	store.setMode(Mode.PlaceTile)
-	store.nextPlayer()
-	store.saveGame()
+	gameStore.removeTilesToReplaceFromHand()
+	gameStore.deselectTilesToReplace()
+	gameStore.fillHand()
+	gameStore.addTilesToBag(tilesToReplace)
+	gameStore.resetSkipCount()
+	gameStore.setMode(Mode.PlaceTile)
+	gameStore.nextPlayer()
+	gameStore.setUndoPoint()
+	gameStore.saveGame()
 }
 
 function cancel() {
-	store.deselectTilesToReplace()
-	store.setMode(Mode.PlaceTile)
+	gameStore.deselectTilesToReplace()
+	gameStore.setMode(Mode.PlaceTile)
 }
 </script>
 

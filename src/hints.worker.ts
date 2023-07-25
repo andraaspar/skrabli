@@ -16,21 +16,19 @@ self.onmessage = async (event) => {
 		hand: THand
 		words: string[]
 	}
+	const wordPlans = getPotentialWords({
+		words: words,
+		board: board,
+		boardSize: boardSize,
+		hand: hand,
+	})
 	const result: IWordPlans = {
-		horizontal: getPotentialWords({
-			words: words,
-			board: board,
-			boardSize: boardSize,
-			hand: hand,
-			direction: Direction.Horizontal,
-		}),
-		vertical: getPotentialWords({
-			words: words,
-			board: board,
-			boardSize: boardSize,
-			hand: hand,
-			direction: Direction.Vertical,
-		}),
+		horizontal: wordPlans.filter(
+			(wordPlan) => wordPlan.direction === Direction.Horizontal,
+		),
+		vertical: wordPlans.filter(
+			(wordPlan) => wordPlan.direction === Direction.Vertical,
+		),
 	}
 	self.postMessage(result)
 }

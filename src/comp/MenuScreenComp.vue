@@ -1,34 +1,48 @@
 <script setup lang="ts">
-import { savedGameExists } from '@/fun/savedGameExists'
+import { getNoError } from '@/fun/getNoError'
+import { loadGame } from '@/fun/loadGame'
+import { useLoadAllWordsValidity } from '@/fun/useLoadAllWordsValidity'
+import { LocalStorageKey } from '@/model/LocalStorageKey'
 import { Mode } from '@/model/Mode'
-import { useStore } from '@/store/useStore'
-import { useRouter } from 'vue-router'
-import IconComp from './IconComp.vue'
+import { useGameStore } from '@/store/useGameStore'
+import { useUiStore } from '@/store/useUiStore'
+import refreshIcon from 'bootstrap-icons/icons/arrow-clockwise.svg?raw'
 import playIcon from 'bootstrap-icons/icons/play-circle-fill.svg?raw'
 import starIcon from 'bootstrap-icons/icons/star-fill.svg?raw'
-import { useLoadAllWordsValidity } from '@/fun/useLoadAllWordsValidity'
-import { getNoError } from '@/fun/getNoError'
-import { LocalStorageKey } from '@/model/LocalStorageKey'
-import ErrorComp from './ErrorComp.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import logoSvg from '../asset/logo.svg?raw'
+import IconComp from './IconComp.vue'
+import type { TGameInfo } from '@/model/TGameInfo'
+import { loadGameInfos } from '@/fun/loadGameInfos'
 
-const store = useStore()
+const gameStore = useGameStore()
+const uiStore = useUiStore()
 const router = useRouter()
 
-function continueGame() {
-	if (store.mode === Mode.NotStarted) {
-		store.loadGame()
+async function continueGame() {
+	if (gameStore.state.mode === Mode.NotStarted) {
+		const gameId = localStorage[LocalStorageKey.LastGameId]
+		if (gameId) {
+			uiStore.lockWhile(async () => {
+				const game = await loadGame(gameId)
+				if (!game) throw new Error(`[ry5mal] Game not found!`)
+				gameStore.$patch(game)
+			})
+		}
 	}
-	goToGameScreen()
+	if (gameStore.state.mode !== Mode.NotStarted) {
+		router.push({ name: 'game' })
+	}
+}
+
+function continueableGameExists() {
+	return !!getNoError(false, () => localStorage[LocalStorageKey.LastGameId])
 }
 
 function startNewGame() {
-	store.newGame()
-	goToGameScreen()
-}
-
-function goToGameScreen() {
+	gameStore.newGame()
+	gameStore.startGame()
 	router.push({ name: 'game' })
 }
 
@@ -41,39 +55,60 @@ const allWordsValidityUpdated = ref(
 function onSuccess() {
 	allWordsValidityUpdated.value = Date.now()
 }
-const {
-	loadAllWordsValidity,
-	loadAllWordsValidityError,
-	loadAllWordsValidityIsLoading,
-	loadAllWordsValidityIcon,
-	loadAllWordsValidityLabel,
-} = useLoadAllWordsValidity(onSuccess)
+const { loadAllWordsValidity } = useLoadAllWordsValidity(onSuccess)
+
+const gameInfos = ref<TGameInfo[] | undefined>(undefined)
+onMounted(() => {
+	uiStore.lockWhile(async () => {
+		gameInfos.value = await loadGameInfos()
+	})
+})
+
+async function loadGameById(id: string) {
+	await uiStore.lockWhile(async () => {
+		const game = await loadGame(id)
+		if (!game) throw new Error(`[ryb06t] Game not found!`)
+		gameStore.$patch(game)
+	})
+	router.push({ name: 'game' })
+}
 </script>
 
 <template>
 	<div class="screen">
-		<div class="menu">
+		<div class="menu" v-if="gameInfos != null">
 			<IconComp :icon="logoSvg" class="logo" />
-			<div class="menu-buttons">
-				<button
-					v-if="store.mode !== Mode.NotStarted || savedGameExists()"
-					@click="continueGame"
-				>
+			<div
+				class="menu-buttons"
+				v-if="
+					gameStore.state.mode !== Mode.NotStarted || continueableGameExists()
+				"
+			>
+				<button @click="continueGame">
 					<IconComp :icon="playIcon" color="#0bd" /> Folytatás
 				</button>
+			</div>
+			<div class="menu-buttons" v-if="gameInfos.length > 0">
+				<button
+					v-for="gameInfo of gameInfos"
+					:key="gameInfo.id"
+					@click="loadGameById(gameInfo.id)"
+				>
+					{{ gameInfo.name }}
+				</button>
+			</div>
+			<div class="menu-buttons">
 				<button @click="startNewGame">
 					<IconComp :icon="starIcon" color="#fc0" /> Új játék
 				</button>
 			</div>
 			<div class="menu-buttons">
-				<ErrorComp :error="loadAllWordsValidityError" />
 				<button
 					v-if="allWordsValidityUpdated < Date.now() - 1000 * 60 * 60 * 24 * 30"
 					@click="loadAllWordsValidity"
-					:disabled="loadAllWordsValidityIsLoading"
 				>
-					<IconComp :icon="loadAllWordsValidityIcon" />
-					{{ loadAllWordsValidityLabel }}
+					<IconComp :icon="refreshIcon" />
+					Frissítsd a szavakat
 				</button>
 			</div>
 		</div>

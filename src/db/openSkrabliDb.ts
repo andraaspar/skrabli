@@ -1,11 +1,22 @@
-import { openDB } from 'idb'
+import { openDB } from 'idb/with-async-ittr'
 import type { ISkrabliDbSchema } from './ISkrabliDbSchema'
 
 export function openSkrabliDb() {
-	return openDB<ISkrabliDbSchema>('skrabli-db', 1, {
+	setTimeout(() => {
+		navigator.storage.persist()
+	})
+	return openDB<ISkrabliDbSchema>('skrabli-db', 2, {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		upgrade(database, oldVersion, newVersion, transaction, event) {
-			database.createObjectStore('validity')
+			if (oldVersion < 1) {
+				database.createObjectStore('validity')
+			}
+			if (oldVersion < 2) {
+				const games = database.createObjectStore('games', {
+					keyPath: 'id',
+				})
+				games.createIndex('byTimestamp', 'timestamp')
+			}
 		},
 	})
 }

@@ -1,4 +1,5 @@
 export enum LocalStorageKey {
-	SavedGame = 'game',
+	_SavedGame = 'game',
 	AllWordsValidityUpdated = 'AllWordsValidityUpdated',
+	LastGameId = 'LastGameId',
 }
