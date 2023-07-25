@@ -80,6 +80,8 @@ async function update() {
 		await uiStore.lockWhile(uiStore.updateServiceWorker)
 	}
 }
+
+const buildTimestamp = BUILD_TIMESTAMP
 </script>
 
 <template>
@@ -124,9 +126,10 @@ async function update() {
 					Frissítsd a szavakat
 				</button>
 			</div>
-			<div :class="{ remark: true, visible: uiStore.offlineReady }">
+			<div v-if="uiStore.offlineReady" class="remark">
 				<IconComp :icon="infoIcon" /> Internet nélkül is működöm!
 			</div>
+			<div class="remark version">Verzió: {{ buildTimestamp }}</div>
 		</div>
 	</div>
 </template>
@@ -154,13 +157,11 @@ async function update() {
 .remark {
 	color: #ffffff55;
 	padding: 0 var(--button-padding);
-	opacity: 0;
-	visibility: hidden;
 	transition: 0.5s;
+	text-align: center;
 }
 
-.remark.visible {
-	opacity: 1;
-	visibility: visible;
+.remark.version {
+	font-size: 0.75em;
 }
 </style>

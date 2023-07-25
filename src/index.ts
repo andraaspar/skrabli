@@ -10,6 +10,10 @@ import GameScreenComp from './comp/GameScreenComp.vue'
 import MenuScreenComp from './comp/MenuScreenComp.vue'
 import { useUiStore } from './store/useUiStore'
 
+declare global {
+	var BUILD_TIMESTAMP: string
+}
+
 const router = createRouter({
 	history: createWebHashHistory(),
 	routes: [
