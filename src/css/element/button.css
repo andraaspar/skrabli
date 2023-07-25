@@ -8,7 +8,7 @@ button,
 	background: rgba(255, 255, 255, 0.1);
 	border: 1px solid transparent;
 	cursor: pointer;
-	transition: background-color 0.25s, color 0.25s;
+	transition: background-color 0.25s, color 0.25s, opacity 0.5s;
 }
 .button:visited {
 	color: white;
@@ -54,4 +54,9 @@ button.green:hover,
 button.green:active,
 .button.green:active {
 	background: rgba(85, 255, 51, 0.3);
+}
+
+button.hidden,
+.button.hidden {
+	opacity: 0;
 }

@@ -82,55 +82,66 @@ async function update() {
 }
 
 const buildTimestamp = BUILD_TIMESTAMP
+
+function wordsValidityExpired() {
+	return allWordsValidityUpdated.value < Date.now() - 1000 * 60 * 60 * 24 * 30
+}
 </script>
 
 <template>
 	<div class="screen">
-		<div class="menu" v-if="gameInfos != null">
-			<IconComp :icon="logoSvg" class="logo" />
-			<div class="menu-buttons" v-if="uiStore.updateServiceWorker">
-				<button class="green" @click="update">
+		<template v-if="gameInfos != null">
+			<div class="top-buttons">
+				<button
+					:class="{ green: true, hidden: !uiStore.updateServiceWorker }"
+					@click="update"
+					:disabled="!uiStore.updateServiceWorker"
+				>
 					<IconComp :icon="updateIcon" /> Frissítsd az alkalmazást
 				</button>
 			</div>
-			<div
-				class="menu-buttons"
-				v-if="
-					gameStore.state.mode !== Mode.NotStarted || continueableGameExists()
-				"
-			>
-				<button @click="continueGame">
-					<IconComp :icon="playIcon" color="#0bd" /> Folytatás
-				</button>
-			</div>
-			<div class="menu-buttons" v-if="gameInfos.length > 0">
-				<button
-					v-for="gameInfo of gameInfos"
-					:key="gameInfo.id"
-					@click="loadGameById(gameInfo.id)"
+			<div class="menu">
+				<IconComp :icon="logoSvg" class="logo" />
+				<div
+					class="menu-buttons"
+					v-if="
+						gameStore.state.mode !== Mode.NotStarted || continueableGameExists()
+					"
 				>
-					{{ gameInfo.name }}
-				</button>
+					<button @click="continueGame">
+						<IconComp :icon="playIcon" color="#0bd" /> Folytatás
+					</button>
+				</div>
+				<div class="menu-buttons" v-if="gameInfos.length > 0">
+					<button
+						v-for="gameInfo of gameInfos"
+						:key="gameInfo.id"
+						@click="loadGameById(gameInfo.id)"
+					>
+						{{ gameInfo.name }}
+					</button>
+				</div>
+				<div class="menu-buttons">
+					<button @click="startNewGame">
+						<IconComp :icon="starIcon" color="#fc0" /> Új játék
+					</button>
+				</div>
+				<div class="menu-buttons">
+					<button
+						:class="{ hidden: wordsValidityExpired }"
+						@click="loadAllWordsValidity"
+						:disabled="wordsValidityExpired"
+					>
+						<IconComp :icon="refreshIcon" color="#5f3" />
+						Frissítsd a szavakat
+					</button>
+				</div>
+				<div :class="{ remark: true, hidden: !uiStore.offlineReady }">
+					<IconComp :icon="infoIcon" /> Internet nélkül is működöm!
+				</div>
 			</div>
-			<div class="menu-buttons">
-				<button @click="startNewGame">
-					<IconComp :icon="starIcon" color="#fc0" /> Új játék
-				</button>
-			</div>
-			<div class="menu-buttons">
-				<button
-					v-if="allWordsValidityUpdated < Date.now() - 1000 * 60 * 60 * 24 * 30"
-					@click="loadAllWordsValidity"
-				>
-					<IconComp :icon="refreshIcon" color="#5f3" />
-					Frissítsd a szavakat
-				</button>
-			</div>
-			<div v-if="uiStore.offlineReady" class="remark">
-				<IconComp :icon="infoIcon" /> Internet nélkül is működöm!
-			</div>
-		</div>
-		<div class="version">Verzió: {{ buildTimestamp }}</div>
+			<div class="version">Verzió: {{ buildTimestamp }}</div>
+		</template>
 	</div>
 </template>
 
@@ -142,9 +153,10 @@ const buildTimestamp = BUILD_TIMESTAMP
 	transform: rotate(15deg) translateY(-4vmin);
 }
 .menu {
+	flex: 0 0 auto;
 	display: flex;
 	flex-flow: column;
-	padding: 8vmin;
+	padding: 8vmin 8vmin 16vmin;
 	gap: 4vmin;
 	margin: auto;
 }
@@ -154,14 +166,26 @@ const buildTimestamp = BUILD_TIMESTAMP
 	gap: var(--gap);
 }
 
+.top-buttons {
+	flex: 0 0 auto;
+	display: flex;
+	flex-flow: column;
+	padding: 8vmin;
+	gap: var(--gap);
+}
+
 .remark {
 	color: #ffffff55;
 	padding: 0 var(--button-padding);
 	text-align: center;
+	transition: 0.5s;
+}
+
+.remark.hidden {
+	opacity: 0;
 }
 
 .version {
-	margin-top: auto;
 	flex: 0 0 auto;
 	color: #ffffff55;
 	padding: var(--button-padding);
