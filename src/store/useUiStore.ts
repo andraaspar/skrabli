@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 interface IUiState {
 	lockedCount: number
 	error: string
-	updateServiceWorker: undefined | (() => Promise<void>)
+	updateServiceWorker: undefined | { update: () => Promise<void> }
 	offlineReady: boolean
 }
 

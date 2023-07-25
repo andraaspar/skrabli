@@ -77,7 +77,7 @@ async function loadGameById(id: string) {
 
 async function update() {
 	if (uiStore.updateServiceWorker) {
-		await uiStore.lockWhile(uiStore.updateServiceWorker)
+		await uiStore.lockWhile(uiStore.updateServiceWorker.update)
 	}
 }
 
@@ -129,8 +129,8 @@ const buildTimestamp = BUILD_TIMESTAMP
 			<div v-if="uiStore.offlineReady" class="remark">
 				<IconComp :icon="infoIcon" /> Internet nélkül is működöm!
 			</div>
-			<div class="remark version">Verzió: {{ buildTimestamp }}</div>
 		</div>
+		<div class="version">Verzió: {{ buildTimestamp }}</div>
 	</div>
 </template>
 
@@ -157,11 +157,15 @@ const buildTimestamp = BUILD_TIMESTAMP
 .remark {
 	color: #ffffff55;
 	padding: 0 var(--button-padding);
-	transition: 0.5s;
 	text-align: center;
 }
 
-.remark.version {
+.version {
+	margin-top: auto;
+	flex: 0 0 auto;
+	color: #ffffff55;
+	padding: var(--button-padding);
+	text-align: center;
 	font-size: 0.75em;
 }
 </style>
