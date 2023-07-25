@@ -3,12 +3,16 @@ import { defineStore } from 'pinia'
 interface IUiState {
 	lockedCount: number
 	error: string
+	updateServiceWorker: undefined | (() => Promise<void>)
+	offlineReady: boolean
 }
 
 export const useUiStore = defineStore('ui', {
 	state: (): IUiState => ({
 		lockedCount: 0,
 		error: '',
+		updateServiceWorker: undefined,
+		offlineReady: false,
 	}),
 	getters: {
 		isLocked(): boolean {

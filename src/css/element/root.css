@@ -1,3 +1,5 @@
 :root {
 	--gap: 1vmin;
+	--radius: 2vmin;
+	--button-padding: 2vmin;
 }

@@ -1,14 +1,14 @@
 button,
 .button {
-	border-radius: 2vmin;
+	border-radius: var(--radius);
 	color: white;
-	padding: 2vmin;
+	padding: var(--button-padding);
 	text-align: center;
 	text-decoration: none;
 	background: rgba(255, 255, 255, 0.1);
 	border: 1px solid transparent;
 	cursor: pointer;
-	transition: background-color 0.25s;
+	transition: background-color 0.25s, color 0.25s;
 }
 .button:visited {
 	color: white;
@@ -37,4 +37,21 @@ button:disabled,
 	border-color: transparent;
 	filter: grayscale(1);
 	cursor: default;
+}
+
+button.green,
+.button.green {
+	background: rgba(85, 255, 51, 0.4);
+	color: #afff9f;
+}
+
+button.green:hover,
+.button.green:hover {
+	background: rgba(85, 255, 51, 0.5);
+	color: white;
+}
+
+button.green:active,
+.button.green:active {
+	background: rgba(85, 255, 51, 0.3);
 }

@@ -1,20 +1,22 @@
 <script setup lang="ts">
 import { getNoError } from '@/fun/getNoError'
 import { loadGame } from '@/fun/loadGame'
+import { loadGameInfos } from '@/fun/loadGameInfos'
 import { useLoadAllWordsValidity } from '@/fun/useLoadAllWordsValidity'
 import { LocalStorageKey } from '@/model/LocalStorageKey'
 import { Mode } from '@/model/Mode'
+import type { TGameInfo } from '@/model/TGameInfo'
 import { useGameStore } from '@/store/useGameStore'
 import { useUiStore } from '@/store/useUiStore'
 import refreshIcon from 'bootstrap-icons/icons/arrow-clockwise.svg?raw'
+import updateIcon from 'bootstrap-icons/icons/arrow-up-square-fill.svg?raw'
+import infoIcon from 'bootstrap-icons/icons/info-circle-fill.svg?raw'
 import playIcon from 'bootstrap-icons/icons/play-circle-fill.svg?raw'
 import starIcon from 'bootstrap-icons/icons/star-fill.svg?raw'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import logoSvg from '../asset/logo.svg?raw'
 import IconComp from './IconComp.vue'
-import type { TGameInfo } from '@/model/TGameInfo'
-import { loadGameInfos } from '@/fun/loadGameInfos'
 
 const gameStore = useGameStore()
 const uiStore = useUiStore()
@@ -72,12 +74,23 @@ async function loadGameById(id: string) {
 	})
 	router.push({ name: 'game' })
 }
+
+async function update() {
+	if (uiStore.updateServiceWorker) {
+		await uiStore.lockWhile(uiStore.updateServiceWorker)
+	}
+}
 </script>
 
 <template>
 	<div class="screen">
 		<div class="menu" v-if="gameInfos != null">
 			<IconComp :icon="logoSvg" class="logo" />
+			<div class="menu-buttons" v-if="uiStore.updateServiceWorker">
+				<button class="green" @click="update">
+					<IconComp :icon="updateIcon" /> Frissítsd az alkalmazást
+				</button>
+			</div>
 			<div
 				class="menu-buttons"
 				v-if="
@@ -107,9 +120,12 @@ async function loadGameById(id: string) {
 					v-if="allWordsValidityUpdated < Date.now() - 1000 * 60 * 60 * 24 * 30"
 					@click="loadAllWordsValidity"
 				>
-					<IconComp :icon="refreshIcon" />
+					<IconComp :icon="refreshIcon" color="#5f3" />
 					Frissítsd a szavakat
 				</button>
+			</div>
+			<div :class="{ remark: true, visible: uiStore.offlineReady }">
+				<IconComp :icon="infoIcon" /> Internet nélkül is működöm!
 			</div>
 		</div>
 	</div>
@@ -132,7 +148,19 @@ async function loadGameById(id: string) {
 .menu-buttons {
 	display: flex;
 	flex-flow: column;
-	padding: var(--gap);
 	gap: var(--gap);
+}
+
+.remark {
+	color: #ffffff55;
+	padding: 0 var(--button-padding);
+	opacity: 0;
+	visibility: hidden;
+	transition: 0.5s;
+}
+
+.remark.visible {
+	opacity: 1;
+	visibility: visible;
 }
 </style>
