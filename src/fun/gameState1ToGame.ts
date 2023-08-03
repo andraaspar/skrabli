@@ -1,17 +1,18 @@
 import { AiLevel } from '@/model/AiLevel'
 import type { IGame } from '@/model/IGame'
 import type { IGameState1 } from '@/model/IGameState'
-import type { IPlayerInfo } from '@/model/IPlayerInfo'
+import type { IPlayerInfo1 } from '@/model/IPlayerInfo'
 import { v4 } from 'uuid'
 import { gameNameFromPlayerInfos } from './gameNameFromPlayerInfos'
+import { upgradeGame } from './upgradeGame'
 
 export function gameState1ToGame(gs1: IGameState1): IGame {
 	const { players, ...gs1Rest } = gs1
-	const playerInfos: IPlayerInfo[] = gs1.players.map((player) => ({
+	const playerInfos: IPlayerInfo1[] = gs1.players.map((player) => ({
 		aiLevel: AiLevel.Human,
 		name: player.name,
 	}))
-	return {
+	const game1 = {
 		id: v4(),
 		name: gameNameFromPlayerInfos(playerInfos),
 		timestamp: Date.now(),
@@ -23,4 +24,5 @@ export function gameState1ToGame(gs1: IGameState1): IGame {
 			},
 		],
 	}
+	return upgradeGame(game1)
 }

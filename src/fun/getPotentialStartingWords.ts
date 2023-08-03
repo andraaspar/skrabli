@@ -15,9 +15,11 @@ import { getPlacementInfo } from './getPlacementInfo'
 import { getRowIndex } from './getRowIndex'
 import { getRowLine } from './getRowLine'
 import { getWordInfo } from './getWordInfo'
+import { isWordPlanBingo } from './isWordPlanBingo'
 import { linePartsToRegExpStrings } from './linePartsToRegExpStrings'
 import { wordPlanIncludesFieldIndex } from './wordPlanIncludesFieldIndex'
 import { wordPlanToBoard } from './wordPlanToBoard'
+import { wordPlanToHand } from './wordPlanToHand'
 
 export function getPotentialStartingWords(
 	words: string[],
@@ -79,6 +81,8 @@ export function getPotentialStartingWords(
 						jokerLetters: placementInfo.jokerLetters,
 						score: NaN,
 						word: word,
+						board: [],
+						hand: [],
 					}
 
 					if (
@@ -88,24 +92,20 @@ export function getPotentialStartingWords(
 						continue
 					}
 
-					const boardWithWord = wordPlanToBoard(
-						board,
-						boardSize,
-						hand,
-						wordPlan,
-					)
-					const wordInfo = getWordInfo(boardWithWord, boardSize)
+					wordPlan.board = wordPlanToBoard(board, boardSize, hand, wordPlan)
+					const wordInfo = getWordInfo(wordPlan.board, boardSize)
 					const allOwnedWords = getAllOwnedWords(
-						boardWithWord,
+						wordPlan.board,
 						boardSize,
 						wordInfo,
 					)
-					const score = getMoveScore(
+					wordPlan.score = getMoveScore(
 						allOwnedWords,
-						wordPlan.handIndices.length === 7,
+						isWordPlanBingo(wordPlan),
 					)
-					if (score > bestScore) {
-						bestScore = score
+					if (wordPlan.score > bestScore) {
+						wordPlan.hand = wordPlanToHand(hand, wordPlan)
+						bestScore = wordPlan.score
 						bestWordPlan = wordPlan
 					}
 				}

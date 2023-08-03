@@ -1,4 +1,4 @@
 export interface IPlacementInfo {
-	handIndices: number[]
+	handIndices: (number | null)[]
 	jokerLetters: (string | null)[]
 }

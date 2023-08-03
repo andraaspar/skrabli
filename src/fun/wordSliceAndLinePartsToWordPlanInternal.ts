@@ -27,14 +27,14 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 	let hasMissingParts = false
 	const hand = originalHand.slice()
 	const wordPartsEnd = wordParts.length - 1
-	const handIndices: number[] = []
+	const handIndices: (number | null)[] = []
 	const jokerLetters: (string | null)[] = []
 	const word = wordParts.join('')
 	for (const [index, wordPart] of wordParts.entries()) {
 		const linePart = lineParts[index]
 		if (isNumber(linePart)) {
 			hasMissingParts = true
-			let handIndicesForWord: number[]
+			let handIndicesForWord: (number | null)[]
 			let jokerLettersForWord: (string | null)[]
 			try {
 				const placementInfo = getPlacementInfo(wordPart, hand)
@@ -61,7 +61,11 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 			}
 			handIndices.push(...handIndicesForWord)
 			jokerLetters.push(...jokerLettersForWord)
-			handIndicesForWord.forEach((index) => (hand[index] = null))
+			handIndicesForWord.forEach((index) => {
+				if (index != null) {
+					hand[index] = null
+				}
+			})
 		} else {
 			if (wordPart !== linePart.text) {
 				throw new Error(
@@ -69,7 +73,7 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 				)
 			}
 			for (let i = 0; i < linePart.fieldCount; i++) {
-				handIndices.push(NaN)
+				handIndices.push(null)
 				jokerLetters.push(null)
 			}
 		}
@@ -89,5 +93,7 @@ export function wordSliceAndLinePartsToWordPlanInternal({
 		handIndices,
 		jokerLetters,
 		score: NaN,
+		board: [],
+		hand: [],
 	}
 }

@@ -3,84 +3,56 @@ import { numberToSignedString } from '@/fun/numberToSignedString'
 import { Mode } from '@/model/Mode'
 import { useGameStore } from '@/store/useGameStore'
 import IconComp from './IconComp.vue'
-import handIcon from 'bootstrap-icons/icons/hand-index-thumb-fill.svg?raw'
-import bagFullIcon from 'bootstrap-icons/icons/bag-fill.svg?raw'
-import bagEmptyIcon from 'bootstrap-icons/icons/bag-x.svg?raw'
-import { gameNameFromPlayerInfos } from '@/fun/gameNameFromPlayerInfos'
+import { aiLevelToIcon } from '@/fun/aiLevelToIcon'
+import { aiLevelToColor } from '@/fun/aiLevelToColor'
+
+// const props = defineProps<{}>()
 
 const gameStore = useGameStore()
-
-function onPlayerClicked(playerIndex: number) {
-	const name = prompt(`Mi a neved?`, gameStore.playerInfos[playerIndex].name)
-	if (name && name.trim()) {
-		gameStore.playerInfos[playerIndex].name = name.trim()
-		gameStore.name = gameNameFromPlayerInfos(gameStore.playerInfos)
-		gameStore.saveGame()
-	}
-}
 </script>
+
 <template>
 	<div class="players">
-		<div
-			v-for="(player, playerIndex) of gameStore.playerInfos"
-			:key="playerIndex"
-			class="player"
-		>
-			<button class="player-name-button" @click="onPlayerClicked(playerIndex)">
-				{{ player.name }}
-			</button>
-			<div class="score">
+		<template v-for="(playerInfo, playerIndex) of gameStore.playerInfos">
+			<div>
 				<IconComp
-					v-if="gameStore.state.playerIndex === playerIndex"
-					:icon="handIcon"
-					color="lightgreen"
-					rotate90-and-flip
+					:icon="aiLevelToIcon(playerInfo.aiLevel)"
+					:color="aiLevelToColor(playerInfo.aiLevel)"
 				/>
-				{{ gameStore.state.playerScores[playerIndex] || 0 }} pont
+				{{ playerInfo.name }}
+			</div>
+			<div class="score">
+				{{ gameStore.state.playerScores.at(playerIndex) }} pont
 				<div v-if="gameStore.state.mode === Mode.Ended" class="player-bonus">
-					{{ numberToSignedString(gameStore.playerBonuses[playerIndex]) }} pont
+					{{ numberToSignedString(gameStore.playerBonuses[playerIndex]) }}
+					pont
 				</div>
 			</div>
-		</div>
-		<div
-			v-if="gameStore.state.mode !== Mode.Ended"
-			class="bag"
-			title="Lapkák a zsákban"
-		>
-			<IconComp
-				:icon="gameStore.state.bag.length > 0 ? bagFullIcon : bagEmptyIcon"
-			/>
-			{{ gameStore.state.bag.length }}
-		</div>
+			<div class="tiles">
+				{{ gameStore.state.hands.at(playerIndex)?.filter(Boolean).length }}
+				lapka
+			</div>
+		</template>
 	</div>
 </template>
+
 <style scoped>
 .players {
-	display: flex;
-	flex-flow: row wrap;
-	padding: var(--gap);
-	gap: var(--gap);
+	margin: 0 auto;
+	width: max-content;
+	display: grid;
+	grid-template-columns: auto auto auto;
 	align-items: baseline;
-	width: 100%;
-}
-.player {
-	flex: 1 0 auto;
-	display: flex;
-	flex-flow: row;
-	align-items: center;
-	gap: 1vmin;
-}
-.player-name-button {
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
+	gap: calc(var(--gap) * 2);
+	text-align: left;
 }
 .player-bonus {
 	font-size: 0.8em;
 	color: gray;
 }
-.bag {
+
+.tiles {
 	font-size: 0.8em;
-	color: gray;
+	color: lch(80 100 320);
 }
 </style>

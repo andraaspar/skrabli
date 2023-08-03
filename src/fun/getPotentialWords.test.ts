@@ -25,18 +25,28 @@ it('[ryb77r]', () => {
 		withInterface<IWordPlan>({
 			direction: Direction.Horizontal,
 			fieldIndex: 0,
-			score: NaN,
-			handIndices: [0, NaN, NaN],
+			score: 3,
+			handIndices: [0, null, null],
 			jokerLetters: [null, null, null],
 			word: 'elő',
+			board: makeBoard(`
+Elő
+---
+`).board,
+			hand: [null, makeTile('l')],
 		}),
 		withInterface<IWordPlan>({
 			direction: Direction.Vertical,
 			fieldIndex: 0,
-			score: NaN,
+			score: 5,
 			handIndices: [0, 1],
 			jokerLetters: [null, null],
 			word: 'el',
+			board: makeBoard(`
+Elő
+L--
+`).board,
+			hand: [null, null],
 		}),
 	])
 })
@@ -59,18 +69,32 @@ apa
 		withInterface<IWordPlan>({
 			direction: Direction.Horizontal,
 			fieldIndex: 0,
-			score: NaN,
-			handIndices: [0, NaN, NaN],
+			score: 3,
+			handIndices: [0, null, null],
 			jokerLetters: [null, null, null],
 			word: 'elő',
+			board: makeBoard(`
+Elő
+--s
+--f
+apa
+`).board,
+			hand: [null, makeTile('l')],
 		}),
 		withInterface<IWordPlan>({
 			direction: Direction.Vertical,
 			fieldIndex: 0,
-			score: NaN,
+			score: 5,
 			handIndices: [0, 1],
 			jokerLetters: [null, null],
 			word: 'el',
+			board: makeBoard(`
+Elő
+L-s
+--f
+apa
+`).board,
+			hand: [null, null],
 		}),
 	])
 })
@@ -91,34 +115,54 @@ it('[rycjdi]', () => {
 		withInterface<IWordPlan>({
 			direction: Direction.Horizontal,
 			fieldIndex: 3,
-			score: NaN,
+			score: 6,
 			handIndices: [0, 1],
 			jokerLetters: [null, null],
 			word: 're',
+			board: makeBoard(`
+űr-
+RE-
+`).board,
+			hand: [null, null, makeTile('á')],
 		}),
 		withInterface<IWordPlan>({
 			direction: Direction.Horizontal,
 			fieldIndex: 3,
-			score: NaN,
+			score: 7,
 			handIndices: [0, 1, 2],
 			jokerLetters: [null, null, null],
 			word: 'reá',
+			board: makeBoard(`
+űr-
+REÁ
+`).board,
+			hand: [null, null, null],
 		}),
 		withInterface<IWordPlan>({
 			direction: Direction.Vertical,
 			fieldIndex: 0,
-			score: NaN,
-			handIndices: [NaN, 0],
+			score: 2,
+			handIndices: [null, 0],
 			jokerLetters: [null, null],
 			word: 'űr',
+			board: makeBoard(`
+űr-
+R--
+`).board,
+			hand: [null, makeTile('e'), makeTile('á')],
 		}),
 		withInterface<IWordPlan>({
 			direction: Direction.Vertical,
 			fieldIndex: 1,
-			score: NaN,
-			handIndices: [NaN, 1],
+			score: 2,
+			handIndices: [null, 1],
 			jokerLetters: [null, null],
 			word: 're',
+			board: makeBoard(`
+űr-
+-E-
+`).board,
+			hand: [makeTile('r'), null, makeTile('á')],
 		}),
 	])
 })
@@ -145,10 +189,10 @@ function makeField(letter: string | null) {
 
 function makeTile(letter: string) {
 	return withInterface<ITile>({
-		letter,
+		letter: letter.toLowerCase(),
 		score: 1,
-		isOwned: undefined,
-		isJoker: undefined,
-		isLast: undefined,
+		isOwned: letter === letter.toLowerCase() ? null : true,
+		isJoker: null,
+		isLast: null,
 	})
 }

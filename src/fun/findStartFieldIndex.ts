@@ -3,7 +3,8 @@ import type { TBoard } from '@/model/TBoard'
 
 export function findStartFieldIndex(board: TBoard): number {
 	for (let fieldIndex = 0; fieldIndex < board.length; fieldIndex++) {
-		if (board[fieldIndex].kind === FieldKind.Start) {
+		const kind = board[fieldIndex].kind
+		if (kind === FieldKind.Start || kind === FieldKind.StartNoBonus) {
 			return fieldIndex
 		}
 	}

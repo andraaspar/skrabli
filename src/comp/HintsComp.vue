@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { getKnownWords } from '@/fun/getKnownWords'
 import { jsonClone } from '@/fun/jsonClone'
-import HintsWorker from '@/hints.worker?worker'
+import { loadHints } from '@/fun/loadHints'
 import type { IWordPlans } from '@/model/IWordPlans'
 import { useGameStore } from '@/store/useGameStore'
 import verticalIcon from 'bootstrap-icons/icons/arrow-down-square.svg?raw'
 import horizontalIcon from 'bootstrap-icons/icons/arrow-right-square.svg?raw'
 import stopwatchIcon from 'bootstrap-icons/icons/stopwatch.svg?raw'
 import { computed, ref, watch } from 'vue'
-import DialogComp from './DialogComp.vue'
-import IconComp from './IconComp.vue'
-import ErrorComp from './ErrorComp.vue'
-import DialogHeaderComp from './DialogHeaderComp.vue'
 import DialogBodyComp from './DialogBodyComp.vue'
+import DialogComp from './DialogComp.vue'
+import DialogHeaderComp from './DialogHeaderComp.vue'
+import ErrorComp from './ErrorComp.vue'
+import IconComp from './IconComp.vue'
 
 const props = defineProps<{ isOpen: boolean }>()
 const isOpen = computed(() => props.isOpen)
@@ -21,7 +20,6 @@ defineEmits(['close'])
 
 const gameStore = useGameStore()
 
-let worker: Worker | null = null
 const hints = ref<IWordPlans | null>(null)
 const hintsError = ref<string | null>(null)
 const hintsTexts = computed(() => {
@@ -32,34 +30,18 @@ const hintsTexts = computed(() => {
 	}
 })
 
-async function loadHints() {
+async function load() {
 	try {
-		const words = await getKnownWords()
+		hints.value = null
 		hintsError.value = null
-		hints.value = await new Promise<IWordPlans>((resolve, reject) => {
-			hints.value = null
-			if (worker) worker.terminate()
-			worker = new HintsWorker()
-			worker.addEventListener('message', (event) => {
-				// console.log(`[ryb95u]`, event.data)
-				resolve(event.data)
-			})
-			worker.addEventListener('error', (event) => {
-				reject(event.message)
-			})
-			worker.postMessage({
-				hand: jsonClone(gameStore.hand),
-				board: jsonClone(gameStore.state.board),
-				boardSize: jsonClone(gameStore.state.boardSize),
-				words: words,
-			})
+		hints.value = await loadHints({
+			board: jsonClone(gameStore.state.board),
+			boardSize: jsonClone(gameStore.state.boardSize),
+			hand: jsonClone(gameStore.hand!),
 		})
 	} catch (e) {
 		console.error(`[rx9sem]`, e)
 		hintsError.value = e + ''
-	} finally {
-		worker?.terminate()
-		worker = null
 	}
 }
 
@@ -67,7 +49,7 @@ watch(
 	[isOpen, gameStore.state.board, gameStore.state.boardSize, gameStore.hand],
 	() => {
 		if (isOpen.value) {
-			loadHints()
+			load()
 		}
 	},
 )

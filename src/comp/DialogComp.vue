@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 
-const props = defineProps<{ isOpen: boolean }>()
+const props = defineProps<{ isOpen: boolean; openDelay?: 1 }>()
 
 const isOpen = computed(() => props.isOpen)
 const dialogVnode = ref<HTMLDialogElement | null>(null)
@@ -22,7 +22,12 @@ watch([isOpen, dialogVnode], () => {
 
 <template>
 	<Transition appear>
-		<dialog v-if="isOpen" ref="dialogVnode" @close.prevent>
+		<dialog
+			v-if="isOpen"
+			ref="dialogVnode"
+			:class="{ 'delay-1s': openDelay === 1 }"
+			@close.prevent
+		>
 			<slot></slot>
 		</dialog>
 	</Transition>

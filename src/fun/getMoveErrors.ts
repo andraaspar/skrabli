@@ -31,7 +31,10 @@ export function getMoveErrors(
 					// 	errors.add(MoveError.InvalidWord)
 					// }
 					for (const field of word) {
-						if (field.kind === FieldKind.Start) {
+						if (
+							field.kind === FieldKind.Start ||
+							field.kind === FieldKind.StartNoBonus
+						) {
 							touchesStart = true
 						}
 						if (field.tile && !field.tile.isOwned) {

@@ -17,10 +17,13 @@ import { computed, ref } from 'vue'
 import ButtonsComp from './ButtonsComp.vue'
 import HintsComp from './HintsComp.vue'
 import IconComp from './IconComp.vue'
+import { useUiStore } from '@/store/useUiStore'
+import { HAND_SIZE } from '@/model/Constants'
 
 defineEmits(['setJokerLetter'])
 
 const gameStore = useGameStore()
+const uiStore = useUiStore()
 
 const queryKey = computed(() => [
 	QueryKey.AreWordsValid,
@@ -79,47 +82,48 @@ function skip() {
 const hintsAreOpen = ref(false)
 
 function showHints() {
-	gameStore.collectTiles()
-	hintsAreOpen.value = true
-}
-
-function done() {
-	gameStore.score()
-	gameStore.disownTiles()
-	gameStore.resetSkipCount()
-	if (gameStore.state.bag.length || gameStore.handCount) {
-		gameStore.fillHand()
-		gameStore.nextPlayer()
-		gameStore.setUndoPoint()
+	if (gameStore.playerInfo.hints > 0) {
+		gameStore.playerInfo.hints--
+		gameStore.collectTiles()
 		gameStore.saveGame()
-	} else {
-		gameStore.endGame()
+		hintsAreOpen.value = true
 	}
 }
 </script>
 
 <template>
 	<ButtonsComp>
-		<button :disabled="okButtonDisabled" @click="done">
+		<button :disabled="okButtonDisabled" @click="gameStore.finishMove">
 			<IconComp :icon="okButtonIcon" :color="okButtonIconColor" />{{
 				okButtonLabel
 			}}<span v-if="gameStore.moveScore > 0" class="score"
 				>: {{ gameStore.moveScore }}&nbsp;pont</span
-			></button
-		><button @click="gameStore.collectTiles">
-			<IconComp :icon="collectIcon" color="#fd0" /> Szedd össze</button
-		><button :disabled="gameStore.state.bag.length < 7" @click="swapTiles">
-			<IconComp :icon="changeIcon" color="#0df" /> Csere</button
-		><button @click="skip">
-			<IconComp :icon="skipIcon" color="#f78" /> Kihagyom</button
-		><button v-if="gameStore.hand" @click="showHints">
-			<IconComp :icon="hintIcon" color="#f7f" /> Tipp</button
-		><button
+			>
+		</button>
+		<button @click="gameStore.collectTiles">
+			<IconComp :icon="collectIcon" color="#fd0" /> Szedd össze
+		</button>
+		<button :disabled="!gameStore.canSwap" @click="swapTiles">
+			<IconComp :icon="changeIcon" color="#0df" /> Csere
+		</button>
+		<button @click="skip">
+			<IconComp :icon="skipIcon" color="#f78" /> Kihagyom
+		</button>
+		<button
+			v-if="gameStore.hand"
+			@click="showHints"
+			:disabled="gameStore.playerInfo.hints <= 0"
+		>
+			<IconComp :icon="hintIcon" color="#f7f" /> Tipp:
+			{{ gameStore.playerInfo.hints }}
+		</button>
+		<button
 			v-if="gameStore.tile?.isOwned && gameStore.tile.isJoker"
 			@click="$emit('setJokerLetter')"
 		>
-			<IconComp :icon="pencilSvg" color="#f60" /> Átírom a lapka betűjét</button
-		><HintsComp :isOpen="hintsAreOpen" @close="hintsAreOpen = false" />
+			<IconComp :icon="pencilSvg" color="#f60" /> Átírom a lapka betűjét
+		</button>
+		<HintsComp :isOpen="hintsAreOpen" @close="hintsAreOpen = false" />
 	</ButtonsComp>
 </template>
 

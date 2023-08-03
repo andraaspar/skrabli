@@ -8,9 +8,9 @@ function makeTile(letter: string) {
 	return withInterface<ITile>({
 		letter,
 		score: 1,
-		isOwned: undefined,
-		isJoker: undefined,
-		isLast: undefined,
+		isOwned: null,
+		isJoker: null,
+		isLast: null,
 	})
 }
 

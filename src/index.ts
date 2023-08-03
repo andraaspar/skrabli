@@ -8,6 +8,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import AppComp from './comp/AppComp.vue'
 import GameScreenComp from './comp/GameScreenComp.vue'
 import MenuScreenComp from './comp/MenuScreenComp.vue'
+import NewGameScreenComp from './comp/NewGameScreenComp.vue'
 import { useUiStore } from './store/useUiStore'
 
 declare global {
@@ -18,6 +19,7 @@ const router = createRouter({
 	history: createWebHashHistory(),
 	routes: [
 		{ name: 'menu', path: '/', component: MenuScreenComp },
+		{ name: 'new', path: '/new', component: NewGameScreenComp },
 		{ name: 'game', path: '/game', component: GameScreenComp },
 	],
 })

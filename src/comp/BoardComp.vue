@@ -3,10 +3,16 @@ import { FieldKind } from '@/model/FieldKind'
 import { useGameStore } from '../store/useGameStore'
 import TileComp from './TileComp.vue'
 import { Mode } from '@/model/Mode'
+import type { TBoard } from '@/model/TBoard'
+import { computed } from 'vue'
+
+const props = defineProps<{ board?: TBoard }>()
 
 const emit = defineEmits(['setJokerLetter'])
 
 const gameStore = useGameStore()
+
+const board = computed(() => props.board ?? gameStore.state.board)
 
 function fieldKindToString(fieldKind: FieldKind): string {
 	switch (fieldKind) {
@@ -17,6 +23,7 @@ function fieldKindToString(fieldKind: FieldKind): string {
 		case FieldKind.DoubleWord:
 			return '2×\nSzó'
 		case FieldKind.Start:
+		case FieldKind.StartNoBonus:
 			return 'Start'
 		case FieldKind.TripleLetter:
 			return '3×\nBetű'
@@ -55,7 +62,7 @@ function onFieldClicked(fieldIndex: number) {
 <template>
 	<div class="board">
 		<div
-			v-for="(field, fieldIndex) in gameStore.state.board"
+			v-for="(field, fieldIndex) in board"
 			:key="fieldIndex"
 			:class="{
 				'board-field': true,
@@ -64,6 +71,7 @@ function onFieldClicked(fieldIndex: number) {
 				'is-double-letter': field.kind === FieldKind.DoubleLetter,
 				'is-double-word': field.kind === FieldKind.DoubleWord,
 				'is-start': field.kind === FieldKind.Start,
+				'is-start-no-bonus': field.kind === FieldKind.StartNoBonus,
 				'is-triple-letter': field.kind === FieldKind.TripleLetter,
 				'is-triple-word': field.kind === FieldKind.TripleWord,
 			}"
@@ -114,6 +122,10 @@ function onFieldClicked(fieldIndex: number) {
 .board-field.is-start,
 .board-field.is-double-word {
 	background-color: indianred;
+}
+
+.board-field.is-start-no-bonus {
+	background-color: lch(40 50 120);
 }
 
 .board-field.is-triple-word {

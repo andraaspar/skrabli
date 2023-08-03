@@ -7,7 +7,7 @@ export function getPlacementInfo(
 	word: string,
 	originalHand: THand,
 ): IPlacementInfo {
-	const handIndices: number[] = []
+	const handIndices: (number | null)[] = []
 	const jokerLetters: (string | null)[] = []
 	const hand = originalHand.slice()
 	for (let i = 0; i < word.length; ) {
@@ -27,7 +27,7 @@ export function getPlacementInfo(
 			throw new Error(`[pr8z2l] No letter in hand matched.`)
 		}
 		const letterIndex = findLetterIndexInHand(letter, hand)
-		if (isNaN(letterIndex)) {
+		if (letterIndex == null) {
 			throw new Error(`[pr52z1] Letter not in hand: ${letter}`)
 		} else {
 			const tile = hand[letterIndex]

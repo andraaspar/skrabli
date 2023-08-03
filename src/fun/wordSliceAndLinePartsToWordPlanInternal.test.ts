@@ -10,9 +10,9 @@ function makeTile(letter: string) {
 	return withInterface<ITile>({
 		letter,
 		score: 1,
-		isOwned: undefined,
-		isJoker: undefined,
-		isLast: undefined,
+		isOwned: null,
+		isJoker: null,
+		isLast: null,
 	})
 }
 
@@ -39,9 +39,11 @@ it(`[pr5327]`, () => {
 			word: 'abcd',
 			fieldIndex: 0,
 			direction: Direction.Horizontal,
-			handIndices: [0, NaN, 1, 2],
+			handIndices: [0, null, 1, 2],
 			jokerLetters: [null, null, null, null],
 			score: NaN,
+			board: [],
+			hand: [],
 		}),
 	)
 })
@@ -62,9 +64,11 @@ it(`[ryb644]`, () => {
 			word: 'abcd',
 			fieldIndex: 0,
 			direction: Direction.Horizontal,
-			handIndices: [NaN, 1, NaN, NaN],
+			handIndices: [null, 1, null, null],
 			jokerLetters: [null, null, null, null],
 			score: NaN,
+			board: [],
+			hand: [],
 		}),
 	)
 })

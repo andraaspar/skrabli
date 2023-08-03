@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { deleteGameFromDb } from '@/fun/deleteGameFromDb'
 import { getNoError } from '@/fun/getNoError'
 import { loadGame } from '@/fun/loadGame'
 import { loadGameInfos } from '@/fun/loadGameInfos'
 import { useLoadAllWordsValidity } from '@/fun/useLoadAllWordsValidity'
 import { LocalStorageKey } from '@/model/LocalStorageKey'
-import { Mode } from '@/model/Mode'
 import type { TGameInfo } from '@/model/TGameInfo'
 import { useGameStore } from '@/store/useGameStore'
 import { useUiStore } from '@/store/useUiStore'
@@ -13,27 +13,29 @@ import updateIcon from 'bootstrap-icons/icons/arrow-up-square-fill.svg?raw'
 import infoIcon from 'bootstrap-icons/icons/info-circle-fill.svg?raw'
 import playIcon from 'bootstrap-icons/icons/play-circle-fill.svg?raw'
 import starIcon from 'bootstrap-icons/icons/star-fill.svg?raw'
+import deleteIcon from 'bootstrap-icons/icons/x-circle.svg?raw'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import logoSvg from '../asset/logo.svg?raw'
 import IconComp from './IconComp.vue'
+import ButtonsComp from './ButtonsComp.vue'
 
 const gameStore = useGameStore()
 const uiStore = useUiStore()
 const router = useRouter()
 
 async function continueGame() {
-	if (gameStore.state.mode === Mode.NotStarted) {
+	if (!gameStore.started) {
 		const gameId = localStorage[LocalStorageKey.LastGameId]
 		if (gameId) {
-			uiStore.lockWhile(async () => {
+			await uiStore.lockWhile(async () => {
 				const game = await loadGame(gameId)
 				if (!game) throw new Error(`[ry5mal] Game not found!`)
 				gameStore.$patch(game)
 			})
 		}
 	}
-	if (gameStore.state.mode !== Mode.NotStarted) {
+	if (gameStore.started) {
 		router.push({ name: 'game' })
 	}
 }
@@ -43,9 +45,7 @@ function continueableGameExists() {
 }
 
 function startNewGame() {
-	gameStore.newGame()
-	gameStore.startGame()
-	router.push({ name: 'game' })
+	router.push({ name: 'new' })
 }
 
 const allWordsValidityUpdated = ref(
@@ -75,6 +75,28 @@ async function loadGameById(id: string) {
 	router.push({ name: 'game' })
 }
 
+function getGameTitleById(id: string): string {
+	if (!gameInfos.value) return ''
+	const gameInfo = gameInfos.value.find((it) => it.id === id)
+	return gameInfo?.name ?? ''
+}
+
+async function deleteGameById(id: string) {
+	uiStore.confirm = {
+		title: `Törlés`,
+		message: `Biztosan töröljem a játékot?\n${getGameTitleById(id)}`,
+		ok: async () => {
+			await uiStore.lockWhile(async () => {
+				await deleteGameFromDb(id)
+				gameInfos.value = await loadGameInfos()
+			})
+			if (gameStore.id === id) {
+				gameStore.$reset()
+			}
+		},
+	}
+}
+
 async function update() {
 	if (uiStore.updateServiceWorker) {
 		await uiStore.lockWhile(uiStore.updateServiceWorker.update)
@@ -102,31 +124,31 @@ function wordsValidityExpired() {
 			</div>
 			<div class="menu">
 				<IconComp :icon="logoSvg" class="logo" />
-				<div
-					class="menu-buttons"
-					v-if="
-						gameStore.state.mode !== Mode.NotStarted || continueableGameExists()
-					"
-				>
+				<ButtonsComp v-if="gameStore.started || continueableGameExists()">
 					<button @click="continueGame">
-						<IconComp :icon="playIcon" color="#0bd" /> Folytatás
+						<IconComp :icon="playIcon" color="lch(80 100 260)" /> Folytatás
 					</button>
-				</div>
+				</ButtonsComp>
 				<div class="menu-buttons" v-if="gameInfos.length > 0">
-					<button
+					<div
+						class="button-row"
 						v-for="gameInfo of gameInfos"
 						:key="gameInfo.id"
-						@click="loadGameById(gameInfo.id)"
 					>
-						{{ gameInfo.name }}
-					</button>
+						<button class="flex" @click="loadGameById(gameInfo.id)">
+							{{ gameInfo.name }}
+						</button>
+						<button @click="deleteGameById(gameInfo.id)">
+							<IconComp :icon="deleteIcon" color="lch(80 100 30)" />
+						</button>
+					</div>
 				</div>
-				<div class="menu-buttons">
+				<ButtonsComp>
 					<button @click="startNewGame">
-						<IconComp :icon="starIcon" color="#fc0" /> Új játék
+						<IconComp :icon="starIcon" color="lch(80 100 70)" /> Új játék
 					</button>
-				</div>
-				<div class="menu-buttons">
+				</ButtonsComp>
+				<ButtonsComp>
 					<button
 						:class="{ hidden: wordsValidityExpired }"
 						@click="loadAllWordsValidity"
@@ -135,7 +157,7 @@ function wordsValidityExpired() {
 						<IconComp :icon="refreshIcon" color="#5f3" />
 						Frissítsd a szavakat
 					</button>
-				</div>
+				</ButtonsComp>
 				<div :class="{ remark: true, hidden: !uiStore.offlineReady }">
 					<IconComp :icon="infoIcon" /> Internet nélkül is működöm!
 				</div>
@@ -165,6 +187,10 @@ function wordsValidityExpired() {
 	flex-flow: column;
 	gap: var(--gap);
 }
+.button-row {
+	display: flex;
+	gap: var(--gap);
+}
 
 .top-buttons {
 	flex: 0 0 auto;
@@ -190,6 +216,10 @@ function wordsValidityExpired() {
 	color: #ffffff55;
 	padding: var(--button-padding);
 	text-align: center;
-	font-size: 0.75em;
+	font-size: 0.8em;
+}
+
+.flex {
+	flex: 1 1 auto;
 }
 </style>

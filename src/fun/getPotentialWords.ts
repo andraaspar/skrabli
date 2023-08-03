@@ -4,10 +4,14 @@ import type { IWordPlan } from '../model/IWordPlan'
 import type { TBoard } from '../model/TBoard'
 import type { THand } from '../model/THand'
 import { boardIsEmpty } from './boardIsEmpty'
+import { getAllOwnedWords } from './getAllOwnedWords'
 import { getLineIndex } from './getLineIndex'
+import { getMoveScore } from './getMoveScore'
 import { getFieldIndexOffset } from './getNextFieldIndex'
 import { getPotentialStartingWords } from './getPotentialStartingWords'
 import { getPotentialWordsInLine } from './getPotentialWordsInLine'
+import { getWordInfo } from './getWordInfo'
+import { isWordPlanBingo } from './isWordPlanBingo'
 import { replaceHandIndexInWordPlan } from './replaceHandIndexInWordPlan'
 import { theOtherDirection } from './theOtherDirection'
 import { wordPlanHash } from './wordPlanHash'
@@ -57,7 +61,9 @@ export function getPotentialWords(options: {
 		let crossWordPlans: IWordPlan[] = []
 		for (const wordPlan of wordPlansMap.values()) {
 			// Find the number of played tiles
-			const tilesToPlace = wordPlan.handIndices.filter((tile) => !isNaN(tile))
+			const tilesToPlace = wordPlan.handIndices.filter(
+				(tile): tile is number => tile != null,
+			)
 			// Only check for cross tiles if there was but a single tile played and
 			// there are no neighboring tiles in the cross direction.
 			if (tilesToPlace.length === 1) {
@@ -95,6 +101,19 @@ export function getPotentialWords(options: {
 							placedTileFieldIndex,
 							tilesToPlace[0],
 							boardSize,
+						)
+						// Redo board and hand to make it a single move
+						newPlan.board = wordPlanToBoard(board, boardSize, hand, newPlan)
+						newPlan.hand = wordPlanToHand(hand, newPlan)
+						const wordInfo = getWordInfo(newPlan.board, boardSize)
+						const allOwnedWords = getAllOwnedWords(
+							newPlan.board,
+							boardSize,
+							wordInfo,
+						)
+						newPlan.score = getMoveScore(
+							allOwnedWords,
+							isWordPlanBingo(newPlan),
 						)
 					}
 					crossWordPlans = crossWordPlans.concat(newPlans)

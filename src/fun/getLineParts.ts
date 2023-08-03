@@ -5,6 +5,9 @@ import { isNumber } from './isNumber'
 import { withInterface } from './withInterface'
 
 export function getLineParts(line: ReadonlyArray<IField>) {
+	if (line.find((it) => it == null)) {
+		throw new Error(`[ryt8th] ` + JSON.stringify(line))
+	}
 	const parts: TLineParts = []
 	let wasGap = false
 	let lastGapStartIndex = -1

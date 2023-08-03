@@ -1,9 +1,11 @@
 import { AiLevel } from '@/model/AiLevel'
-import type { IPlayerInfo } from '@/model/IPlayerInfo'
+import type { IPlayerInfo, IPlayerInfo1 } from '@/model/IPlayerInfo'
 import { isString } from './isString'
 import { listed } from './listed'
 
-export function gameNameFromPlayerInfos(playerInfos: IPlayerInfo[]): string {
+export function gameNameFromPlayerInfos(
+	playerInfos: (IPlayerInfo | IPlayerInfo1)[],
+): string {
 	const humans = playerInfos.filter((p) => p.aiLevel === AiLevel.Human)
 	const easyBots = playerInfos.filter((p) => p.aiLevel === AiLevel.Easy)
 	const mediumBots = playerInfos.filter((p) => p.aiLevel === AiLevel.Medium)
@@ -13,7 +15,7 @@ export function gameNameFromPlayerInfos(playerInfos: IPlayerInfo[]): string {
 		easyBots.length > 0 && `${easyBots.length} könnyű`,
 		mediumBots.length > 0 && `${mediumBots.length} közepes`,
 		hardBots.length > 0 && `${hardBots.length} nehéz`,
-		ultimateBots.length > 0 && `${ultimateBots.length} végzetes`,
+		ultimateBots.length > 0 && `${ultimateBots.length} végső`,
 	].filter(isString)
 	const botsString =
 		botsStringBase.length === 0

@@ -9,6 +9,9 @@ import DialogHeaderComp from './DialogHeaderComp.vue'
 import DialogBodyComp from './DialogBodyComp.vue'
 import { onMounted, ref } from 'vue'
 import { migrateGameFromLocalStorage } from '@/fun/migrateGameFromLocalStorage'
+import ButtonsComp from './ButtonsComp.vue'
+import okIcon from 'bootstrap-icons/icons/check-circle-fill.svg?raw'
+import cancelIcon from 'bootstrap-icons/icons/x-circle.svg?raw'
 
 const queryClient = useQueryClient()
 queryClient.setQueryDefaults([], {
@@ -29,6 +32,19 @@ onMounted(async () => {
 		isMigrated.value = true
 	}
 })
+
+function acceptConfirm() {
+	try {
+		uiStore.confirm?.ok()
+	} catch (e) {
+		console.error(e)
+	}
+	uiStore.confirm = undefined
+}
+
+function cancelConfirm() {
+	uiStore.confirm = undefined
+}
 </script>
 
 <template>
@@ -43,7 +59,29 @@ onMounted(async () => {
 			<ErrorComp :error="uiStore.error" />
 		</DialogBodyComp>
 	</DialogComp>
-	<DialogComp :isOpen="uiStore.isLocked || !isMigrated">
+	<DialogComp :isOpen="uiStore.isLocked || !isMigrated" :openDelay="1">
 		<IconComp :icon="loadingSvg" />
 	</DialogComp>
+	<DialogComp :isOpen="!!uiStore.confirm">
+		<DialogHeaderComp @close="cancelConfirm">{{
+			uiStore.confirm?.title
+		}}</DialogHeaderComp>
+		<DialogBodyComp>
+			<div class="message">{{ uiStore.confirm?.message }}</div>
+			<ButtonsComp>
+				<button @click="acceptConfirm" class="green">
+					<IconComp :icon="okIcon" /> Rendben
+				</button>
+				<button @click="cancelConfirm" class="red">
+					<IconComp :icon="cancelIcon" /> Mégse
+				</button>
+			</ButtonsComp>
+		</DialogBodyComp>
+	</DialogComp>
 </template>
+
+<style scoped>
+.message {
+	white-space: pre-wrap;
+}
+</style>

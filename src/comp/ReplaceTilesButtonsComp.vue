@@ -9,22 +9,6 @@ import cancelIcon from 'bootstrap-icons/icons/x-circle.svg?raw'
 
 const gameStore = useGameStore()
 
-function replaceTiles() {
-	const hand = gameStore.state.hands[gameStore.state.playerIndex!]
-	const tilesToReplace = hand.filter(
-		(tile, aHandIndex) => gameStore.state.handIndicesToReplace[aHandIndex],
-	) as ITile[]
-	gameStore.removeTilesToReplaceFromHand()
-	gameStore.deselectTilesToReplace()
-	gameStore.fillHand()
-	gameStore.addTilesToBag(tilesToReplace)
-	gameStore.resetSkipCount()
-	gameStore.setMode(Mode.PlaceTile)
-	gameStore.nextPlayer()
-	gameStore.setUndoPoint()
-	gameStore.saveGame()
-}
-
 function cancel() {
 	gameStore.deselectTilesToReplace()
 	gameStore.setMode(Mode.PlaceTile)
@@ -33,7 +17,7 @@ function cancel() {
 
 <template>
 	<ButtonsComp>
-		<button @click="replaceTiles">
+		<button @click="gameStore.swap">
 			<IconComp :icon="changeIcon" color="#0df" /> Csere
 		</button>
 		<button @click="cancel">

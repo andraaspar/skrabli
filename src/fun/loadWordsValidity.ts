@@ -10,12 +10,12 @@ export async function loadWordsValidity(
 	// const wordsToCheck = new Set<string>()
 	for (const word of words) {
 		if (word.length < 2) {
-			console.warn(`[rxhewt] Not a word:`, word)
+			// console.warn(`[rxhewt] Not a word:`, word)
 		} else if (word.includes(' ')) {
-			console.log(`[rxhf5v] Word has blank joker:`, word)
+			// console.log(`[rxhf5v] Word has blank joker:`, word)
 			invalidWords.add(word)
 		} else if (knownValidWords.includes(word)) {
-			console.log(`[rxhf6r] Word is in list:`, word)
+			// console.log(`[rxhf6r] Word is in list:`, word)
 			validWords.add(word)
 		}
 		// else if (LETTERS.find((letter) => letter.letter === word)) {

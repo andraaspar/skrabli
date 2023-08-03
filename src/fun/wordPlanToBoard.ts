@@ -15,10 +15,10 @@ export function wordPlanToBoard(
 	const boardDraft = jsonClone(board)
 	disownTiles(boardDraft)
 	const tiles = wordPlan.handIndices.map((handIndex) =>
-		isNaN(handIndex) ? null : jsonClone(hand[handIndex]),
+		handIndex == null ? null : jsonClone(hand[handIndex]),
 	)
 	for (let tileIndex = 0; tileIndex < tiles.length; tileIndex++) {
-		const tile = tiles[tileIndex]
+		const tile = jsonClone(tiles[tileIndex])
 		if (tile) {
 			const fieldIndex =
 				wordPlan.fieldIndex +
@@ -27,7 +27,7 @@ export function wordPlanToBoard(
 			field.tile = tile
 			tile.isOwned = true
 			if (tile.isJoker) {
-				tile.letter = wordPlan.jokerLetters[fieldIndex]!
+				tile.letter = wordPlan.jokerLetters[tileIndex]!
 			}
 		}
 	}

@@ -1,3 +1,4 @@
+import type { IConfirm } from '@/model/IConfirm'
 import { defineStore } from 'pinia'
 
 interface IUiState {
@@ -5,6 +6,7 @@ interface IUiState {
 	error: string
 	updateServiceWorker: undefined | { update: () => Promise<void> }
 	offlineReady: boolean
+	confirm: IConfirm | undefined
 }
 
 export const useUiStore = defineStore('ui', {
@@ -13,6 +15,7 @@ export const useUiStore = defineStore('ui', {
 		error: '',
 		updateServiceWorker: undefined,
 		offlineReady: false,
+		confirm: undefined,
 	}),
 	getters: {
 		isLocked(): boolean {

@@ -3,17 +3,19 @@ import { Direction } from '../model/Direction'
 import type { IWordPlan } from '../model/IWordPlan'
 import type { TBoard } from '../model/TBoard'
 import type { THand } from '../model/THand'
+import { getAllOwnedWords } from './getAllOwnedWords'
 import { getLettersInHandRe } from './getLettersInHandRe'
 import { getLine } from './getLine'
 import { getLineParts } from './getLineParts'
-import { getFieldIndexOffset } from './getNextFieldIndex'
-import { getWordAt } from './getWordAt'
+import { getMoveScore } from './getMoveScore'
+import { getWordInfo } from './getWordInfo'
 import { getWordSlices } from './getWordSlices'
 import { getWordString } from './getWordString'
+import { isWordPlanBingo } from './isWordPlanBingo'
 import { linePartsToRegExpStrings } from './linePartsToRegExpStrings'
-import { theOtherDirection } from './theOtherDirection'
 import { wordPlanIncludesFieldIndex } from './wordPlanIncludesFieldIndex'
 import { wordPlanToBoard } from './wordPlanToBoard'
+import { wordPlanToHand } from './wordPlanToHand'
 import { wordSliceAndLinePartsToWordPlan } from './wordSliceAndLinePartsToWordPlan'
 
 export function getPotentialWordsInLine({
@@ -75,31 +77,44 @@ export function getPotentialWordsInLine({
 					return false
 				}
 			}
-			const boardPlan = wordPlanToBoard(board, boardSize, hand, wordPlan)
-			for (
-				let fieldIndex = wordPlan.fieldIndex,
-					lastFieldIndex =
-						fieldIndex +
-						wordPlan.handIndices.length *
-							getFieldIndexOffset(wordPlan.direction, boardSize);
-				fieldIndex < lastFieldIndex;
-				fieldIndex += getFieldIndexOffset(wordPlan.direction, boardSize)
-			) {
-				if (!boardPlan[fieldIndex]?.tile?.isOwned) {
-					// Don't check cross words that the player does not own: avoid issue
-					// with unknown words already on board
-					continue
-				}
-				const word = getWordAt(
-					boardPlan,
-					boardSize,
-					fieldIndex,
-					theOtherDirection(wordPlan.direction),
-				)
-				if (word.word.length > 1 && !words.includes(getWordString(word.word))) {
+			wordPlan.board = wordPlanToBoard(board, boardSize, hand, wordPlan)
+			// for (
+			// 	let fieldIndex = wordPlan.fieldIndex,
+			// 		lastFieldIndex =
+			// 			fieldIndex +
+			// 			wordPlan.handIndices.length *
+			// 				getFieldIndexOffset(wordPlan.direction, boardSize);
+			// 	fieldIndex < lastFieldIndex;
+			// 	fieldIndex += getFieldIndexOffset(wordPlan.direction, boardSize)
+			// ) {
+			// 	if (!boardWithWord[fieldIndex]?.tile?.isOwned) {
+			// 		// Don't check cross words that the player does not own: avoid issue
+			// 		// with unknown words already on board
+			// 		continue
+			// 	}
+			// 	const word = getWordAt(
+			// 		boardWithWord,
+			// 		boardSize,
+			// 		fieldIndex,
+			// 		theOtherDirection(wordPlan.direction),
+			// 	)
+			// 	if (word.word.length > 1 && !words.includes(getWordString(word.word))) {
+			// 		return false
+			// 	}
+			// }
+			const wordInfo = getWordInfo(wordPlan.board, boardSize)
+			const allOwnedWords = getAllOwnedWords(
+				wordPlan.board,
+				boardSize,
+				wordInfo,
+			)
+			for (const word of allOwnedWords) {
+				if (word.length > 1 && !words.includes(getWordString(word))) {
 					return false
 				}
 			}
+			wordPlan.score = getMoveScore(allOwnedWords, isWordPlanBingo(wordPlan))
+			wordPlan.hand = wordPlanToHand(hand, wordPlan)
 			return true
 		})
 }

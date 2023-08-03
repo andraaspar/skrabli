@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { MoveError } from '@/model/MoveError'
 import { useGameStore } from '@/store/useGameStore'
-import IconComp from './IconComp.vue'
-import errorIcon from 'bootstrap-icons/icons/exclamation-triangle-fill.svg?raw'
+import WarningComp from './WarningComp.vue'
 
 const gameStore = useGameStore()
 
@@ -28,9 +27,11 @@ function errorToString(error: MoveError) {
 
 <template>
 	<div v-if="gameStore.moveErrors.length > 0" class="errors">
-		<div v-for="(error, index) of gameStore.moveErrors" :key="index">
-			<IconComp :icon="errorIcon" color="#f70" /> {{ errorToString(error) }}
-		</div>
+		<WarningComp
+			v-for="(error, index) of gameStore.moveErrors"
+			:key="index"
+			:warning="errorToString(error)"
+		/>
 	</div>
 </template>
 
@@ -40,8 +41,5 @@ function errorToString(error: MoveError) {
 	flex-flow: column;
 	padding: var(--gap);
 	gap: var(--gap);
-	text-align: center;
-	color: #f70;
-	font-weight: bold;
 }
 </style>

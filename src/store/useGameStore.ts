@@ -3,14 +3,18 @@ import { findStartFieldIndex } from '@/fun/findStartFieldIndex'
 import { gameNameFromPlayerInfos } from '@/fun/gameNameFromPlayerInfos'
 import { getAllOwnedWords } from '@/fun/getAllOwnedWords'
 import { getHandValue } from '@/fun/getHandValue'
+import { getMoveByAiLevel } from '@/fun/getMoveByAiLevel'
 import { getMoveErrors } from '@/fun/getMoveErrors'
 import { getMoveScore } from '@/fun/getMoveScore'
 import { getWordInfo } from '@/fun/getWordInfo'
 import { getWordString } from '@/fun/getWordString'
 import { jsonClone } from '@/fun/jsonClone'
 import { loadGame } from '@/fun/loadGame'
+import { loadHints } from '@/fun/loadHints'
+import { range } from '@/fun/range'
 import { storeGameToDb } from '@/fun/storeGameToDb'
 import { AiLevel } from '@/model/AiLevel'
+import { HAND_SIZE } from '@/model/Constants'
 import type { IGame } from '@/model/IGame'
 import type { IPlayerInfo } from '@/model/IPlayerInfo'
 import type { IValidAndInvalidWords } from '@/model/IValidAndInvalidWords'
@@ -19,95 +23,58 @@ import { defineStore } from 'pinia'
 import { v4 } from 'uuid'
 import { getHandTileCount } from '../fun/getHandTileCount'
 import { getWordAt } from '../fun/getWordAt'
-import { range } from '../fun/range'
-import { withInterface } from '../fun/withInterface'
-import { BOARD_SIZE, HAND_SIZE } from '../model/Constants'
 import { Direction } from '../model/Direction'
-import { FieldKind } from '../model/FieldKind'
 import type { IField } from '../model/IField'
 import type { IGameState } from '../model/IGameState'
 import type { ITile } from '../model/ITile'
 import type { IWordInfo } from '../model/IWordInfo'
-import { LETTERS } from '../model/LETTERS'
 import { Mode } from '../model/Mode'
 import { type THand } from '../model/THand'
 import { useUiStore } from './useUiStore'
 
 export const useGameStore = defineStore('game', {
 	state: (): IGame => {
-		const playerInfos: IPlayerInfo[] = [
-			{
-				aiLevel: AiLevel.Human,
-				name: '1. Játékos',
-			},
-			{
-				aiLevel: AiLevel.Human,
-				name: '2. Játékos',
-			},
-		]
 		return {
+			version: 2,
 			id: v4(),
-			name: gameNameFromPlayerInfos(playerInfos),
-			playerInfos: playerInfos,
+			name: '',
+			playerInfos: [],
 			timestamp: Date.now(),
-			states: [
-				{
-					mode: Mode.NotStarted,
-					playerScores: playerInfos.map(() => 0),
-					hands: playerInfos.map(() => range(HAND_SIZE).map(() => null)),
-					playerIndex: null,
-					fieldIndex: null,
-					handIndex: null,
-					startingHandCount: null,
-					skipCount: null,
-					handIndicesToReplace: range(HAND_SIZE).map(() => false),
-					board: `
-W--l---W---l--W
--w---L---L---w-
---w---l-l---w--
-l--w---l---w--l
-----w-----w----
--L---L---L---L-
---l---l-l---l--
-W--l---s---l--W
---l---l-l---l--
--L---L---L---L-
-----w-----w----
-l--w---l---w--l
---w---l-l---w--
--w---L---L---w-
-W--l---W---l--W
-`
-						.trim()
-						.split(/\n/)
-						.flatMap((row) =>
-							row.split('').map((letter) =>
-								withInterface<IField>({
-									kind: letter as FieldKind,
-									tile: null,
-								}),
-							),
-						),
-					boardSize: { width: BOARD_SIZE, height: BOARD_SIZE },
-					bag: LETTERS.flatMap(({ count, letter, score }) =>
-						range(count).map(() =>
-							withInterface<ITile>({
-								letter,
-								score,
-								isOwned: undefined,
-								isJoker: letter === ' ' || undefined,
-								isLast: undefined,
-							}),
-						),
-					),
-				},
-			],
+			states: [],
 		}
 	},
 	getters: {
-		state(): IGameState {
-			return this.states.at(-1)!
+		started(): boolean {
+			return this.states.length > 0
 		},
+
+		state(): IGameState {
+			return (
+				this.states.at(-1) ?? {
+					bag: [],
+					board: [],
+					boardSize: { height: 0, width: 0 },
+					fieldIndex: null,
+					handIndex: null,
+					handIndicesToReplace: [],
+					hands: [],
+					mode: Mode.NotStarted,
+					playerIndex: null,
+					playerScores: [],
+					skipCount: null,
+					startingHandCount: null,
+				}
+			)
+		},
+
+		playerInfo(): IPlayerInfo {
+			return this.playerInfos.at(this.state.playerIndex!)!
+		},
+
+		playerScore(): number {
+			return this.state.playerScores.at(this.state.playerIndex!)!
+		},
+
 		wordInfo(): IWordInfo {
 			return getWordInfo(this.state.board, this.state.boardSize)
 		},
@@ -242,6 +209,10 @@ W--l---W---l--W
 			const last = winnerNames[winnerNames.length - 1]
 			const rest = winnerNames.slice(0, winnerNames.length - 1)
 			return rest.length ? `${rest.join(', ')} és ${last}` : last
+		},
+
+		canSwap(): boolean {
+			return this.state.bag.length >= HAND_SIZE
 		},
 	},
 	actions: {
@@ -379,14 +350,6 @@ W--l---W---l--W
 			})
 		},
 
-		newGame() {
-			const names = this.playerInfos.map((player) => player.name)
-			this.$reset()
-			names.forEach((name, playerIndex) => {
-				this.playerInfos[playerIndex].name = name
-			})
-		},
-
 		startGame() {
 			this.name = gameNameFromPlayerInfos(this.playerInfos)
 			this.playerInfos.forEach(() => {
@@ -395,8 +358,52 @@ W--l---W---l--W
 			})
 			this.state.mode = Mode.PlaceTile
 			this.nextPlayer()
-			this.setUndoPoint()
-			this.saveGame()
+			this.beginTurn()
+		},
+
+		finishMove() {
+			this.score()
+			this.disownTiles()
+			this.resetSkipCount()
+			if (this.state.bag.length || this.handCount) {
+				this.fillHand()
+				this.nextPlayer()
+				this.beginTurn()
+			} else {
+				this.endGame()
+			}
+		},
+
+		async beginTurn() {
+			if (this.playerInfo.aiLevel === AiLevel.Human) {
+				this.setUndoPoint()
+				this.saveGame()
+			} else {
+				const uiStore = useUiStore()
+				await uiStore.lockWhile(this.aiMove)
+			}
+		},
+
+		async aiMove() {
+			const movesHV = await loadHints({
+				board: jsonClone(this.state.board),
+				boardSize: jsonClone(this.state.boardSize),
+				hand: jsonClone(this.hand!),
+			})
+			const moves = [...movesHV.horizontal, ...movesHV.vertical]
+			if (moves.length === 0) {
+				if (this.canSwap) {
+					this.state.handIndicesToReplace = range(HAND_SIZE).map((it) => true)
+					this.swap()
+				} else {
+					this.skip()
+				}
+			} else {
+				const move = getMoveByAiLevel(moves, this.playerInfo.aiLevel)
+				this.state.board = move.board
+				this.state.hands[this.state.playerIndex!] = move.hand
+				this.finishMove()
+			}
 		},
 
 		selectHand(handIndexToSelect: number): void {
@@ -428,6 +435,21 @@ W--l---W---l--W
 			}
 		},
 
+		swap() {
+			const hand = this.hand!
+			const tilesToReplace = hand.filter(
+				(tile, aHandIndex) => this.state.handIndicesToReplace[aHandIndex],
+			) as ITile[]
+			this.removeTilesToReplaceFromHand()
+			this.deselectTilesToReplace()
+			this.fillHand()
+			this.addTilesToBag(tilesToReplace)
+			this.resetSkipCount()
+			this.setMode(Mode.PlaceTile)
+			this.nextPlayer()
+			this.beginTurn()
+		},
+
 		skip() {
 			this.incrementSkipCount()
 			if ((this.state.skipCount || 0) >= this.playerInfos.length * 2) {
@@ -435,8 +457,7 @@ W--l---W---l--W
 			} else {
 				this.collectTiles()
 				this.nextPlayer()
-				this.setUndoPoint()
-				this.saveGame()
+				this.beginTurn()
 			}
 		},
 
@@ -453,7 +474,12 @@ W--l---W---l--W
 
 		async saveGame() {
 			const uiStore = useUiStore()
-			await uiStore.lockWhile(() => storeGameToDb(this.$state))
+			await uiStore.lockWhile(async () => {
+				await storeGameToDb(this.$state)
+				// await new Promise<void>((resolve, reject) => {
+				// 	setTimeout(resolve, 3000)
+				// })
+			})
 		},
 
 		async loadGame(id: string) {
@@ -468,5 +494,5 @@ W--l---W---l--W
 })
 
 // if (import.meta.hot) {
-// 	import.meta.hot.accept(acceptHMRUpdate(useGameStore, import.meta.hot))
+// 	import.meta.hot.accept(acceptHMRUpdate(usethis, import.meta.hot))
 // }

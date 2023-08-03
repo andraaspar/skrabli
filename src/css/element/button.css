@@ -41,19 +41,32 @@ button:disabled,
 
 button.green,
 .button.green {
-	background: rgba(85, 255, 51, 0.4);
-	color: #afff9f;
+	background: lch(65 100 170 / 0.5);
 }
 
 button.green:hover,
 .button.green:hover {
-	background: rgba(85, 255, 51, 0.5);
-	color: white;
+	background: lch(80 100 170 / 0.5);
 }
 
 button.green:active,
 .button.green:active {
-	background: rgba(85, 255, 51, 0.3);
+	background: lch(60 100 170 / 0.5);
+}
+
+button.red,
+.button.red {
+	background: lch(65 100 20 / 0.5);
+}
+
+button.red:hover,
+.button.red:hover {
+	background: lch(80 100 20 / 0.5);
+}
+
+button.red:active,
+.button.red:active {
+	background: lch(60 100 20 / 0.5);
 }
 
 button.hidden,
