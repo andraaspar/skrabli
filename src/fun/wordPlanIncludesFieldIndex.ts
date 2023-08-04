@@ -9,7 +9,7 @@ export function wordPlanIncludesFieldIndex(
 ): boolean {
 	const fieldIndexOffset = getFieldIndexOffset(wordPlan.direction, boardSize)
 	for (let i = 0; i < wordPlan.handIndices.length; i++) {
-		const aFieldIndex = fieldIndex + i * fieldIndexOffset
+		const aFieldIndex = wordPlan.fieldIndex + i * fieldIndexOffset
 		if (aFieldIndex === fieldIndex) return true
 	}
 	return false

@@ -21,12 +21,17 @@ import { wordPlanIncludesFieldIndex } from './wordPlanIncludesFieldIndex'
 import { wordPlanToBoard } from './wordPlanToBoard'
 import { wordPlanToHand } from './wordPlanToHand'
 
-export function getPotentialStartingWords(
-	words: string[],
-	board: TBoard,
-	boardSize: IBoardSize,
-	hand: THand,
-): IWordPlan[] {
+export function getPotentialStartingWords({
+	words,
+	board,
+	boardSize,
+	hand,
+}: {
+	words: string[]
+	board: TBoard
+	boardSize: IBoardSize
+	hand: THand
+}): IWordPlan[] {
 	const startFieldIndex = findStartFieldIndex(board)
 	const startColIndex = getColumnIndex(startFieldIndex, boardSize)
 	const startCol = getColumnLine(board, boardSize, startColIndex)

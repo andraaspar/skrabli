@@ -29,7 +29,7 @@ export function getPotentialWords(options: {
 	const wordPlansMap = new Map<string, IWordPlan>()
 
 	if (boardIsEmpty(board)) {
-		getPotentialStartingWords(words, board, boardSize, hand).forEach(
+		getPotentialStartingWords({ words, board, boardSize, hand }).forEach(
 			(wordPlan) => {
 				wordPlansMap.set(wordPlanHash(wordPlan), wordPlan)
 			},

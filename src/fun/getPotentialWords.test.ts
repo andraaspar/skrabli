@@ -1,12 +1,9 @@
 import { Direction } from '@/model/Direction'
-import { FieldKind } from '@/model/FieldKind'
-import type { IBoardSize } from '@/model/IBoardSize'
-import type { IField } from '@/model/IField'
-import type { ITile } from '@/model/ITile'
 import type { IWordPlan } from '@/model/IWordPlan'
-import type { TBoard } from '@/model/TBoard'
 import { expect, it } from 'vitest'
 import { getPotentialWords } from './getPotentialWords'
+import { makeBoard } from './test/makeBoard'
+import { makeTile } from './test/makeTile'
 import { withInterface } from './withInterface'
 
 it('[ryb77r]', () => {
@@ -166,33 +163,3 @@ R--
 		}),
 	])
 })
-
-function makeBoard(s: string) {
-	const lines = s.trim().split('\n')
-	const boardSize: IBoardSize = {
-		height: lines.length,
-		width: lines[0].length,
-	}
-	const board: TBoard = lines
-		.join('')
-		.split('')
-		.map((letter) => makeField(letter === '-' ? null : letter))
-	return { boardSize, board }
-}
-
-function makeField(letter: string | null) {
-	return withInterface<IField>({
-		kind: FieldKind.Normal,
-		tile: letter ? makeTile(letter) : null,
-	})
-}
-
-function makeTile(letter: string) {
-	return withInterface<ITile>({
-		letter: letter.toLowerCase(),
-		score: 1,
-		isOwned: letter === letter.toLowerCase() ? null : true,
-		isJoker: null,
-		isLast: null,
-	})
-}

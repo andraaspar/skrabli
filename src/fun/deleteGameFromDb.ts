@@ -11,12 +11,12 @@ export async function deleteGameFromDb(gameId: string): Promise<void> {
 		try {
 			if (localStorage[LocalStorageKey.LastGameId] === gameId) {
 				localStorage.removeItem(LocalStorageKey.LastGameId)
-			} else {
+			} /*  else {
 				console.warn(`[ryb0sr]`, {
 					gameId,
 					LastGameId: localStorage[LocalStorageKey.LastGameId],
 				})
-			}
+			} */
 		} catch (e) {
 			// Ignore error
 		}
