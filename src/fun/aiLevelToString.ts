@@ -10,6 +10,8 @@ export function aiLevelToString(aiLevel: AiLevel): string {
 			return `közepes robot`
 		case AiLevel.Hard:
 			return `nehéz robot`
+		case AiLevel.VeryHard:
+			return `durva robot`
 		case AiLevel.Ultimate:
 			return `végső robot`
 	}

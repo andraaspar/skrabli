@@ -10,6 +10,7 @@ export function aiLevelToColor(aiLevel: AiLevel): string {
 			return `lch(80 100 60)`
 		case AiLevel.Hard:
 			return `lch(80 100 20)`
+		case AiLevel.VeryHard:
 		case AiLevel.Ultimate:
 			return `lch(80 100 320)`
 	}

@@ -10,6 +10,7 @@ export function aiLevelToIcon(aiLevel: AiLevel): string {
 		case AiLevel.Easy:
 		case AiLevel.Medium:
 		case AiLevel.Hard:
+		case AiLevel.VeryHard:
 			return cpuIcon
 		case AiLevel.Ultimate:
 			return cpuFullIcon

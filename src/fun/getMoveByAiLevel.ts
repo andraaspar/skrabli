@@ -27,6 +27,8 @@ export function getMoveByAiLevel(
 			return moves.find((move) => move.score < min + range * 0.25)!
 		case AiLevel.Hard:
 			return moves.find((move) => move.score < min + range * 0.5)!
+		case AiLevel.VeryHard:
+			return moves.find((move) => move.score < min + range * 0.75)!
 		case AiLevel.Ultimate:
 			return moves[0]
 	}

@@ -3,5 +3,6 @@ export enum AiLevel {
 	Easy,
 	Medium,
 	Hard,
+	VeryHard,
 	Ultimate,
 }

@@ -59,6 +59,7 @@ const LEVELS = [
 	AiLevel.Easy,
 	AiLevel.Medium,
 	AiLevel.Hard,
+	AiLevel.VeryHard,
 	AiLevel.Ultimate,
 ]
 
