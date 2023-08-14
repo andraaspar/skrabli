@@ -9,14 +9,16 @@ import { withInterface } from './withInterface'
 it(`[prckst]`, () => {
 	const { board, boardSize } = makeBoard(`t-`)
 	expect(
-		getPotentialWordsInLine({
-			words: ['én', 'te', 'ő'],
-			board,
-			boardSize,
-			lineIndex: 0,
-			direction: Direction.Horizontal,
-			hand: [makeTile('e')],
-		}),
+		Array.from(
+			getPotentialWordsInLine({
+				words: ['én', 'te', 'ő'],
+				board,
+				boardSize,
+				lineIndex: 0,
+				direction: Direction.Horizontal,
+				hand: [makeTile('e')],
+			}).values(),
+		),
 	).toEqual([
 		withInterface<IWordPlan>({
 			word: 'te',
@@ -33,14 +35,16 @@ it(`[prckst]`, () => {
 it(`[prcm7b]`, () => {
 	const { board, boardSize } = makeBoard(`-t-`)
 	expect(
-		getPotentialWordsInLine({
-			words: ['én', 'te', 'ő'],
-			board,
-			boardSize,
-			lineIndex: 0,
-			direction: Direction.Horizontal,
-			hand: [makeTile('e')],
-		}),
+		Array.from(
+			getPotentialWordsInLine({
+				words: ['én', 'te', 'ő'],
+				board,
+				boardSize,
+				lineIndex: 0,
+				direction: Direction.Horizontal,
+				hand: [makeTile('e')],
+			}).values(),
+		),
 	).toEqual([
 		withInterface<IWordPlan>({
 			word: 'te',
@@ -57,14 +61,16 @@ it(`[prcm7b]`, () => {
 it(`[prcm7i]`, () => {
 	const { board, boardSize } = makeBoard(`--t`)
 	expect(
-		getPotentialWordsInLine({
-			words: ['reggel', 'dél', 'est'],
-			board,
-			boardSize,
-			lineIndex: 0,
-			direction: Direction.Horizontal,
-			hand: [makeTile('e'), makeTile('s')],
-		}),
+		Array.from(
+			getPotentialWordsInLine({
+				words: ['reggel', 'dél', 'est'],
+				board,
+				boardSize,
+				lineIndex: 0,
+				direction: Direction.Horizontal,
+				hand: [makeTile('e'), makeTile('s')],
+			}).values(),
+		),
 	).toEqual([
 		withInterface<IWordPlan>({
 			word: 'est',
@@ -81,14 +87,16 @@ it(`[prcm7i]`, () => {
 it(`[preckt]`, () => {
 	const { board, boardSize } = makeBoard(`---l---`)
 	expect(
-		getPotentialWordsInLine({
-			words: ['el', 'le', 'ell', 'lle', 'lel'],
-			board,
-			boardSize,
-			lineIndex: 0,
-			direction: Direction.Horizontal,
-			hand: [makeTile('e')],
-		}),
+		Array.from(
+			getPotentialWordsInLine({
+				words: ['el', 'le', 'ell', 'lle', 'lel'],
+				board,
+				boardSize,
+				lineIndex: 0,
+				direction: Direction.Horizontal,
+				hand: [makeTile('e')],
+			}).values(),
+		),
 	).toEqual([
 		withInterface<IWordPlan>({
 			word: 'el',
@@ -115,14 +123,16 @@ it(`[preckt]`, () => {
 it(`[ry1jh1]`, () => {
 	const { board, boardSize } = makeBoard(`---l-ó---`)
 	expect(
-		getPotentialWordsInLine({
-			words: ['ló', 'ól'],
-			board,
-			boardSize,
-			lineIndex: 0,
-			direction: Direction.Horizontal,
-			hand: 'rámlóge'.split('').map((letter) => makeTile(letter)),
-		}),
+		Array.from(
+			getPotentialWordsInLine({
+				words: ['ló', 'ól'],
+				board,
+				boardSize,
+				lineIndex: 0,
+				direction: Direction.Horizontal,
+				hand: 'rámlóge'.split('').map((letter) => makeTile(letter)),
+			}).values(),
+		),
 	).toEqual([
 		withInterface<IWordPlan>({
 			word: 'ól',

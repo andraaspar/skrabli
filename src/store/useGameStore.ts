@@ -345,17 +345,21 @@ export const useGameStore = defineStore('game', {
 		},
 
 		scoreBonuses() {
-			this.playerInfos.forEach((player, playerIndex) => {
+			for (
+				let playerIndex = 0;
+				playerIndex < this.playerInfos.length;
+				playerIndex++
+			) {
 				this.state.playerScores[playerIndex] += this.playerBonuses[playerIndex]
-			})
+			}
 		},
 
 		startGame() {
 			this.name = gameNameFromPlayerInfos(this.playerInfos)
-			this.playerInfos.forEach(() => {
+			for (const playerInfo of this.playerInfos) {
 				this.nextPlayer()
 				this.fillHand()
-			})
+			}
 			this.state.mode = Mode.PlaceTile
 			this.nextPlayer()
 			this.beginTurn()

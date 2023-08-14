@@ -1,4 +1,7 @@
+import type { IWordPart } from './IWordPart'
+
 export interface IWordSlice {
-	readonly firstIsFixed: boolean
-	readonly wordParts: ReadonlyArray<string>
+	word: string
+	fieldOffset: number
+	wordParts: IWordPart[]
 }

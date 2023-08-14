@@ -163,3 +163,19 @@ R--
 		}),
 	])
 })
+
+it('[rzdybj]', () => {
+	const { board, boardSize } = makeBoard(`
+-d-
+abc
+-e-
+`)
+	expect(
+		getPotentialWords({
+			board,
+			boardSize,
+			hand: `f`.split('').map((letter) => makeTile(letter)),
+			words: ['abc', 'dbe', 'cf'],
+		}),
+	).toEqual([])
+})

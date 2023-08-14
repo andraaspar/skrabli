@@ -12,11 +12,13 @@ import { getWordInfo } from './getWordInfo'
 import { getWordSlices } from './getWordSlices'
 import { getWordString } from './getWordString'
 import { isWordPlanBingo } from './isWordPlanBingo'
-import { linePartsToRegExpStrings } from './linePartsToRegExpStrings'
+import { linePartsOptionsToRegExpStrings } from './linePartsOptionsToRegExpStrings'
+import { linePartsToLinePartsOptions } from './linePartsToLinePartsOptions'
+import { wordPlanHash } from './wordPlanHash'
 import { wordPlanIncludesFieldIndex } from './wordPlanIncludesFieldIndex'
 import { wordPlanToBoard } from './wordPlanToBoard'
 import { wordPlanToHand } from './wordPlanToHand'
-import { wordSliceAndLinePartsToWordPlan } from './wordSliceAndLinePartsToWordPlan'
+import { wordSliceToWordPlans } from './wordSliceToWordPlans'
 
 export function getPotentialWordsInLine({
 	words,
@@ -34,87 +36,90 @@ export function getPotentialWordsInLine({
 	direction: Direction
 	hand: THand
 	pinnedFieldIndex?: number
-}): IWordPlan[] {
+}): Map<string, IWordPlan> {
 	const line = getLine(board, boardSize, lineIndex, direction)
-	if (!line.find((field) => !!field.tile)) return []
+	// Skip empty lines
+	if (!line.find((field) => !!field.tile)) return new Map()
 	const lettersInHandRe = getLettersInHandRe(hand)
-	if (!lettersInHandRe) return []
+	if (!lettersInHandRe) return new Map()
+	// Combine sequences of gaps and tiles so we can work with them
 	const lineParts = getLineParts(line)
-	const reStrings = linePartsToRegExpStrings(lettersInHandRe, lineParts)
-	const reStringsTrimmed = linePartsToRegExpStrings(
+	// Generate multiple combinations of sequences so we can try fitting words
+	// into each
+	const linePartsOptions = linePartsToLinePartsOptions(lineParts)
+	// Create a single regex that can narrow down potential words
+	const reStrings = linePartsOptionsToRegExpStrings({
 		lettersInHandRe,
-		lineParts,
-		{ trim: true },
-	)
+		partsOptions: linePartsOptions,
+	})
 	const re = new RegExp(reStrings.join('|'))
+	// Create multiple regexes that can detect which splitting regex should be used
 	const res = reStrings.map((s) => new RegExp(s))
+	// Create multiple regexes that are suitable for splitting a certain word
+	const reStringsTrimmed = linePartsOptionsToRegExpStrings({
+		lettersInHandRe,
+		partsOptions: linePartsOptions,
+		trim: true,
+	})
 	const resTrimmed = reStringsTrimmed.map((s) => new RegExp(s, 'g'))
-	return words
-		.filter((word) => re.test(word))
-		.flatMap((word) => {
-			const wordSlices = getWordSlices(word, res, resTrimmed)
-			const wordPlans: IWordPlan[] = []
-			for (const wordSlice of wordSlices) {
-				const newWordPlans = wordSliceAndLinePartsToWordPlan({
-					lineIndex,
-					direction,
-					wordSlice,
-					lineParts,
-					hand,
-					boardSize,
-				})
-				if (newWordPlans.length) {
-					wordPlans.push(...newWordPlans)
-				}
-			}
-			return wordPlans
+
+	const wordPlans = new Map<string, IWordPlan>()
+	for (const word of words) {
+		// Words that fail the big regex are not considered further
+		if (!re.test(word)) continue
+		// Get all the ways the word can be sliced to fit the gaps
+		const wordSlices = getWordSlices({
+			word,
+			res,
+			resTrimmed,
+			linePartsOptions,
 		})
-		.filter((wordPlan) => {
-			if (pinnedFieldIndex != null) {
+		for (const wordSlice of wordSlices) {
+			// Convert slices to plans describing what hand index goes where
+			const newWordPlans = wordSliceToWordPlans({
+				lineIndex,
+				direction,
+				wordSlice,
+				hand,
+				boardSize,
+			})
+			wordPlansLoop: for (const wordPlan of newWordPlans) {
 				if (
+					pinnedFieldIndex != null &&
 					!wordPlanIncludesFieldIndex(wordPlan, pinnedFieldIndex, boardSize)
 				) {
-					return false
+					// If a certain field must be covered but it isn't, we drop the plan
+					continue
 				}
-			}
-			wordPlan.board = wordPlanToBoard(board, boardSize, hand, wordPlan)
-			// for (
-			// 	let fieldIndex = wordPlan.fieldIndex,
-			// 		lastFieldIndex =
-			// 			fieldIndex +
-			// 			wordPlan.handIndices.length *
-			// 				getFieldIndexOffset(wordPlan.direction, boardSize);
-			// 	fieldIndex < lastFieldIndex;
-			// 	fieldIndex += getFieldIndexOffset(wordPlan.direction, boardSize)
-			// ) {
-			// 	if (!boardWithWord[fieldIndex]?.tile?.isOwned) {
-			// 		// Don't check cross words that the player does not own: avoid issue
-			// 		// with unknown words already on board
-			// 		continue
-			// 	}
-			// 	const word = getWordAt(
-			// 		boardWithWord,
-			// 		boardSize,
-			// 		fieldIndex,
-			// 		theOtherDirection(wordPlan.direction),
-			// 	)
-			// 	if (word.word.length > 1 && !words.includes(getWordString(word.word))) {
-			// 		return false
-			// 	}
-			// }
-			const wordInfo = getWordInfo(wordPlan.board, boardSize)
-			const allOwnedWords = getAllOwnedWords(
-				wordPlan.board,
-				boardSize,
-				wordInfo,
-			)
-			for (const word of allOwnedWords) {
-				if (word.length > 1 && !words.includes(getWordString(word))) {
-					return false
+				const hash = wordPlanHash(wordPlan)
+				// This word plan was already found
+				if (wordPlans.has(hash)) {
+					continue
 				}
+				// Finalize plans with board and hand outcomes, also a score
+				wordPlan.board = wordPlanToBoard(board, boardSize, hand, wordPlan)
+				const wordInfo = getWordInfo(wordPlan.board, boardSize)
+				// Get all the cross words placed
+				const allOwnedWords = getAllOwnedWords(
+					wordPlan.board,
+					boardSize,
+					wordInfo,
+				)
+				for (const word of allOwnedWords) {
+					if (word.length > 1 && !words.includes(getWordString(word))) {
+						// If any words found are unknown, we drop the plan
+						continue wordPlansLoop
+					}
+				}
+				wordPlan.score = getMoveScore(allOwnedWords, isWordPlanBingo(wordPlan))
+				wordPlan.hand = wordPlanToHand(hand, wordPlan)
+				// const newHash = wordPlanHash(wordPlan)
+				// if (newHash !== hash) {
+				// 	throw new Error(`[rz4xfs] ${newHash} !== ${hash}`)
+				// }
+				wordPlans.set(hash, wordPlan)
 			}
-			wordPlan.score = getMoveScore(allOwnedWords, isWordPlanBingo(wordPlan))
-			wordPlan.hand = wordPlanToHand(hand, wordPlan)
-			return true
-		})
+		}
+	}
+	return wordPlans
 }

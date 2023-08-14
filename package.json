@@ -12,7 +12,8 @@
 		"generate-pwa-assets": "pwa-assets-generator --preset minimal src/asset/logo.svg",
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
 		"format": "prettier --write src/",
-		"order": "ts-node ./util/orderKnownWords.ts"
+		"order": "ts-node ./util/orderKnownWords.ts",
+		"debug": "ts-node -P tsconfig.tsnode.json src/debug.ts"
 	},
 	"dependencies": {
 		"@tanstack/vue-query": "^4.29.19",
@@ -22,6 +23,7 @@
 		"normalize.css": "^8.0.1",
 		"pinia": "^2.1.4",
 		"ts-node": "^10.9.1",
+		"tsconfig-paths": "^4.2.0",
 		"uuid": "^9.0.0",
 		"vue": "^3.3.4",
 		"vue-router": "4"

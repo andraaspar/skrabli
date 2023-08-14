@@ -1,45 +1,36 @@
 import { type IField } from '../model/IField'
-import { type IFixedLinePart } from '../model/IFixedLinePart'
-import { type TLineParts } from '../model/TLineParts'
-import { isNumber } from './isNumber'
-import { withInterface } from './withInterface'
+import { type IWordPart } from '../model/IWordPart'
 
-export function getLineParts(line: ReadonlyArray<IField>) {
-	if (line.find((it) => it == null)) {
-		throw new Error(`[ryt8th] ` + JSON.stringify(line))
-	}
-	const parts: TLineParts = []
+/**
+ * Converts a line of fields to { gapBefore, text, fieldCount }.
+ */
+export function getLineParts(line: ReadonlyArray<IField>): IWordPart[] {
+	const parts: IWordPart[] = []
 	let wasGap = false
-	let lastGapStartIndex = -1
-	line.forEach((field, index) => {
+	for (const [index, field] of line.entries()) {
 		if (field.tile) {
-			if (wasGap) {
-				if (lastGapStartIndex >= 0) {
-					parts.push(index - lastGapStartIndex)
-				}
-			}
-			if (wasGap || index === 0) {
-				parts.push(
-					withInterface<IFixedLinePart>({
-						text: field.tile.letter,
-						fieldCount: 1,
-					}),
-				)
+			// There is a tile here
+			if (index === 0) {
+				// There was no previous field, so add the initial part
+				parts.push({ gapBefore: 0, text: field.tile.letter, fieldCount: 1 })
 			} else {
-				const fixedLinePart = parts[parts.length - 1] as IFixedLinePart
+				// Append text to the last part
+				const fixedLinePart = parts[parts.length - 1] as IWordPart
 				fixedLinePart.text += field.tile.letter
 				fixedLinePart.fieldCount++
 			}
 			wasGap = false
 		} else {
-			if (!wasGap) {
-				wasGap = true
-				lastGapStartIndex = index
+			// There is an empty field here
+			if (wasGap) {
+				// The last field was also a gap, increment gap length
+				parts[parts.length - 1].gapBefore++
+			} else {
+				// The last field was not a gap, add a new part
+				parts.push({ gapBefore: 1, text: '', fieldCount: 0 })
 			}
+			wasGap = true
 		}
-	})
-	parts.push(wasGap ? line.length - lastGapStartIndex : 0)
-	if (!isNumber(parts[0])) parts.unshift(0)
-	if (!isNumber(parts[parts.length - 1])) parts.push(0)
+	}
 	return parts
 }

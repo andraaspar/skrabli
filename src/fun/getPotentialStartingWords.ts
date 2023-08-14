@@ -1,22 +1,22 @@
 import { Direction } from '@/model/Direction'
 import type { IBoardSize } from '@/model/IBoardSize'
-import type { IPlacementInfo } from '@/model/IPlacementInfo'
+import type { ILinePartsOption } from '@/model/ILinePartsOption'
+import type { IWordPart } from '@/model/IWordPart'
 import type { IWordPlan } from '@/model/IWordPlan'
 import type { TBoard } from '@/model/TBoard'
 import type { THand } from '@/model/THand'
 import { findStartFieldIndex } from './findStartFieldIndex'
 import { getAllOwnedWords } from './getAllOwnedWords'
 import { getColumnIndex } from './getColumnIndex'
-import { getColumnLine } from './getColumnLine'
 import { getLettersInHandRe } from './getLettersInHandRe'
 import { getLineFieldIndex } from './getLineFieldIndex'
 import { getMoveScore } from './getMoveScore'
-import { getPlacementInfo } from './getPlacementInfo'
+import { getPlacementInfos } from './getPlacementInfos'
 import { getRowIndex } from './getRowIndex'
-import { getRowLine } from './getRowLine'
 import { getWordInfo } from './getWordInfo'
 import { isWordPlanBingo } from './isWordPlanBingo'
-import { linePartsToRegExpStrings } from './linePartsToRegExpStrings'
+import { linePartsOptionsToRegExpStrings } from './linePartsOptionsToRegExpStrings'
+import { wordPlanHash } from './wordPlanHash'
 import { wordPlanIncludesFieldIndex } from './wordPlanIncludesFieldIndex'
 import { wordPlanToBoard } from './wordPlanToBoard'
 import { wordPlanToHand } from './wordPlanToHand'
@@ -31,48 +31,70 @@ export function getPotentialStartingWords({
 	board: TBoard
 	boardSize: IBoardSize
 	hand: THand
-}): IWordPlan[] {
+}): Map<string, IWordPlan> {
 	const startFieldIndex = findStartFieldIndex(board)
 	const startColIndex = getColumnIndex(startFieldIndex, boardSize)
-	const startCol = getColumnLine(board, boardSize, startColIndex)
 	const startRowIndex = getRowIndex(startFieldIndex, boardSize)
-	const startRow = getRowLine(board, boardSize, startRowIndex)
 	const lettersInHandRe = getLettersInHandRe(hand)
-	if (!lettersInHandRe) return []
-	const reStrings = linePartsToRegExpStrings(lettersInHandRe, [
-		Math.max(boardSize.width, boardSize.height),
-	])
-	const re = new RegExp(reStrings.join('|'))
-	return words
-		.filter((word) => re.test(word))
-		.flatMap((word) => {
-			const wordPlans: IWordPlan[] = []
+	if (!lettersInHandRe) return new Map()
+	const wordPlans = new Map<string, IWordPlan>()
 
-			// What tiles in hand will produce this word
-			let placementInfo: IPlacementInfo
-			try {
-				placementInfo = getPlacementInfo(word, hand)
-			} catch (e) {
-				if (/pr6o04|pr8z2l/.test(e + '')) {
-					return []
-				} else {
-					throw e
-				}
-			}
+	for (const direction of [Direction.Horizontal, Direction.Vertical]) {
+		// The line has no tiles placed, so create the single line part option manually
+		const partsOptions: ILinePartsOption[] = [
+			{
+				fieldOffset: 0,
+				option: [
+					{
+						gapBefore:
+							direction === Direction.Horizontal
+								? boardSize.width
+								: boardSize.height,
+						fieldCount: 0,
+						text: '',
+					},
+				],
+			},
+		]
+		// Create a regex to match valid words based on the tiles in hand
+		const reStrings = linePartsOptionsToRegExpStrings({
+			lettersInHandRe,
+			partsOptions,
+		})
+		const re = new RegExp(reStrings.join('|'))
 
-			// Check both directions
-			for (const direction of [Direction.Horizontal, Direction.Vertical]) {
-				const lineIndex =
-					direction === Direction.Horizontal ? startRowIndex : startColIndex
-				const line = direction === Direction.Horizontal ? startRow : startCol
+		for (const word of words) {
+			// Words that fail the regex cannot be placed from this hand, so they are not considered further
+			if (!re.test(word)) continue
+
+			const lineIndex =
+				direction === Direction.Horizontal ? startRowIndex : startColIndex
+
+			// There is a single part for the word: the gap stretching the entire board.
+			const wordParts: IWordPart[] = [
+				{
+					gapBefore: 0,
+					text: word,
+					fieldCount:
+						direction === Direction.Horizontal
+							? boardSize.width
+							: boardSize.height,
+				},
+			]
+			// Map tiles to fields.
+			const placementInfos = getPlacementInfos({
+				fieldOffset: 0,
+				wordParts,
+				hand,
+			})
+			for (const placementInfo of placementInfos) {
 				let bestScore = -Infinity
 				let bestWordPlan: IWordPlan | undefined = undefined
-
-				// Reduce options to the best word plan
+				// Check all possible positions the word can be placed in the line
 				for (
-					let fieldIndex = 0;
-					fieldIndex < line.length - placementInfo.handIndices.length;
-					fieldIndex++
+					let fieldOffset = 0;
+					fieldOffset <= placementInfo.fieldOffset;
+					fieldOffset++
 				) {
 					const wordPlan: IWordPlan = {
 						direction: direction,
@@ -80,7 +102,7 @@ export function getPotentialStartingWords({
 							boardSize,
 							direction,
 							lineIndex,
-							fieldIndex,
+							fieldOffset,
 						),
 						handIndices: placementInfo.handIndices,
 						jokerLetters: placementInfo.jokerLetters,
@@ -114,10 +136,12 @@ export function getPotentialStartingWords({
 						bestWordPlan = wordPlan
 					}
 				}
+				// Only keep the best scoring option
 				if (bestWordPlan) {
-					wordPlans.push(bestWordPlan)
+					wordPlans.set(wordPlanHash(bestWordPlan), bestWordPlan)
 				}
 			}
-			return wordPlans
-		})
+		}
+	}
+	return wordPlans
 }

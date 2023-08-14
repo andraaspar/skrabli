@@ -29,12 +29,14 @@ W--s--W
 		fieldsString,
 	)
 	expect(
-		getPotentialStartingWords({
-			board,
-			boardSize,
-			hand: `elő`.split('').map((it) => makeTile(it)),
-			words: ['elő'],
-		}),
+		Array.from(
+			getPotentialStartingWords({
+				board,
+				boardSize,
+				hand: `elő`.split('').map((it) => makeTile(it)),
+				words: ['elő'],
+			}).values(),
+		),
 	).toEqual([
 		withInterface<IWordPlan>({
 			direction: Direction.Horizontal,
@@ -73,6 +75,75 @@ W--s--W
 -------
 -------
 -------
+`,
+				fieldsString,
+			).board,
+			word: 'elő',
+		}),
+	])
+})
+
+it('[rzdxk6]', () => {
+	const fieldsString = `
+-----
+-----
+--s-W
+-----
+--W--
+`
+	const { board, boardSize } = makeBoard(
+		`
+-----
+-----
+-----
+-----
+-----
+`,
+		fieldsString,
+	)
+	expect(
+		Array.from(
+			getPotentialStartingWords({
+				board,
+				boardSize,
+				hand: `elő`.split('').map((it) => makeTile(it)),
+				words: ['elő'],
+			}).values(),
+		),
+	).toEqual([
+		withInterface<IWordPlan>({
+			direction: Direction.Horizontal,
+			fieldIndex: 2 * 5 + 3 - 1,
+			score: 3 * 2 * 3,
+			handIndices: [0, 1, 2],
+			jokerLetters: [null, null, null],
+			hand: `---`.split('').map((it) => makeTile(it)),
+			board: makeBoard(
+				`
+-----
+-----
+--ELŐ
+-----
+-----
+`,
+				fieldsString,
+			).board,
+			word: 'elő',
+		}),
+		withInterface<IWordPlan>({
+			direction: Direction.Vertical,
+			fieldIndex: 2 * 5 + 3 - 1,
+			score: 3 * 2 * 3,
+			handIndices: [0, 1, 2],
+			jokerLetters: [null, null, null],
+			hand: `---`.split('').map((it) => makeTile(it)),
+			board: makeBoard(
+				`
+-----
+-----
+--E--
+--L--
+--Ő--
 `,
 				fieldsString,
 			).board,

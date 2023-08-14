@@ -6,6 +6,6 @@ export function wordPlanHash(wordPlan: IWordPlan): string {
 		wordPlan.direction,
 		// If two words differ only in the letters chosen for the joker tiles, the word should be enough to distinguish them
 		wordPlan.word,
-		...wordPlan.handIndices,
+		...wordPlan.handIndices.map((it) => (it == null ? '-' : it.toString())),
 	].join(':')
 }

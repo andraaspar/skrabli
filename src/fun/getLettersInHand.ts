@@ -1,8 +1,14 @@
+import { JOKER_LETTERS } from '@/model/JOKER_LETTERS'
 import type { THand } from '../model/THand'
-import { getLettersInHandSet } from './getLettersInHandSet'
 
 export function getLettersInHand(hand: THand) {
-	return Array.from(getLettersInHandSet(hand)).sort(
-		(a, b) => a.length - b.length,
-	)
+	const letters = new Set<string>()
+	for (const tile of hand) {
+		if (tile?.isJoker) {
+			return JOKER_LETTERS
+		} else if (tile) {
+			letters.add(tile.letter)
+		}
+	}
+	return Array.from(letters)
 }

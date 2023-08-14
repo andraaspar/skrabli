@@ -29,11 +29,15 @@ export function getPotentialWords(options: {
 	const wordPlansMap = new Map<string, IWordPlan>()
 
 	if (boardIsEmpty(board)) {
-		getPotentialStartingWords({ words, board, boardSize, hand }).forEach(
-			(wordPlan) => {
-				wordPlansMap.set(wordPlanHash(wordPlan), wordPlan)
-			},
-		)
+		const wordPlans = getPotentialStartingWords({
+			words,
+			board,
+			boardSize,
+			hand,
+		})
+		for (const [hash, wordPlan] of wordPlans) {
+			wordPlansMap.set(hash, wordPlan)
+		}
 	} else {
 		// let wordPlans: IWordPlan[] = []
 		// Find plans in lines that already have tiles
@@ -46,19 +50,19 @@ export function getPotentialWords(options: {
 					: boardSize.width);
 				lineIndex++
 			) {
-				getPotentialWordsInLine({
+				const wordPlans = getPotentialWordsInLine({
 					...options,
 					direction,
 					lineIndex,
-				}).forEach((wordPlan) => {
-					wordPlansMap.set(wordPlanHash(wordPlan), wordPlan)
 				})
+				for (const [hash, wordPlan] of wordPlans) {
+					wordPlansMap.set(hash, wordPlan)
+				}
 			}
 		}
 		// Search for cross opportunities on single tile plans. This should find extra
 		// opportunities that are just next to placed tiles, in an empty line. Empty
 		// lines are normally skipped, so we need to look at them here.
-		let crossWordPlans: IWordPlan[] = []
 		for (const wordPlan of wordPlansMap.values()) {
 			// Find the number of played tiles
 			const tilesToPlace = wordPlan.handIndices.filter(
@@ -67,10 +71,9 @@ export function getPotentialWords(options: {
 			// Only check for cross tiles if there was but a single tile played and
 			// there are no neighboring tiles in the cross direction.
 			if (tilesToPlace.length === 1) {
-				const placedTileIndex = wordPlan.handIndices.indexOf(tilesToPlace[0])
-				const placedTileFieldIndex =
-					wordPlan.fieldIndex +
-					getFieldIndexOffset(wordPlan.direction, boardSize) * placedTileIndex
+				const placedTileFieldIndex = wordPlan.board.findIndex(
+					(field) => field.tile?.isOwned,
+				)
 				const crossDirection = theOtherDirection(wordPlan.direction)
 				const crossDirectionOffset = getFieldIndexOffset(
 					crossDirection,
@@ -83,7 +86,7 @@ export function getPotentialWords(options: {
 				) {
 					const newPlans = getPotentialWordsInLine({
 						words,
-						board: wordPlanToBoard(board, boardSize, hand, wordPlan), // Place the placed tile on the board
+						board: wordPlan.board,
 						lineIndex: getLineIndex(
 							placedTileFieldIndex,
 							boardSize,
@@ -91,10 +94,10 @@ export function getPotentialWords(options: {
 						),
 						boardSize,
 						direction: crossDirection,
-						hand: wordPlanToHand(hand, wordPlan), // Remove the placed tile from the hand
+						hand: wordPlan.hand,
 						pinnedFieldIndex: placedTileFieldIndex, // Only include plans that span the placed tile
 					})
-					for (const newPlan of newPlans) {
+					for (const newPlan of newPlans.values()) {
 						// Add the placed tile to the right location in the new plans
 						replaceHandIndexInWordPlan(
 							newPlan,
@@ -102,9 +105,12 @@ export function getPotentialWords(options: {
 							tilesToPlace[0],
 							boardSize,
 						)
+						// Need a new hash, because the hand changed
+						const hash = wordPlanHash(newPlan)
+						if (wordPlansMap.has(hash)) continue
 						// Redo board and hand to make it a single move
-						newPlan.board = wordPlanToBoard(board, boardSize, hand, newPlan)
 						newPlan.hand = wordPlanToHand(hand, newPlan)
+						newPlan.board = wordPlanToBoard(board, boardSize, hand, newPlan)
 						const wordInfo = getWordInfo(newPlan.board, boardSize)
 						const allOwnedWords = getAllOwnedWords(
 							newPlan.board,
@@ -115,15 +121,18 @@ export function getPotentialWords(options: {
 							allOwnedWords,
 							isWordPlanBingo(newPlan),
 						)
+						wordPlansMap.set(hash, newPlan)
 					}
-					crossWordPlans = crossWordPlans.concat(newPlans)
 				}
 			}
 		}
-		for (const crossWordPlan of crossWordPlans) {
-			wordPlansMap.set(wordPlanHash(crossWordPlan), crossWordPlan)
-		}
 	}
+	// for (const [hash, wordPlan] of wordPlansMap) {
+	// 	const newHash = wordPlanHash(wordPlan)
+	// 	if (newHash !== hash) {
+	// 		throw new Error(`[rz4x5q] ${newHash} !== ${hash}`)
+	// 	}
+	// }
 	return Array.from(wordPlansMap.values()).sort(
 		(a, b) =>
 			a.direction - b.direction ||

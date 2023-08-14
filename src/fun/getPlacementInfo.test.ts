@@ -1,7 +1,7 @@
 import type { IPlacementInfo } from '@/model/IPlacementInfo'
 import { expect, it } from 'vitest'
 import { type ITile } from '../model/ITile'
-import { getPlacementInfo } from './getPlacementInfo'
+import { getPlacementInfos } from './getPlacementInfos'
 import { withInterface } from './withInterface'
 
 function makeTile(letter: string) {
@@ -15,43 +15,71 @@ function makeTile(letter: string) {
 }
 
 it(`[prckj2]`, () => {
-	expect(getPlacementInfo('abc', [makeTile('a'), makeTile('bc')])).toEqual(
+	expect(
+		getPlacementInfos({
+			fieldOffset: 0,
+			wordParts: [{ gapBefore: 0, fieldCount: 2, text: 'abc' }],
+			hand: [makeTile('a'), makeTile('bc')],
+		}),
+	).toEqual([
 		withInterface<IPlacementInfo>({
+			fieldOffset: 0,
 			handIndices: [0, 1],
 			jokerLetters: [null, null],
 		}),
-	)
+	])
 })
 it(`[prckjm]`, () => {
-	expect(getPlacementInfo('abc', [makeTile('bc'), makeTile('a')])).toEqual(
+	expect(
+		getPlacementInfos({
+			fieldOffset: 0,
+			wordParts: [{ gapBefore: 0, fieldCount: 2, text: 'abc' }],
+			hand: [makeTile('bc'), makeTile('a')],
+		}),
+	).toEqual([
 		withInterface<IPlacementInfo>({
+			fieldOffset: 0,
 			handIndices: [1, 0],
 			jokerLetters: [null, null],
 		}),
-	)
+	])
 })
 it(`[prckkc]`, () => {
 	expect(
-		getPlacementInfo('abc', [makeTile('a'), makeTile('x'), makeTile('bc')]),
-	).toEqual(
+		getPlacementInfos({
+			fieldOffset: 0,
+			wordParts: [{ gapBefore: 0, fieldCount: 2, text: 'abc' }],
+			hand: [makeTile('a'), makeTile('x'), makeTile('bc')],
+		}),
+	).toEqual([
 		withInterface<IPlacementInfo>({
+			fieldOffset: 0,
 			handIndices: [0, 2],
 			jokerLetters: [null, null],
 		}),
-	)
+	])
 })
 it(`[prckkf]`, () => {
 	expect(
-		getPlacementInfo('abc', [makeTile('a'), null, makeTile('bc')]),
-	).toEqual(
+		getPlacementInfos({
+			fieldOffset: 0,
+			wordParts: [{ gapBefore: 0, fieldCount: 2, text: 'abc' }],
+			hand: [makeTile('a'), null, makeTile('bc')],
+		}),
+	).toEqual([
 		withInterface<IPlacementInfo>({
+			fieldOffset: 0,
 			handIndices: [0, 2],
 			jokerLetters: [null, null],
 		}),
-	)
+	])
 })
 it(`[prckkh]`, () => {
-	expect(() => {
-		getPlacementInfo('abc', [makeTile('d'), null, makeTile('e')])
-	}).toThrow('[pr8z2l]')
+	expect(
+		getPlacementInfos({
+			fieldOffset: 0,
+			wordParts: [{ gapBefore: 0, fieldCount: 2, text: 'abc' }],
+			hand: [makeTile('d'), null, makeTile('e')],
+		}),
+	).toEqual([])
 })
