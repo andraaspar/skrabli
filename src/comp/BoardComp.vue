@@ -1,18 +1,24 @@
 <script setup lang="ts">
 import { FieldKind } from '@/model/FieldKind'
+import type { IBoardInfo } from '@/model/IBoardInfo'
+import { Mode } from '@/model/Mode'
+import { computed } from 'vue'
 import { useGameStore } from '../store/useGameStore'
 import TileComp from './TileComp.vue'
-import { Mode } from '@/model/Mode'
-import type { TBoard } from '@/model/TBoard'
-import { computed } from 'vue'
 
-const props = defineProps<{ board?: TBoard }>()
+const props = defineProps<{ boardInfo?: IBoardInfo; isSmaller?: boolean }>()
 
 const emit = defineEmits(['setJokerLetter'])
 
 const gameStore = useGameStore()
 
-const board = computed(() => props.board ?? gameStore.state.board)
+const board = computed(() => props.boardInfo?.board ?? gameStore.state.board)
+const boardSize = computed(
+	() => props.boardInfo?.boardSize ?? gameStore.state.boardSize,
+)
+const aspectRatio = computed(
+	() => boardSize.value.width / boardSize.value.height,
+)
 
 function fieldKindToString(fieldKind: FieldKind): string {
 	switch (fieldKind) {
@@ -60,7 +66,7 @@ function onFieldClicked(fieldIndex: number) {
 }
 </script>
 <template>
-	<div class="board">
+	<div :class="{ board: true, 'is-smaller': props.isSmaller }">
 		<div
 			v-for="(field, fieldIndex) in board"
 			:key="fieldIndex"
@@ -84,12 +90,26 @@ function onFieldClicked(fieldIndex: number) {
 </template>
 <style>
 .board {
-	width: 25rem;
+	container: board / inline-size;
+
+	width: 100%;
+	height: fit-content;
 	display: grid;
-	grid-template-columns: repeat(15, calc((100vmin - 14px) / 15));
-	grid-template-rows: repeat(15, calc((100vmin - 14px) / 15));
+	grid-template-columns: repeat(15, 1fr);
+	grid-template-rows: repeat(15, 1fr);
 	grid-gap: 1px;
-	margin: 0 auto;
+	aspect-ratio: v-bind(aspectRatio);
+}
+
+@media (aspect-ratio >= 16/10) {
+	.board {
+		width: fit-content;
+		height: 100%;
+	}
+
+	.is-smaller {
+		height: 89vmin;
+	}
 }
 
 .board-field {
@@ -100,7 +120,7 @@ function onFieldClicked(fieldIndex: number) {
 	background-color: #444;
 	color: white;
 	text-align: center;
-	font-size: 0.5rem;
+	font-size: 2cqmin;
 	border: 1px solid #9bff6900;
 	cursor: pointer;
 	white-space: pre-wrap;

@@ -13,7 +13,6 @@ import type { ITile } from '@/model/ITile'
 import { LETTERS } from '@/model/LETTERS'
 import { Mode } from '@/model/Mode'
 import { useGameStore } from '@/store/useGameStore'
-import { useUiStore } from '@/store/useUiStore'
 import arrowLeftIcon from 'bootstrap-icons/icons/arrow-left.svg?raw'
 import arrowRightIcon from 'bootstrap-icons/icons/arrow-right.svg?raw'
 import addPlayerIcon from 'bootstrap-icons/icons/person-add.svg?raw'
@@ -28,11 +27,9 @@ import DialogComp from './DialogComp.vue'
 import DialogHeaderComp from './DialogHeaderComp.vue'
 import HeaderComp from './HeaderComp.vue'
 import IconComp from './IconComp.vue'
-import { off } from 'process'
 import WarningComp from './WarningComp.vue'
 
 const gameStore = useGameStore()
-const uiStore = useUiStore()
 const router = useRouter()
 
 const newGame = ref<{
@@ -78,6 +75,7 @@ const warning = computed(() => {
 	if (!players.find((player) => player.level === AiLevel.Human)) {
 		return `Legalább egy emberi játékosnak kell lennie!`
 	}
+	return undefined
 })
 
 // onMounted(() => {
@@ -184,15 +182,17 @@ function start() {
 <template>
 	<div class="screen">
 		<HeaderComp>Új játék</HeaderComp>
-		<BoardComp :board="BOARDS[newGame.boardIndex].board" />
-		<ButtonsComp>
-			<button @click="nextBoard(-1)">
-				<IconComp :icon="arrowLeftIcon" /> Előző tábla
-			</button>
-			<button @click="nextBoard(1)">
-				Következő tábla <IconComp :icon="arrowRightIcon" />
-			</button>
-		</ButtonsComp>
+		<div class="board-and-buttons">
+			<BoardComp :isSmaller="true" :boardInfo="BOARDS[newGame.boardIndex]" />
+			<ButtonsComp>
+				<button @click="nextBoard(-1)">
+					<IconComp :icon="arrowLeftIcon" /> Előző tábla
+				</button>
+				<button @click="nextBoard(1)">
+					Következő tábla <IconComp :icon="arrowRightIcon" />
+				</button>
+			</ButtonsComp>
+		</div>
 		<div class="form">
 			<div class="form-control">
 				<div class="form-label">Játékosok</div>
@@ -269,13 +269,16 @@ function start() {
 
 <style scoped>
 .form {
-	flex: 0 0 auto;
+	container: form / inline-size;
+	width: 100%;
 	display: flex;
 	flex-flow: column;
 	padding: 8vmin 8vmin 16vmin;
 	gap: 4vmin;
 	margin: 0 auto;
+	overflow: auto;
 }
+
 .form-control,
 .form-buttons {
 	display: flex;
@@ -294,7 +297,13 @@ function start() {
 .players {
 	display: grid;
 	gap: var(--gap);
-	grid-template-columns: 1fr 1fr auto;
+	grid-template-columns: 1fr;
+}
+
+@container form (width > 60vmin) {
+	.players {
+		grid-template-columns: 1fr 1fr auto;
+	}
 }
 
 .none {
@@ -302,5 +311,11 @@ function start() {
 	text-align: center;
 	font-style: italic;
 	color: lch(100 0 0 / 0.6);
+}
+
+.board-and-buttons {
+	flex: 0 0 auto;
+	display: flex;
+	flex-flow: column;
 }
 </style>

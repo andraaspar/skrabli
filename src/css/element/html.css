@@ -9,7 +9,3 @@ html {
 	height: 100%;
 	scrollbar-width: none;
 }
-
-html::-webkit-scrollbar {
-	display: none;
-}

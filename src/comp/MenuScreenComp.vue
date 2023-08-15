@@ -113,53 +113,55 @@ function wordsValidityExpired() {
 <template>
 	<div class="screen">
 		<template v-if="gameInfos != null">
-			<div class="top-buttons">
-				<button
-					:class="{ green: true, hidden: !uiStore.updateServiceWorker }"
-					@click="update"
-					:disabled="!uiStore.updateServiceWorker"
-				>
-					<IconComp :icon="updateIcon" /> Frissítsd az alkalmazást
-				</button>
-			</div>
-			<div class="menu">
-				<IconComp :icon="logoSvg" class="logo" />
-				<ButtonsComp v-if="gameStore.started || continueableGameExists()">
-					<button @click="continueGame">
-						<IconComp :icon="playIcon" color="lch(80 100 260)" /> Folytatás
-					</button>
-				</ButtonsComp>
-				<div class="menu-buttons" v-if="gameInfos.length > 0">
-					<div
-						class="button-row"
-						v-for="gameInfo of gameInfos"
-						:key="gameInfo.id"
-					>
-						<button class="flex" @click="loadGameById(gameInfo.id)">
-							{{ gameInfo.name }}
-						</button>
-						<button @click="deleteGameById(gameInfo.id)">
-							<IconComp :icon="deleteIcon" color="lch(80 100 30)" />
-						</button>
-					</div>
-				</div>
-				<ButtonsComp>
-					<button @click="startNewGame">
-						<IconComp :icon="starIcon" color="lch(80 100 70)" /> Új játék
-					</button>
-				</ButtonsComp>
-				<ButtonsComp>
+			<div class="menu-and-top">
+				<div class="top-buttons">
 					<button
-						:class="{ hidden: wordsValidityExpired }"
-						@click="loadAllWordsValidity"
-						:disabled="wordsValidityExpired"
+						:class="{ green: true, hidden: !uiStore.updateServiceWorker }"
+						@click="update"
+						:disabled="!uiStore.updateServiceWorker"
 					>
-						<IconComp :icon="refreshIcon" color="#5f3" />
-						Frissítsd a szavakat
+						<IconComp :icon="updateIcon" /> Frissítsd az alkalmazást
 					</button>
-				</ButtonsComp>
-				<div :class="{ remark: true, hidden: !uiStore.offlineReady }">
-					<IconComp :icon="infoIcon" /> Internet nélkül is működöm!
+				</div>
+				<div class="menu">
+					<IconComp :icon="logoSvg" class="logo" />
+					<ButtonsComp v-if="gameStore.started || continueableGameExists()">
+						<button @click="continueGame">
+							<IconComp :icon="playIcon" color="lch(80 100 260)" /> Folytatás
+						</button>
+					</ButtonsComp>
+					<div class="menu-buttons" v-if="gameInfos.length > 0">
+						<div
+							class="button-row"
+							v-for="gameInfo of gameInfos"
+							:key="gameInfo.id"
+						>
+							<button class="flex" @click="loadGameById(gameInfo.id)">
+								{{ gameInfo.name }}
+							</button>
+							<button @click="deleteGameById(gameInfo.id)">
+								<IconComp :icon="deleteIcon" color="lch(80 100 30)" />
+							</button>
+						</div>
+					</div>
+					<ButtonsComp>
+						<button @click="startNewGame">
+							<IconComp :icon="starIcon" color="lch(80 100 70)" /> Új játék
+						</button>
+					</ButtonsComp>
+					<ButtonsComp>
+						<button
+							:class="{ hidden: wordsValidityExpired }"
+							@click="loadAllWordsValidity"
+							:disabled="wordsValidityExpired"
+						>
+							<IconComp :icon="refreshIcon" color="#5f3" />
+							Frissítsd a szavakat
+						</button>
+					</ButtonsComp>
+					<div :class="{ remark: true, hidden: !uiStore.offlineReady }">
+						<IconComp :icon="infoIcon" /> Internet nélkül is működöm!
+					</div>
 				</div>
 			</div>
 			<div class="version">Verzió: {{ buildTimestamp }}</div>
@@ -200,6 +202,12 @@ function wordsValidityExpired() {
 	gap: var(--gap);
 }
 
+.menu-and-top {
+	flex: 1 0 auto;
+	display: flex;
+	flex-flow: column;
+}
+
 .remark {
 	color: #ffffff55;
 	padding: 0 var(--button-padding);
@@ -221,5 +229,12 @@ function wordsValidityExpired() {
 
 .flex {
 	flex: 1 1 auto;
+}
+
+@media (aspect-ratio >= 16/10) {
+	.version {
+		writing-mode: vertical-lr;
+		writing-mode: sideways-lr;
+	}
 }
 </style>

@@ -6,6 +6,7 @@
 	right: 0;
 	display: flex;
 	flex-flow: column;
+	overflow: auto;
 }
 
 .screen.v-enter-active,
@@ -16,4 +17,10 @@
 .screen.v-enter-from,
 .screen.v-leave-to {
 	opacity: 0;
+}
+
+@media (aspect-ratio >= 16/10) {
+	.screen {
+		flex-flow: row;
+	}
 }

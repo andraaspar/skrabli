@@ -32,11 +32,23 @@ import IconComp from './IconComp.vue'
 	transform: rotate(15deg);
 }
 .title {
-	width: 100%;
-	flex: 0 1 auto;
+	flex: 1 0 0;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	text-align: center;
+}
+
+@media (aspect-ratio >= 16/10) {
+	.header-row {
+		flex-flow: column;
+		height: auto;
+	}
+
+	.title {
+		writing-mode: vertical-lr;
+		writing-mode: sideways-lr;
+		width: auto;
+	}
 }
 </style>

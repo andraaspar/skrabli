@@ -3,9 +3,3 @@
 	flex-direction: column;
 	height: 100%;
 }
-
-@media (min-aspect-ratio: 4/3) {
-	#app {
-		flex-direction: row;
-	}
-}
