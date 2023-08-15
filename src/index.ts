@@ -12,7 +12,7 @@ import NewGameScreenComp from './comp/NewGameScreenComp.vue'
 import { useUiStore } from './store/useUiStore'
 
 declare global {
-	var BUILD_TIMESTAMP: string
+	const BUILD_TIMESTAMP: string
 }
 
 const router = createRouter({

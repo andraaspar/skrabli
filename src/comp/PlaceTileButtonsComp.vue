@@ -10,20 +10,17 @@ import okIcon from 'bootstrap-icons/icons/check-circle-fill.svg?raw'
 import collectIcon from 'bootstrap-icons/icons/eject-fill.svg?raw'
 import errorIcon from 'bootstrap-icons/icons/exclamation-triangle-fill.svg?raw'
 import hintIcon from 'bootstrap-icons/icons/magic.svg?raw'
+import pencilSvg from 'bootstrap-icons/icons/pencil-fill.svg?raw'
 import stopwatchIcon from 'bootstrap-icons/icons/stopwatch.svg?raw'
 import notOkIcon from 'bootstrap-icons/icons/x-circle-fill.svg?raw'
-import pencilSvg from 'bootstrap-icons/icons/pencil-fill.svg?raw'
 import { computed, ref } from 'vue'
 import ButtonsComp from './ButtonsComp.vue'
 import HintsComp from './HintsComp.vue'
 import IconComp from './IconComp.vue'
-import { useUiStore } from '@/store/useUiStore'
-import { HAND_SIZE } from '@/model/Constants'
 
 defineEmits(['setJokerLetter'])
 
 const gameStore = useGameStore()
-const uiStore = useUiStore()
 
 const queryKey = computed(() => [
 	QueryKey.AreWordsValid,

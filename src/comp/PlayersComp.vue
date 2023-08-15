@@ -13,7 +13,10 @@ const gameStore = useGameStore()
 
 <template>
 	<div class="players">
-		<template v-for="(playerInfo, playerIndex) of gameStore.playerInfos">
+		<template
+			v-for="(playerInfo, playerIndex) of gameStore.playerInfos"
+			:key="playerIndex"
+		>
 			<div>
 				<IconComp
 					:icon="aiLevelToIcon(playerInfo.aiLevel)"

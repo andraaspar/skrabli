@@ -356,7 +356,7 @@ export const useGameStore = defineStore('game', {
 
 		startGame() {
 			this.name = gameNameFromPlayerInfos(this.playerInfos)
-			for (const playerInfo of this.playerInfos) {
+			for (let i = 0; i < this.playerInfos.length; i++) {
 				this.nextPlayer()
 				this.fillHand()
 			}
@@ -397,7 +397,7 @@ export const useGameStore = defineStore('game', {
 			const moves = [...movesHV.horizontal, ...movesHV.vertical]
 			if (moves.length === 0) {
 				if (this.canSwap) {
-					this.state.handIndicesToReplace = range(HAND_SIZE).map((it) => true)
+					this.state.handIndicesToReplace = range(HAND_SIZE).map(() => true)
 					this.swap()
 				} else {
 					this.skip()

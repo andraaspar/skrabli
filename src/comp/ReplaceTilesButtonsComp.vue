@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { ITile } from '@/model/ITile'
 import { Mode } from '@/model/Mode'
 import { useGameStore } from '@/store/useGameStore'
-import ButtonsComp from './ButtonsComp.vue'
-import IconComp from './IconComp.vue'
 import changeIcon from 'bootstrap-icons/icons/arrow-down-up.svg?raw'
 import cancelIcon from 'bootstrap-icons/icons/x-circle.svg?raw'
+import ButtonsComp from './ButtonsComp.vue'
+import IconComp from './IconComp.vue'
 
 const gameStore = useGameStore()
 
