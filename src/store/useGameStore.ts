@@ -483,6 +483,10 @@ export const useGameStore = defineStore('game', {
 				// await new Promise<void>((resolve, reject) => {
 				// 	setTimeout(resolve, 3000)
 				// })
+				const uiStore = useUiStore()
+				if (uiStore.updateServiceWorker) {
+					await uiStore.updateServiceWorker()
+				}
 			})
 		},
 

@@ -27,6 +27,7 @@ import IconComp from './IconComp.vue'
 }
 
 .logo {
+	flex: 0 0 auto;
 	width: 6vmin;
 	height: 6vmin;
 	transform: rotate(15deg);

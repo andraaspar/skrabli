@@ -18,6 +18,7 @@ import { deleteGameFromDb } from '@/fun/deleteGameFromDb'
 import { useUiStore } from '@/store/useUiStore'
 import PlayersComp from './PlayersComp.vue'
 import HeaderComp from './HeaderComp.vue'
+import { loadContinuableGame } from '@/fun/loadContinuableGame'
 
 const gameStore = useGameStore()
 const uiStore = useUiStore()
@@ -26,7 +27,14 @@ const router = useRouter()
 const showSetJokerLetter = ref(false)
 
 if (!gameStore.started) {
-	router.replace({ name: 'menu' })
+	uiStore.lockWhile(async () => {
+		const game = await loadContinuableGame()
+		if (game) {
+			gameStore.$patch(game)
+		} else {
+			router.replace({ name: 'menu' })
+		}
+	})
 }
 
 async function endGame() {

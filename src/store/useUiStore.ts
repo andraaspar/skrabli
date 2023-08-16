@@ -4,8 +4,7 @@ import { defineStore } from 'pinia'
 interface IUiState {
 	lockedCount: number
 	error: string
-	updateServiceWorker: undefined | { update: () => Promise<void> }
-	offlineReady: boolean
+	updateServiceWorker: undefined | (() => Promise<void>)
 	confirm: IConfirm | undefined
 }
 
@@ -14,7 +13,6 @@ export const useUiStore = defineStore('ui', {
 		lockedCount: 0,
 		error: '',
 		updateServiceWorker: undefined,
-		offlineReady: false,
 		confirm: undefined,
 	}),
 	getters: {
