@@ -99,10 +99,6 @@ async function update() {
 }
 
 const buildTimestamp = BUILD_TIMESTAMP
-
-function wordsValidityExpired() {
-	return allWordsValidityUpdated.value < Date.now() - 1000 * 60 * 60 * 24 * 30
-}
 </script>
 
 <template>
