@@ -60,15 +60,17 @@ const suggestWordData = ref<TSuggestResponse | undefined>()
 async function suggestWord() {
 	const word = props.word
 	const isValid = isWordValid.value
-	try {
-		suggestWordData.value = undefined
-		if (!word) throw new Error(`[rxwcdk] No word!`)
-		if (
-			window.confirm(`Itt jelezheted nekem, hogy a kiválasztott „${word}” ${
-				isValid
-					? `szó nem szabályos.`
-					: `szót szeretnéd szabályossá tenni a játékban.`
-			}
+	suggestWordData.value = undefined
+	if (!word) throw new Error(`[rxwcdk] No word!`)
+	uiStore.confirm = {
+		title:
+			'„' +
+			word +
+			'” ' +
+			(isValid ? `legyen szabálytalan` : `legyen szabályos`),
+		message: `Itt jelezheted nekem, hogy a kiválasztott „${word}” ${
+			isValid ? `szó legyen szabálytalan.` : `szó legyen szabályos.`
+		}
 
 FONTOS:
 1. Ha ige, csak az egyes szám harmadik személyű alakja (pl. eszik, megy, tesz) szabályos.
@@ -78,15 +80,17 @@ FONTOS:
 5. Ritka szavakat csak akkor fogadok el, ha van szócikkük a Wikiszótárban vagy a Wikipédián.
 6. Trágárságot nem fogadok el.
 7. Időbe telik – napok, hetek, hónapok, ki tudja? Légy türelmes!
-8. Az én döntésem, hogy mit fogadok el. Légy megértő!`)
-		) {
-			await uiStore.lockWhile(async () => {
-				suggestWordData.value = await suggestWordToServer(word, !isValid)
-			})
-		}
-	} catch (e) {
-		console.error(`[rxwchg]`, e)
-		uiStore.error = e + ''
+8. Az én döntésem, hogy mit fogadok el. Légy megértő!`,
+		ok: async () => {
+			try {
+				await uiStore.lockWhile(async () => {
+					suggestWordData.value = await suggestWordToServer(word, !isValid)
+				})
+			} catch (e) {
+				console.error(`[rxwchg]`, e)
+				uiStore.error = e + ''
+			}
+		},
 	}
 }
 
@@ -113,8 +117,8 @@ const suggestWordLabel = computed(() => {
 		return 'Sikerült! Egy következő játékban ismét megpróbálhatod.'
 	}
 	return isWordValid.value
-		? 'Jelzem ezt a szót, mert szabálytalan!'
-		: 'Kérem ezt a szót, mert szabályos!'
+		? 'Jelzem ezt a szót, legyen szabálytalan!'
+		: 'Kérem ezt a szót, legyen szabályos!'
 })
 
 const suggestWordIcon = computed(() => {
