@@ -35,10 +35,11 @@ app.mount('#app')
 const updateServiceWorker = registerSW({
 	onNeedRefresh() {
 		const uiStore = useUiStore()
-		uiStore.updateServiceWorker = { update: () => updateServiceWorker(true) }
+		uiStore.updateServiceWorker = () => updateServiceWorker(true)
 	},
 	onOfflineReady() {
-		const uiStore = useUiStore()
-		uiStore.offlineReady = true
+		// Never seems to trigger
+		// const uiStore = useUiStore()
+		// uiStore.offlineReady = true
 	},
 })
