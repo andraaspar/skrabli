@@ -87,6 +87,12 @@ async function endGame() {
 	gap: var(--gap);
 }
 
+@media (aspect-ratio >= 16/10) {
+	.tools {
+		overflow: auto;
+	}
+}
+
 .bingo {
 	font-size: 1.5rem;
 	color: hotpink;

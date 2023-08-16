@@ -276,7 +276,12 @@ function start() {
 	padding: 8vmin 8vmin 16vmin;
 	gap: 4vmin;
 	margin: 0 auto;
-	overflow: auto;
+}
+
+@media (aspect-ratio >= 16/10) {
+	.form {
+		overflow: auto;
+	}
 }
 
 .form-control,
@@ -297,12 +302,12 @@ function start() {
 .players {
 	display: grid;
 	gap: var(--gap);
-	grid-template-columns: 1fr;
+	grid-template-columns: 1fr 1fr auto;
 }
 
-@container form (width > 60vmin) {
+@container form (width <= 60vmin) {
 	.players {
-		grid-template-columns: 1fr 1fr auto;
+		grid-template-columns: 1fr;
 	}
 }
 
