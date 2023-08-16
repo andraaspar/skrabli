@@ -18,6 +18,7 @@ import { HAND_SIZE } from '@/model/Constants'
 import type { IGame } from '@/model/IGame'
 import type { IPlayerInfo } from '@/model/IPlayerInfo'
 import type { IValidAndInvalidWords } from '@/model/IValidAndInvalidWords'
+import { MAX_SKIP_PER_PLAYER } from '@/model/MAX_SKIP_PER_PLAYER'
 import { MoveError } from '@/model/MoveError'
 import { defineStore } from 'pinia'
 import { v4 } from 'uuid'
@@ -456,7 +457,10 @@ export const useGameStore = defineStore('game', {
 
 		skip() {
 			this.incrementSkipCount()
-			if ((this.state.skipCount || 0) >= this.playerInfos.length * 2) {
+			if (
+				(this.state.skipCount || 0) >=
+				this.playerInfos.length * MAX_SKIP_PER_PLAYER
+			) {
 				this.endGame()
 			} else {
 				this.collectTiles()

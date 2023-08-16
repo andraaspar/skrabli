@@ -17,10 +17,13 @@ import { computed, ref } from 'vue'
 import ButtonsComp from './ButtonsComp.vue'
 import HintsComp from './HintsComp.vue'
 import IconComp from './IconComp.vue'
+import { useUiStore } from '@/store/useUiStore'
+import { MAX_SKIP_PER_PLAYER } from '@/model/MAX_SKIP_PER_PLAYER'
 
 defineEmits(['setJokerLetter'])
 
 const gameStore = useGameStore()
+const uiStore = useUiStore()
 
 const queryKey = computed(() => [
 	QueryKey.AreWordsValid,
@@ -71,8 +74,22 @@ function swapTiles() {
 }
 
 function skip() {
-	if (window.confirm(`Biztos hogy nem teszel semmit?`)) {
-		gameStore.skip()
+	const skipsToEndGame = MAX_SKIP_PER_PLAYER * gameStore.playerInfos.length
+	const skipsRemaining = Math.ceil(
+		skipsToEndGame - (gameStore.state.skipCount ?? 0),
+	)
+	uiStore.confirm = {
+		title: `A kör kihagyása`,
+		message:
+			`Biztos hogy nem teszel semmit?\n\n` +
+			(skipsRemaining === 1
+				? `Ezzel véget ér a játék.`
+				: `Ha a játékosok ezután még ${
+						skipsRemaining - 1
+				  } alkalommal kihagyják a kört, a játék véget ér.`),
+		ok: () => {
+			gameStore.skip()
+		},
 	}
 }
 
