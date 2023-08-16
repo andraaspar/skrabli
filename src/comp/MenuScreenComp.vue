@@ -27,7 +27,7 @@ const router = useRouter()
 
 async function continueGame() {
 	if (!gameStore.started) {
-		uiStore.lockWhile(async () => {
+		await uiStore.lockWhile(async () => {
 			const game = await loadContinuableGame()
 			if (game) {
 				gameStore.$patch(game)
