@@ -130,7 +130,7 @@ function onInputHintsCount(e: Event) {
 	if (value) {
 		const num = parseInt(value, 10)
 		if (!isNaN(num) && isFinite(num)) {
-			newGame.value.hintsCount = Math.max(0, num)
+			newGame.value.hintsCount = Math.max(0, Math.min(999, num))
 		}
 	}
 }
@@ -303,9 +303,11 @@ function start() {
 	display: grid;
 	gap: var(--gap);
 	grid-template-columns: 1fr 1fr auto;
+	width: max-content;
+	margin: 0 auto;
 }
 
-@container form (width <= 60vmin) {
+@container form (width < 40vw) {
 	.players {
 		grid-template-columns: 1fr;
 	}
