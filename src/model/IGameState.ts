@@ -32,4 +32,5 @@ export interface IGameState {
 	handIndicesToReplace: boolean[]
 	startingHandCount: number | null
 	skipCount: number | null
+	hintUsed?: boolean | null
 }

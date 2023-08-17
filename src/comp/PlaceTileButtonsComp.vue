@@ -96,8 +96,11 @@ function skip() {
 const hintsAreOpen = ref(false)
 
 function showHints() {
-	if (gameStore.playerInfo.hints > 0) {
-		gameStore.playerInfo.hints--
+	if (gameStore.playerInfo.hints > 0 || gameStore.state.hintUsed) {
+		if (!gameStore.state.hintUsed) {
+			gameStore.state.hintUsed = true
+			gameStore.playerInfo.hints--
+		}
 		gameStore.collectTiles()
 		gameStore.saveGame()
 		hintsAreOpen.value = true
@@ -126,7 +129,7 @@ function showHints() {
 		<button
 			v-if="gameStore.hand"
 			@click="showHints"
-			:disabled="gameStore.playerInfo.hints <= 0"
+			:disabled="gameStore.playerInfo.hints <= 0 && !gameStore.state.hintUsed"
 		>
 			<IconComp :icon="hintIcon" color="#f7f" /> Tipp:
 			{{ gameStore.playerInfo.hints }}

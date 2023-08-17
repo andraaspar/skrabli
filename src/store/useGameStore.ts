@@ -268,6 +268,7 @@ export const useGameStore = defineStore('game', {
 			}
 			this.state.fieldIndex = null
 			this.state.handIndex = null
+			this.state.hintUsed = null
 		},
 
 		score() {
