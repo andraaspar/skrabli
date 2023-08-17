@@ -120,7 +120,7 @@ function onFieldClicked(fieldIndex: number) {
 	background-color: #444;
 	color: white;
 	text-align: center;
-	font-size: 2cqmin;
+	font-size: 2cqi;
 	border: 1px solid #9bff6900;
 	cursor: pointer;
 	white-space: pre-wrap;
