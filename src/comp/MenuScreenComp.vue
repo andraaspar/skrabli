@@ -99,6 +99,10 @@ async function update() {
 }
 
 const buildTimestamp = BUILD_TIMESTAMP
+
+function wordsValidityExpired() {
+	return allWordsValidityUpdated.value < Date.now() - 1000 * 60 * 5 // 5 minutes
+}
 </script>
 
 <template>
@@ -136,7 +140,10 @@ const buildTimestamp = BUILD_TIMESTAMP
 					</button>
 				</ButtonsComp>
 				<ButtonsComp>
-					<button @click="loadAllWordsValidity">
+					<button
+						@click="loadAllWordsValidity"
+						:disabled="!wordsValidityExpired()"
+					>
 						<IconComp :icon="refreshIcon" color="#5f3" />
 						Frissítsd a szavakat
 					</button>
