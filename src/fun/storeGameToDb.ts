@@ -1,8 +1,8 @@
-import type { ISkrabliDbSchema } from '@/db/ISkrabliDbSchema'
-import { openSkrabliDb } from '@/db/openSkrabliDb'
-import type { IGame } from '@/model/IGame'
-import { LocalStorageKey } from '@/model/LocalStorageKey'
 import type { IDBPDatabase } from 'idb'
+import type { ISkrabliDbSchema } from '../db/ISkrabliDbSchema'
+import { openSkrabliDb } from '../db/openSkrabliDb'
+import type { IGame } from '../model/IGame'
+import { LocalStorageKey } from '../model/LocalStorageKey'
 import { jsonClone } from './jsonClone'
 
 export async function storeGameToDb(game: IGame): Promise<void> {

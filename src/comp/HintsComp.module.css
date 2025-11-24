@@ -1,0 +1,14 @@
+.results {
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	gap: 4vmin;
+}
+.result {
+	display: flex;
+	flex-flow: column;
+	gap: 2vmin;
+}
+.title {
+	font-weight: bold;
+}

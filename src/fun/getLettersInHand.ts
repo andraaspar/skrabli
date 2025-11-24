@@ -1,4 +1,4 @@
-import { JOKER_LETTERS } from '@/model/JOKER_LETTERS'
+import { JOKER_LETTERS } from '../model/JOKER_LETTERS'
 import type { THand } from '../model/THand'
 
 export function getLettersInHand(hand: THand) {

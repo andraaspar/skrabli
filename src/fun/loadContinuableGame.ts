@@ -1,5 +1,5 @@
-import type { IGame } from '@/model/IGame'
-import { LocalStorageKey } from '@/model/LocalStorageKey'
+import type { IGame } from '../model/IGame'
+import { LocalStorageKey } from '../model/LocalStorageKey'
 import { loadGame } from './loadGame'
 
 export async function loadContinuableGame(): Promise<IGame | undefined> {

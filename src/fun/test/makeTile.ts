@@ -1,4 +1,4 @@
-import type { ITile } from '@/model/ITile'
+import { ITile } from '../../model/ITile'
 import { withInterface } from '../withInterface'
 
 export function makeTile(letter: string) {

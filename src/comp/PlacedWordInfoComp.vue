@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useGameStore } from '@/store/useGameStore'
+import { useGameStore } from '../store/useGameStore'
 import WordListComp from './WordListComp.vue'
 
 const gameStore = useGameStore()

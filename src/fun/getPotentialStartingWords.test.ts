@@ -1,6 +1,6 @@
-import { Direction } from '@/model/Direction'
-import type { IWordPlan } from '@/model/IWordPlan'
 import { expect, it } from 'vitest'
+import { Direction } from '../model/Direction'
+import type { IWordPlan } from '../model/IWordPlan'
 import { getPotentialStartingWords } from './getPotentialStartingWords'
 import { makeBoard } from './test/makeBoard'
 import { makeTile } from './test/makeTile'

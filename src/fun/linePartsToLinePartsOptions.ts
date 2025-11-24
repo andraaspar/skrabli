@@ -1,5 +1,5 @@
-import type { ILinePartsOption } from '@/model/ILinePartsOption'
-import type { IWordPart } from '@/model/IWordPart'
+import type { ILinePartsOption } from '../model/ILinePartsOption'
+import type { IWordPart } from '../model/IWordPart'
 
 export function linePartsToLinePartsOptions(
 	parts: IWordPart[],
@@ -14,8 +14,8 @@ export function linePartsToLinePartsOptions(
 			// Away from the border: one less gap to put a tile into, as we need separation
 			if (i > 0) {
 				partsOption[0] = {
-					...partsOption[0],
-					gapBefore: Math.max(0, partsOption[0].gapBefore - 1),
+					...partsOption[0]!,
+					gapBefore: Math.max(0, partsOption[0]!.gapBefore - 1),
 				}
 			}
 			// There is a gap to put a tile into and there is text to anchor it to
@@ -38,11 +38,11 @@ export function linePartsToLinePartsOptions(
 			const end = partsOptionShort.length - 1
 			if (
 				partsOptionShort.length > 1 &&
-				partsOptionShort[end].text &&
-				partsOptionShort[end].gapBefore > 1
+				partsOptionShort[end]!.text &&
+				partsOptionShort[end]!.gapBefore > 1
 			) {
 				partsOptionShort[end] = {
-					gapBefore: Math.max(0, partsOptionShort[end].gapBefore - 1),
+					gapBefore: Math.max(0, partsOptionShort[end]!.gapBefore - 1),
 					text: '',
 					fieldCount: 0,
 				}
@@ -59,7 +59,7 @@ export function linePartsToLinePartsOptions(
 				}
 			}
 		}
-		fieldOffset += parts[i].gapBefore + parts[i].fieldCount
+		fieldOffset += parts[i]!.gapBefore + parts[i]!.fieldCount
 	}
 	return result
 }

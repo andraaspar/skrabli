@@ -1,5 +1,5 @@
-import type { IWordPlan } from '@/model/IWordPlan'
-import type { THand } from '@/model/THand'
+import type { IWordPlan } from '../model/IWordPlan'
+import type { THand } from '../model/THand'
 import { jsonClone } from './jsonClone'
 
 export function wordPlanToHand(hand: THand, wordPlan: IWordPlan): THand {

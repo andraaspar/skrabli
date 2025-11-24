@@ -1,0 +1,29 @@
+.word-list {
+	display: flex;
+	flex-flow: column;
+	gap: var(--gap);
+	text-align: center;
+}
+.words {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	gap: 1px;
+}
+.label {
+	font-weight: bold;
+	opacity: 0.8;
+	text-transform: uppercase;
+	font-size: 0.6em;
+	padding-top: 1vmin;
+}
+
+.invalid-word {
+	font-style: italic;
+	color: lightpink;
+}
+
+.valid-word {
+	font-weight: bold;
+	color: lightgreen;
+}

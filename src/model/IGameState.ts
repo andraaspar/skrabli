@@ -1,8 +1,8 @@
-import type { IBoardSize } from '@/model/IBoardSize'
 import { Mode } from '../model/Mode'
 import { type TBag } from '../model/TBag'
 import type { TBoard } from '../model/TBoard'
 import { type THands } from '../model/THands'
+import { IBoardSize } from './IBoardSize'
 
 export interface IGameState1 {
 	mode: Mode

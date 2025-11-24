@@ -1,9 +1,9 @@
-import { FieldKind } from '@/model/FieldKind'
-import type { IBoardSize } from '@/model/IBoardSize'
-import type { IField } from '@/model/IField'
-import type { ITile } from '@/model/ITile'
-import type { TBoard } from '@/model/TBoard'
 import { expect, it } from 'vitest'
+import { FieldKind } from '../model/FieldKind'
+import type { IBoardSize } from '../model/IBoardSize'
+import type { IField } from '../model/IField'
+import type { ITile } from '../model/ITile'
+import type { TBoard } from '../model/TBoard'
 import { getColumnLine } from './getColumnLine'
 import { withInterface } from './withInterface'
 
@@ -41,7 +41,7 @@ function makeBoard(s: string) {
 	const lines = s.trim().split('\n')
 	const boardSize: IBoardSize = {
 		height: lines.length,
-		width: lines[0].length,
+		width: lines[0]!.length,
 	}
 	const board: TBoard = lines
 		.join('')

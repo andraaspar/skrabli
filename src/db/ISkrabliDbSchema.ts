@@ -1,5 +1,5 @@
-import type { IGame } from '@/model/IGame'
 import { type DBSchema } from 'idb'
+import type { IGame } from '../model/IGame'
 import { type IWordsValidity } from '../model/IWordsValidity'
 
 export interface ISkrabliDbSchema extends DBSchema {

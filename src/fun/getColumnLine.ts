@@ -1,4 +1,4 @@
-import type { IBoardSize } from '@/model/IBoardSize'
+import type { IBoardSize } from '../model/IBoardSize'
 import type { IField } from '../model/IField'
 
 export function getColumnLine(
@@ -8,7 +8,7 @@ export function getColumnLine(
 ): IField[] {
 	const column: IField[] = []
 	for (let rowIndex = 0; rowIndex < boardSize.height; rowIndex++) {
-		column.push(board[rowIndex * boardSize.width + columnIndex])
+		column.push(board[rowIndex * boardSize.width + columnIndex]!)
 	}
 	return column
 }

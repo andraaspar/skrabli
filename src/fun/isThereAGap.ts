@@ -1,5 +1,5 @@
-import type { IBoardSize } from '@/model/IBoardSize'
 import { Direction } from '../model/Direction'
+import type { IBoardSize } from '../model/IBoardSize'
 import { type IField } from '../model/IField'
 import { getFieldIndexOffset } from './getNextFieldIndex'
 
@@ -15,7 +15,7 @@ export function isThereAGap(
 		fieldIndex <= endFieldIndex;
 		fieldIndex += getFieldIndexOffset(direction, boardSize)
 	) {
-		if (!board[fieldIndex].tile) return true
+		if (!board[fieldIndex]?.tile) return true
 	}
 	return false
 }

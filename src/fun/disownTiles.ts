@@ -1,4 +1,4 @@
-import type { TBoard } from '@/model/TBoard'
+import type { TBoard } from '../model/TBoard'
 
 export function disownTiles(board: TBoard): void {
 	for (const field of board) {

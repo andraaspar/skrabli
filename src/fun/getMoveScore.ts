@@ -1,5 +1,5 @@
-import { BINGO_SCORE } from '@/model/Constants'
-import type { IField } from '@/model/IField'
+import { BINGO_SCORE } from '../model/Constants'
+import type { IField } from '../model/IField'
 import { getWordScore } from './getWordScore'
 
 export function getMoveScore(allOwnedWords: IField[][], isBingo: boolean) {

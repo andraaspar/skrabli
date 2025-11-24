@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { jsonClone } from '@/fun/jsonClone'
-import { loadHints } from '@/fun/loadHints'
-import type { IWordPlans } from '@/model/IWordPlans'
-import { useGameStore } from '@/store/useGameStore'
+import { jsonClone } from '../fun/jsonClone'
+import { loadHints } from '../fun/loadHints'
+import type { IWordPlans } from '../model/IWordPlans'
+import { useGameStore } from '../store/useGameStore'
 import verticalIcon from 'bootstrap-icons/icons/arrow-down-square.svg?raw'
 import horizontalIcon from 'bootstrap-icons/icons/arrow-right-square.svg?raw'
 import stopwatchIcon from 'bootstrap-icons/icons/stopwatch.svg?raw'

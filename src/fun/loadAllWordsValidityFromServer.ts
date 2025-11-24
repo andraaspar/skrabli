@@ -1,4 +1,4 @@
-import type { IWordsValidity } from '@/model/IWordsValidity'
+import type { IWordsValidity } from '../model/IWordsValidity'
 import { storeAllWordsValidityToDb } from './storeAllWordsValidityToDb'
 
 export async function loadAllWordsValidityFromServer() {

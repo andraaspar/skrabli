@@ -1,8 +1,7 @@
-import { AiLevel } from '@/model/AiLevel'
-import type { IGame } from '@/model/IGame'
-import type { IGameState1 } from '@/model/IGameState'
-import type { IPlayerInfo1 } from '@/model/IPlayerInfo'
-import { v4 } from 'uuid'
+import { AiLevel } from '../model/AiLevel'
+import type { IGame } from '../model/IGame'
+import type { IGameState1 } from '../model/IGameState'
+import type { IPlayerInfo1 } from '../model/IPlayerInfo'
 import { gameNameFromPlayerInfos } from './gameNameFromPlayerInfos'
 import { upgradeGame } from './upgradeGame'
 
@@ -13,7 +12,7 @@ export function gameState1ToGame(gs1: IGameState1): IGame {
 		name: player.name,
 	}))
 	const game1 = {
-		id: v4(),
+		id: crypto.randomUUID(),
 		name: gameNameFromPlayerInfos(playerInfos),
 		timestamp: Date.now(),
 		playerInfos: playerInfos,

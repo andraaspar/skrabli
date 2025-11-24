@@ -1,5 +1,5 @@
-import { FieldKind } from '@/model/FieldKind'
-import type { IField } from '@/model/IField'
+import { FieldKind } from '../../model/FieldKind'
+import { IField } from '../../model/IField'
 import { withInterface } from '../withInterface'
 import { makeTile } from './makeTile'
 

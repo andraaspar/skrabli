@@ -1,6 +1,6 @@
-import type { ILinePartsOption } from '@/model/ILinePartsOption'
-import type { IWordPart } from '@/model/IWordPart'
-import type { IWordSlice } from '@/model/IWordSlice'
+import type { ILinePartsOption } from '../model/ILinePartsOption'
+import type { IWordPart } from '../model/IWordPart'
+import type { IWordSlice } from '../model/IWordSlice'
 
 export function getWordSlices({
 	word,
@@ -18,10 +18,10 @@ export function getWordSlices({
 		// Find a splitting regex that should work by using the full regex
 		if (re.test(word)) {
 			// Get the matching splitting regex
-			const reTrimmed = resTrimmed[reIndex]
+			const reTrimmed = resTrimmed[reIndex]!
 			// By utilizing the fact that regexes come from line parts options we can
 			// get the line parts option that was used to generate the regex
-			const linePartsOption = linePartsOptions[reIndex]
+			const linePartsOption = linePartsOptions[reIndex]!
 			// Attempt splitting at multiple locations in the word
 			for (let reTrimmedStartIndex = 0; reTrimmedStartIndex < word.length; ) {
 				reTrimmed.lastIndex = reTrimmedStartIndex
@@ -62,7 +62,7 @@ export function getWordSlices({
 					// become gaps
 					if (isFixedFirst) {
 						// There was no added back word part, so we can iterate normally
-						const fixedLinePart = linePartsOption.option[stringIndex / 2]
+						const fixedLinePart = linePartsOption.option[stringIndex / 2]!
 						const handLinePart = linePartsOption.option[stringIndex / 2 + 1]
 						wordParts.push({
 							gapBefore: fixedLinePart.fieldCount,
@@ -93,7 +93,7 @@ export function getWordSlices({
 						wordParts,
 						fieldOffset: isFixedFirst
 							? linePartsOption.fieldOffset +
-							  linePartsOption.option[0].gapBefore
+							  linePartsOption.option[0]!.gapBefore
 							: linePartsOption.fieldOffset,
 					})
 				}

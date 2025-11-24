@@ -1,7 +1,7 @@
-import type { TDB } from '@/db/TDB'
-import { openSkrabliDb } from '@/db/openSkrabliDb'
-import { LocalStorageKey } from '@/model/LocalStorageKey'
-import type { TGameInfo } from '@/model/TGameInfo'
+import type { TDB } from '../db/TDB'
+import { openSkrabliDb } from '../db/openSkrabliDb'
+import { LocalStorageKey } from '../model/LocalStorageKey'
+import type { TGameInfo } from '../model/TGameInfo'
 import { isString } from './isString'
 
 export async function loadLastGameInfo(): Promise<TGameInfo | undefined> {

@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { Mode } from '@/model/Mode'
-import { useGameStore } from '@/store/useGameStore'
+import { Mode } from '../model/Mode'
+import { useGameStore } from '../store/useGameStore'
 import IconComp from './IconComp.vue'
 import playersIcon from 'bootstrap-icons/icons/people.svg?raw'
 import bagFullIcon from 'bootstrap-icons/icons/bag-fill.svg?raw'
 import bagEmptyIcon from 'bootstrap-icons/icons/bag-x.svg?raw'
-import { gameNameFromPlayerInfos } from '@/fun/gameNameFromPlayerInfos'
+import { gameNameFromPlayerInfos } from '../fun/gameNameFromPlayerInfos'
 import DialogComp from './DialogComp.vue'
 import { ref } from 'vue'
 import DialogHeaderComp from './DialogHeaderComp.vue'
 import DialogBodyComp from './DialogBodyComp.vue'
 import PlayersComp from './PlayersComp.vue'
-import { aiLevelToIcon } from '@/fun/aiLevelToIcon'
-import { aiLevelToColor } from '@/fun/aiLevelToColor'
+import { aiLevelToIcon } from '../fun/aiLevelToIcon'
+import { aiLevelToColor } from '../fun/aiLevelToColor'
 
 const gameStore = useGameStore()
 

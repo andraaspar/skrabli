@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { loadWordsValidity } from '@/fun/loadWordsValidity'
-import { Mode } from '@/model/Mode'
-import { QueryKey } from '@/model/QueryKey'
-import { useGameStore } from '@/store/useGameStore'
+import { loadWordsValidity } from '../fun/loadWordsValidity'
+import { Mode } from '../model/Mode'
+import { QueryKey } from '../model/QueryKey'
+import { useGameStore } from '../store/useGameStore'
 import { useQuery } from '@tanstack/vue-query'
 import changeIcon from 'bootstrap-icons/icons/arrow-down-up.svg?raw'
 import skipIcon from 'bootstrap-icons/icons/arrow-right-square-fill.svg?raw'
@@ -17,8 +17,8 @@ import { computed, ref } from 'vue'
 import ButtonsComp from './ButtonsComp.vue'
 import HintsComp from './HintsComp.vue'
 import IconComp from './IconComp.vue'
-import { useUiStore } from '@/store/useUiStore'
-import { MAX_SKIP_PER_PLAYER } from '@/model/MAX_SKIP_PER_PLAYER'
+import { useUiStore } from '../store/useUiStore'
+import { MAX_SKIP_PER_PLAYER } from '../model/MAX_SKIP_PER_PLAYER'
 
 defineEmits(['setJokerLetter'])
 

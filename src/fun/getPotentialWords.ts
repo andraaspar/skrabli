@@ -1,5 +1,5 @@
-import type { IBoardSize } from '@/model/IBoardSize'
 import { Direction } from '../model/Direction'
+import type { IBoardSize } from '../model/IBoardSize'
 import type { IWordPlan } from '../model/IWordPlan'
 import type { TBoard } from '../model/TBoard'
 import type { THand } from '../model/THand'
@@ -102,7 +102,7 @@ export function getPotentialWords(options: {
 						replaceHandIndexInWordPlan(
 							newPlan,
 							placedTileFieldIndex,
-							tilesToPlace[0],
+							tilesToPlace[0]!,
 							boardSize,
 						)
 						// Need a new hash, because the hand changed

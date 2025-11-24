@@ -1,17 +1,14 @@
-import { LocalStorageKey } from '@/model/LocalStorageKey'
-import { QueryKey } from '@/model/QueryKey'
-import { useUiStore } from '@/store/useUiStore'
-import { useQueryClient } from '@tanstack/vue-query'
+import { resetQueries } from '../c-mp/fun/useQuery'
+import { LocalStorageKey } from '../model/LocalStorageKey'
+import { QueryKey } from '../model/QueryKey'
+import { uiStore } from '../store/uiStore'
 import { loadAllWordsValidityFromServer } from './loadAllWordsValidityFromServer'
 
 export function useLoadAllWordsValidity(onSuccess?: () => void) {
-	const queryClient = useQueryClient()
-	const uiStore = useUiStore()
-
 	async function loadAllWordsValidity() {
 		await uiStore.lockWhile(async () => {
 			await loadAllWordsValidityFromServer()
-			queryClient.invalidateQueries([QueryKey.AreWordsValid])
+			resetQueries(QueryKey.AreWordsValid)
 			try {
 				localStorage[LocalStorageKey.AllWordsValidityUpdated] = Date.now()
 			} catch (e) {

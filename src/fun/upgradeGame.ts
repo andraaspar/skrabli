@@ -1,4 +1,4 @@
-import type { IGame, IGame1 } from '@/model/IGame'
+import type { IGame, IGame1 } from '../model/IGame'
 import { withInterface } from './withInterface'
 
 export function upgradeGame(game: IGame | IGame1): IGame {

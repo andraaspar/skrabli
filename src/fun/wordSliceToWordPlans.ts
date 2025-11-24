@@ -1,8 +1,8 @@
-import type { Direction } from '@/model/Direction'
-import type { IBoardSize } from '@/model/IBoardSize'
-import type { IWordPlan } from '@/model/IWordPlan'
-import type { IWordSlice } from '@/model/IWordSlice'
-import type { THand } from '@/model/THand'
+import type { Direction } from '../model/Direction'
+import type { IBoardSize } from '../model/IBoardSize'
+import type { IWordPlan } from '../model/IWordPlan'
+import type { IWordSlice } from '../model/IWordSlice'
+import type { THand } from '../model/THand'
 import { getLineFieldIndex } from './getLineFieldIndex'
 import { getPlacementInfos } from './getPlacementInfos'
 

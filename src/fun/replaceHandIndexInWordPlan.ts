@@ -1,5 +1,5 @@
-import type { IBoardSize } from '@/model/IBoardSize'
-import type { IWordPlan } from '@/model/IWordPlan'
+import type { IBoardSize } from '../model/IBoardSize'
+import type { IWordPlan } from '../model/IWordPlan'
 import { getFieldIndexOffset } from './getNextFieldIndex'
 
 export function replaceHandIndexInWordPlan(

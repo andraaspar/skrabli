@@ -1,5 +1,5 @@
-import { Direction } from '@/model/Direction'
 import { expect, it } from 'vitest'
+import { Direction } from '../model/Direction'
 import { makeBoard } from './test/makeBoard'
 import { makeTile } from './test/makeTile'
 import { wordPlanIncludesFieldIndex } from './wordPlanIncludesFieldIndex'

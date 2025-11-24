@@ -1,5 +1,5 @@
-import type { IBoardSize } from '@/model/IBoardSize'
 import { Direction } from '../model/Direction'
+import type { IBoardSize } from '../model/IBoardSize'
 import type { IWordPlan } from '../model/IWordPlan'
 import type { TBoard } from '../model/TBoard'
 import type { THand } from '../model/THand'

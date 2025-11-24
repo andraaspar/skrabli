@@ -1,4 +1,4 @@
-import { openDB } from 'idb/with-async-ittr'
+import { openDB } from 'idb'
 import type { ISkrabliDbSchema } from './ISkrabliDbSchema'
 
 export function openSkrabliDb() {

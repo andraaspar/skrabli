@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BINGO_SCORE } from '@/model/Constants'
+import { BINGO_SCORE } from '../model/Constants'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Mode } from '../model/Mode'
@@ -14,11 +14,11 @@ import PlayerComp from './PlayerComp.vue'
 import ReplaceTilesButtonsComp from './ReplaceTilesButtonsComp.vue'
 import SetJokerLetterComp from './SetJokerLetterComp.vue'
 import ButtonsComp from './ButtonsComp.vue'
-import { deleteGameFromDb } from '@/fun/deleteGameFromDb'
-import { useUiStore } from '@/store/useUiStore'
+import { deleteGameFromDb } from '../fun/deleteGameFromDb'
+import { useUiStore } from '../store/useUiStore'
 import PlayersComp from './PlayersComp.vue'
 import HeaderComp from './HeaderComp.vue'
-import { loadContinuableGame } from '@/fun/loadContinuableGame'
+import { loadContinuableGame } from '../fun/loadContinuableGame'
 
 const gameStore = useGameStore()
 const uiStore = useUiStore()

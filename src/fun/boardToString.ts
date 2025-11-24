@@ -1,12 +1,12 @@
-import type { IBoardSize } from '@/model/IBoardSize'
-import type { TBoard } from '@/model/TBoard'
+import type { IBoardSize } from '../model/IBoardSize'
+import type { TBoard } from '../model/TBoard'
 
 export function boardToString(board: TBoard, boardSize: IBoardSize): string {
 	const tiles: string[] = []
 	const fields: string[] = []
 	for (let i = 0; i < boardSize.height; i++) {
 		for (let j = 0; j < boardSize.width; j++) {
-			const field = board[j + i * boardSize.width]
+			const field = board[j + i * boardSize.width]!
 			fields.push(field.kind)
 			if (field.tile == null) {
 				tiles.push('-')

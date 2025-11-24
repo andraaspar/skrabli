@@ -1,6 +1,6 @@
-import type { IPlacementInfo } from '@/model/IPlacementInfo'
-import type { IWordPart } from '@/model/IWordPart'
-import { JOKER_LETTERS } from '@/model/JOKER_LETTERS'
+import type { IPlacementInfo } from '../model/IPlacementInfo'
+import type { IWordPart } from '../model/IWordPart'
+import { JOKER_LETTERS } from '../model/JOKER_LETTERS'
 import type { THand } from '../model/THand'
 import { range } from './range'
 
@@ -40,7 +40,7 @@ function getPlacementInfoInternal({
 }): IPlacementInfo[] {
 	if (wordParts.length === 0) return []
 	const result: IPlacementInfo[] = []
-	const wordPart = wordParts[0]
+	const wordPart = wordParts[0]!
 	if (wordPart.gapBefore > 0) {
 		// A gap (fixed tiles): skip it and add as many nulls to hand indices and
 		// joker letters as necessary to skip the fixed tiles

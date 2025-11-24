@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { suggestWordToServer } from '@/fun/suggestWordToServer'
-import { useLoadAllWordsValidity } from '@/fun/useLoadAllWordsValidity'
-import type { TSuggestResponse } from '@/model/TSuggestResponse'
+import { suggestWordToServer } from '../fun/suggestWordToServer'
+import { useLoadAllWordsValidity } from '../fun/useLoadAllWordsValidity'
+import type { TSuggestResponse } from '../model/TSuggestResponse'
 import successIcon from 'bootstrap-icons/icons/check-circle-fill.svg?raw'
 import errorIcon from 'bootstrap-icons/icons/exclamation-triangle-fill.svg?raw'
 import signalIcon from 'bootstrap-icons/icons/hand-index-fill.svg?raw'
@@ -13,8 +13,8 @@ import DialogComp from './DialogComp.vue'
 import DialogHeaderComp from './DialogHeaderComp.vue'
 import IconComp from './IconComp.vue'
 import refreshIcon from 'bootstrap-icons/icons/arrow-clockwise.svg?raw'
-import { useUiStore } from '@/store/useUiStore'
-import { getKnownWords } from '@/fun/getKnownWords'
+import { useUiStore } from '../store/useUiStore'
+import { getKnownWords } from '../fun/getKnownWords'
 
 const props = withDefaults(
 	defineProps<{ word: string | undefined; isValid: boolean | undefined }>(),

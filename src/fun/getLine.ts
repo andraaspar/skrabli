@@ -1,5 +1,5 @@
-import type { IBoardSize } from '@/model/IBoardSize'
 import { Direction } from '../model/Direction'
+import type { IBoardSize } from '../model/IBoardSize'
 import type { IField } from '../model/IField'
 import type { TBoard } from '../model/TBoard'
 import { getColumnLine } from './getColumnLine'

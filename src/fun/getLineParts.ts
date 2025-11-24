@@ -24,7 +24,7 @@ export function getLineParts(line: ReadonlyArray<IField>): IWordPart[] {
 			// There is an empty field here
 			if (wasGap) {
 				// The last field was also a gap, increment gap length
-				parts[parts.length - 1].gapBefore++
+				parts[parts.length - 1]!.gapBefore++
 			} else {
 				// The last field was not a gap, add a new part
 				parts.push({ gapBefore: 1, text: '', fieldCount: 0 })

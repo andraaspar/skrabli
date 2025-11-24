@@ -1,0 +1,24 @@
+.tools {
+	flex: 0 1 100%;
+	display: flex;
+	flex-flow: column;
+	gap: var(--gap);
+}
+
+@media (aspect-ratio >= 16/10) {
+	.tools {
+		overflow: auto;
+	}
+}
+
+.bingo {
+	font-size: 1.5rem;
+	color: hotpink;
+	text-align: center;
+}
+
+.result {
+	text-align: center;
+	font-size: 6vmin;
+	color: hotpink;
+}

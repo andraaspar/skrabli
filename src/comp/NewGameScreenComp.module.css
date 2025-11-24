@@ -1,0 +1,57 @@
+.form {
+	container: form / inline-size;
+	width: 100%;
+	display: flex;
+	flex-flow: column;
+	padding: 8vmin 8vmin 16vmin;
+	gap: 4vmin;
+	margin: 0 auto;
+}
+
+@media (aspect-ratio >= 16/10) {
+	.form {
+		overflow: auto;
+	}
+}
+
+.form-control,
+.form-buttons {
+	display: flex;
+	flex-flow: column;
+	gap: var(--gap);
+}
+.form-label {
+	font-size: 0.8em;
+	text-align: center;
+}
+.form-control-centered {
+	display: flex;
+	justify-content: center;
+}
+
+.players {
+	display: grid;
+	gap: var(--gap);
+	grid-template-columns: 1fr 1fr auto;
+	width: max-content;
+	margin: 0 auto;
+}
+
+@container form (width < 40vw) {
+	.players {
+		grid-template-columns: 1fr;
+	}
+}
+
+.none {
+	padding: var(--button-padding);
+	text-align: center;
+	font-style: italic;
+	color: lch(100 0 0 / 0.6);
+}
+
+.board-and-buttons {
+	flex: 0 0 auto;
+	display: flex;
+	flex-flow: column;
+}

@@ -1,4 +1,4 @@
-import { stringToBoardInfo } from '@/fun/stringToBoardInfo'
+import { stringToBoardInfo } from '../fun/stringToBoardInfo'
 
 export const BOARDS = [
 	`

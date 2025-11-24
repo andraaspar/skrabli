@@ -1,0 +1,6 @@
+.errors {
+	display: flex;
+	flex-flow: column;
+	padding: var(--gap);
+	gap: var(--gap);
+}

@@ -1,0 +1,40 @@
+.dialog {
+	display: flex;
+	flex-flow: column;
+	overflow: auto;
+	padding: 8vmin;
+	gap: 4vmin;
+	background-color: #444;
+	color: white;
+	border: 1px solid white;
+	border-radius: 4vmin;
+	text-align: center;
+	box-shadow: 0 0 8vmin black;
+	transition: opacity 0.5s ease;
+
+	&::backdrop {
+		background-color: black;
+		opacity: 0.4;
+		transition: opacity 0.5s ease;
+	}
+}
+
+.dialog-header {
+	padding: 0 0 4vmin;
+	display: flex;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	margin: -4vmin -4vmin 0;
+	align-items: center;
+}
+
+.dialog-header-title {
+	flex: 0 1 auto;
+	padding: 2vmin;
+	color: white;
+	width: 100%;
+	text-align: left;
+}
+
+.dialog-header-close {
+	flex: 0 0 auto;
+}

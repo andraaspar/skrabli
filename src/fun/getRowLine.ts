@@ -1,4 +1,4 @@
-import type { IBoardSize } from '@/model/IBoardSize'
+import type { IBoardSize } from '../model/IBoardSize'
 import { type IField } from '../model/IField'
 
 export function getRowLine(

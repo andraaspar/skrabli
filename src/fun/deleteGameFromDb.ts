@@ -1,7 +1,7 @@
-import type { ISkrabliDbSchema } from '@/db/ISkrabliDbSchema'
-import { openSkrabliDb } from '@/db/openSkrabliDb'
-import { LocalStorageKey } from '@/model/LocalStorageKey'
 import type { IDBPDatabase } from 'idb'
+import type { ISkrabliDbSchema } from '../db/ISkrabliDbSchema'
+import { openSkrabliDb } from '../db/openSkrabliDb'
+import { LocalStorageKey } from '../model/LocalStorageKey'
 
 export async function deleteGameFromDb(gameId: string): Promise<void> {
 	let db: IDBPDatabase<ISkrabliDbSchema> | undefined = undefined

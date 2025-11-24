@@ -1,4 +1,4 @@
-import { AiLevel } from '@/model/AiLevel'
+import { AiLevel } from '../model/AiLevel'
 
 export function aiLevelToString(aiLevel: AiLevel): string {
 	switch (aiLevel) {

@@ -1,0 +1,15 @@
+.warning {
+	display: flex;
+}
+.content {
+	display: flex;
+	gap: 0.5em;
+	white-space: pre-wrap;
+	margin: auto;
+}
+.message {
+	display: flex;
+	flex-flow: column;
+	gap: 0.25em;
+	text-align: left;
+}

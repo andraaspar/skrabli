@@ -1,4 +1,4 @@
-import type { ILinePartsOption } from '@/model/ILinePartsOption'
+import type { ILinePartsOption } from '../model/ILinePartsOption'
 
 export function linePartsOptionsToRegExpStrings({
 	lettersInHandRe,

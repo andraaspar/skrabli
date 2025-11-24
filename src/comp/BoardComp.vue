@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { FieldKind } from '@/model/FieldKind'
-import type { IBoardInfo } from '@/model/IBoardInfo'
-import { Mode } from '@/model/Mode'
+import { FieldKind } from '../model/FieldKind'
+import type { IBoardInfo } from '../model/IBoardInfo'
+import { Mode } from '../model/Mode'
 import { computed } from 'vue'
 import { useGameStore } from '../store/useGameStore'
 import TileComp from './TileComp.vue'

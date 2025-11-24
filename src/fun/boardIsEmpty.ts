@@ -1,4 +1,4 @@
-import type { TBoard } from '@/model/TBoard'
+import type { TBoard } from '../model/TBoard'
 
 export function boardIsEmpty(board: TBoard): boolean {
 	for (const field of board) {

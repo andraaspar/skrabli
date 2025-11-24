@@ -1,0 +1,28 @@
+.layout {
+	display: flex;
+	flex-flow: row wrap;
+	padding: var(--gap);
+	gap: var(--gap);
+	align-items: baseline;
+	width: 100%;
+}
+.player {
+	flex: 1 0 auto;
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	gap: 1vmin;
+}
+.player-name-button {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.player-bonus {
+	font-size: 0.8em;
+	color: gray;
+}
+.bag {
+	font-size: 0.8em;
+	color: gray;
+}

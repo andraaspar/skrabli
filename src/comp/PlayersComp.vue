@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { numberToSignedString } from '@/fun/numberToSignedString'
-import { Mode } from '@/model/Mode'
-import { useGameStore } from '@/store/useGameStore'
+import { numberToSignedString } from '../fun/numberToSignedString'
+import { Mode } from '../model/Mode'
+import { useGameStore } from '../store/useGameStore'
 import IconComp from './IconComp.vue'
-import { aiLevelToIcon } from '@/fun/aiLevelToIcon'
-import { aiLevelToColor } from '@/fun/aiLevelToColor'
+import { aiLevelToIcon } from '../fun/aiLevelToIcon'
+import { aiLevelToColor } from '../fun/aiLevelToColor'
 
 // const props = defineProps<{}>()
 

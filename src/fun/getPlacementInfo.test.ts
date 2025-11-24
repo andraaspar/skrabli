@@ -1,5 +1,5 @@
-import type { IPlacementInfo } from '@/model/IPlacementInfo'
 import { expect, it } from 'vitest'
+import type { IPlacementInfo } from '../model/IPlacementInfo'
 import { type ITile } from '../model/ITile'
 import { getPlacementInfos } from './getPlacementInfos'
 import { withInterface } from './withInterface'

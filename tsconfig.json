@@ -1,14 +1,31 @@
 {
-	"files": [],
-	"references": [
-		{
-			"path": "./tsconfig.node.json"
-		},
-		{
-			"path": "./tsconfig.app.json"
-		},
-		{
-			"path": "./tsconfig.vitest.json"
-		}
-	]
+	"compilerOptions": {
+		"target": "es2024",
+		"useDefineForClassFields": true,
+		"module": "ESNext",
+		"lib": ["es2024", "DOM", "DOM.Iterable", "WebWorker"],
+		"skipLibCheck": true,
+
+		/* Bundler mode */
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": true,
+		// "verbatimModuleSyntax": true,
+		"moduleDetection": "force",
+		"noEmit": true,
+
+		"jsx": "react-jsx",
+		"jsxImportSource": "skrabli",
+
+		/* Linting */
+		"strict": true,
+		// "noUnusedLocals": true,
+		// "noUnusedParameters": true,
+		// "erasableSyntaxOnly": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedSideEffectImports": true,
+		"noUncheckedIndexedAccess": true
+
+		// "types": ["vite-plugin-pwa/client"]
+	},
+	"include": ["src"]
 }

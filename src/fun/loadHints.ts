@@ -1,8 +1,8 @@
-import HintsWorker from '@/hints.worker?worker'
-import type { IBoardSize } from '@/model/IBoardSize'
-import type { IWordPlans } from '@/model/IWordPlans'
-import type { TBoard } from '@/model/TBoard'
-import type { THand } from '@/model/THand'
+import HintsWorker from '../hints.worker?worker'
+import type { IBoardSize } from '../model/IBoardSize'
+import type { IWordPlans } from '../model/IWordPlans'
+import type { TBoard } from '../model/TBoard'
+import type { THand } from '../model/THand'
 import { getKnownWords } from './getKnownWords'
 
 let worker: Worker | null = null

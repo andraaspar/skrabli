@@ -1,0 +1,9 @@
+.invalid-word {
+	font-style: italic;
+	color: lightpink;
+}
+
+.valid-word {
+	font-weight: bold;
+	color: lightgreen;
+}

@@ -1,4 +1,4 @@
-import type { TSuggestResponse } from '@/model/TSuggestResponse'
+import type { TSuggestResponse } from '../model/TSuggestResponse'
 
 export async function suggestWordToServer(
 	word: string,

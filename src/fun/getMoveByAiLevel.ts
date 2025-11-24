@@ -1,5 +1,5 @@
-import { AiLevel } from '@/model/AiLevel'
-import type { IWordPlan } from '@/model/IWordPlan'
+import { AiLevel } from '../model/AiLevel'
+import type { IWordPlan } from '../model/IWordPlan'
 
 export function getMoveByAiLevel(
 	movesUnsorted: IWordPlan[],
@@ -9,7 +9,7 @@ export function getMoveByAiLevel(
 		throw new Error(`[rytggu] No moves.`)
 	}
 	if (movesUnsorted.length === 1) {
-		return movesUnsorted[0]
+		return movesUnsorted[0]!
 	}
 	const moves = movesUnsorted
 		.slice()
@@ -17,8 +17,8 @@ export function getMoveByAiLevel(
 			(a, b) =>
 				b.score - a.score || b.handIndices.length - a.handIndices.length,
 		)
-	const max = moves[0].score
-	const min = moves[moves.length - 1].score
+	const max = moves[0]!.score
+	const min = moves[moves.length - 1]!.score
 	const range = max - min
 	switch (aiLevel) {
 		case AiLevel.Easy:
@@ -30,7 +30,7 @@ export function getMoveByAiLevel(
 		case AiLevel.VeryHard:
 			return moves.find((move) => move.score < min + range * 0.75)!
 		case AiLevel.Ultimate:
-			return moves[0]
+			return moves[0]!
 	}
 	throw new Error(`[rytgn0]`)
 }

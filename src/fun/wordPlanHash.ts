@@ -1,4 +1,4 @@
-import type { IWordPlan } from '@/model/IWordPlan'
+import type { IWordPlan } from '../model/IWordPlan'
 
 export function wordPlanHash(wordPlan: IWordPlan): string {
 	return [

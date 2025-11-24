@@ -1,0 +1,14 @@
+.options {
+	display: grid;
+	grid-template-columns: repeat(5, 12vmin);
+	grid-gap: var(--gap);
+}
+.option {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	font-family: serif;
+	font-style: italic;
+	font-size: 6vmin;
+}

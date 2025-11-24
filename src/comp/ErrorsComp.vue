@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { MoveError } from '@/model/MoveError'
-import { useGameStore } from '@/store/useGameStore'
+import { MoveError } from '../model/MoveError'
+import { useGameStore } from '../store/useGameStore'
 import WarningComp from './WarningComp.vue'
 
 const gameStore = useGameStore()

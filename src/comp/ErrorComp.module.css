@@ -1,0 +1,19 @@
+.error {
+	display: flex;
+}
+.content {
+	display: flex;
+	gap: 0.5em;
+	white-space: pre-wrap;
+	margin: auto;
+}
+.message {
+	display: flex;
+	flex-flow: column;
+	gap: 0.25em;
+	text-align: left;
+}
+.detail {
+	font-size: 0.6em;
+	color: rgba(255, 255, 255, 0.6);
+}

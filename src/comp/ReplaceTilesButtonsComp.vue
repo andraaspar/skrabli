@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Mode } from '@/model/Mode'
-import { useGameStore } from '@/store/useGameStore'
+import { Mode } from '../model/Mode'
+import { useGameStore } from '../store/useGameStore'
 import changeIcon from 'bootstrap-icons/icons/arrow-down-up.svg?raw'
 import cancelIcon from 'bootstrap-icons/icons/x-circle.svg?raw'
 import ButtonsComp from './ButtonsComp.vue'

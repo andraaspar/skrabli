@@ -1,7 +1,7 @@
-import type { ISkrabliDbSchema } from '@/db/ISkrabliDbSchema'
-import { openSkrabliDb } from '@/db/openSkrabliDb'
-import type { IWordsValidity } from '@/model/IWordsValidity'
 import type { IDBPDatabase } from 'idb'
+import type { ISkrabliDbSchema } from '../db/ISkrabliDbSchema'
+import { openSkrabliDb } from '../db/openSkrabliDb'
+import type { IWordsValidity } from '../model/IWordsValidity'
 
 export async function storeAllWordsValidityToDb(
 	validity: IWordsValidity,

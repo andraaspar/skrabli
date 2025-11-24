@@ -9,7 +9,7 @@ export function getWordFromLine(
 	let startLineIndex = lineIndex
 	let endLineIndex = lineIndex
 	while (index >= 0) {
-		const field = line[index]
+		const field = line[index]!
 		if (!field.tile) break
 		word.unshift(field)
 		startLineIndex = index

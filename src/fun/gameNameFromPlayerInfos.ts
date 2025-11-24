@@ -1,5 +1,5 @@
-import { AiLevel } from '@/model/AiLevel'
-import type { IPlayerInfo, IPlayerInfo1 } from '@/model/IPlayerInfo'
+import { AiLevel } from '../model/AiLevel'
+import type { IPlayerInfo, IPlayerInfo1 } from '../model/IPlayerInfo'
 import { isString } from './isString'
 import { listed } from './listed'
 

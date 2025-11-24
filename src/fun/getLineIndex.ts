@@ -1,5 +1,5 @@
-import { Direction } from '@/model/Direction'
-import type { IBoardSize } from '@/model/IBoardSize'
+import { Direction } from '../model/Direction'
+import type { IBoardSize } from '../model/IBoardSize'
 import { getColumnIndex } from './getColumnIndex'
 import { getRowIndex } from './getRowIndex'
 

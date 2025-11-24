@@ -1,15 +1,18 @@
 @import 'normalize.css';
 
+@import '../c-mp/css/style.css';
+
 @import './element/any.css';
 @import './element/root.css';
 @import './element/html.css';
 @import './element/body.css';
 @import './element/a.css';
 @import './element/button.css';
-@import './element/dialog.css';
 @import './element/input.css';
 
 @import './id/app.css';
 
 @import './regular/score.css';
 @import './regular/screen.css';
+@import './regular/buttons.css';
+@import './regular/dialog.css';

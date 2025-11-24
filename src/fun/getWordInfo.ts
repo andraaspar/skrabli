@@ -1,7 +1,7 @@
-import { Direction } from '@/model/Direction'
-import type { IBoardSize } from '@/model/IBoardSize'
-import type { IWordInfo } from '@/model/IWordInfo'
-import type { TBoard } from '@/model/TBoard'
+import { Direction } from '../model/Direction'
+import type { IBoardSize } from '../model/IBoardSize'
+import type { IWordInfo } from '../model/IWordInfo'
+import type { TBoard } from '../model/TBoard'
 import { getColumnIndex } from './getColumnIndex'
 import { getRowIndex } from './getRowIndex'
 import { getWordAt } from './getWordAt'
@@ -15,7 +15,7 @@ export function getWordInfo(board: TBoard, boardSize: IBoardSize): IWordInfo {
 	let direction: Direction | null = null
 
 	for (let fieldIndex = 0; fieldIndex < board.length; fieldIndex++) {
-		const field = board[fieldIndex]
+		const field = board[fieldIndex]!
 		if (field.tile && field.tile.isOwned) {
 			if (colIndex == null) {
 				// First field

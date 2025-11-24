@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import DialogComp from './DialogComp.vue'
-import { LETTERS } from '@/model/LETTERS'
-import { useGameStore } from '@/store/useGameStore'
+import { LETTERS } from '../model/LETTERS'
+import { useGameStore } from '../store/useGameStore'
 
 const props = defineProps<{ isOpen: boolean }>()
 const isOpen = computed(() => props.isOpen)

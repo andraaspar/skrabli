@@ -1,8 +1,8 @@
-import { FieldKind } from '@/model/FieldKind'
-import type { IField } from '@/model/IField'
-import type { IWordInfo } from '@/model/IWordInfo'
-import { MoveError } from '@/model/MoveError'
-import type { TBoard } from '@/model/TBoard'
+import { FieldKind } from '../model/FieldKind'
+import type { IField } from '../model/IField'
+import type { IWordInfo } from '../model/IWordInfo'
+import { MoveError } from '../model/MoveError'
+import type { TBoard } from '../model/TBoard'
 
 export function getMoveErrors(
 	board: TBoard,
@@ -42,7 +42,7 @@ export function getMoveErrors(
 						}
 					}
 				}
-				if (board[startFieldIndex].tile == null) {
+				if (board[startFieldIndex]!.tile == null) {
 					errors.add(MoveError.NoStart)
 				} else if (!touchesUnowned && !touchesStart) {
 					errors.add(MoveError.NoConnection)

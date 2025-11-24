@@ -1,6 +1,6 @@
-import type { TDB } from '@/db/TDB'
-import { openSkrabliDb } from '@/db/openSkrabliDb'
-import type { TGameInfo } from '@/model/TGameInfo'
+import type { TDB } from '../db/TDB'
+import { openSkrabliDb } from '../db/openSkrabliDb'
+import type { TGameInfo } from '../model/TGameInfo'
 
 export async function loadGameInfos(): Promise<TGameInfo[]> {
 	let db: TDB | undefined = undefined

@@ -1,6 +1,6 @@
-import type { TDB } from '@/db/TDB'
-import { openSkrabliDb } from '@/db/openSkrabliDb'
-import type { IGame } from '@/model/IGame'
+import type { TDB } from '../db/TDB'
+import { openSkrabliDb } from '../db/openSkrabliDb'
+import type { IGame } from '../model/IGame'
 import { upgradeGame } from './upgradeGame'
 
 export async function loadGame(id: string): Promise<IGame | undefined> {

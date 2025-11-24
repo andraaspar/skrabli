@@ -1,0 +1,36 @@
+.header-row {
+	display: flex;
+	flex-flow: row;
+	padding: var(--gap);
+	gap: var(--gap);
+	height: fit-content;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.logo {
+	flex: 0 0 auto;
+	width: 6vmin;
+	height: 6vmin;
+	transform: rotate(15deg);
+}
+.title {
+	flex: 1 0 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: center;
+}
+
+@media (aspect-ratio >= 16/10) {
+	.header-row {
+		flex-flow: column;
+		height: auto;
+	}
+
+	.title {
+		writing-mode: vertical-lr;
+		writing-mode: sideways-lr;
+		width: auto;
+	}
+}

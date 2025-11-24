@@ -5,18 +5,17 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	base: './',
+	base: '',
 	define: {
 		BUILD_TIMESTAMP: JSON.stringify(new Date().toLocaleString('hu')),
 	},
+	build: {
+		modulePreload: false,
+	},
+	esbuild: {
+		minifyIdentifiers: false,
+	},
 	plugins: [
-		vue({
-			// template: {
-			// 	compilerOptions: {
-			// 		whitespace: 'preserve',
-			// 	},
-			// },
-		}),
 		VitePWA({
 			registerType: 'prompt',
 			filename: 'service-worker.js',
@@ -58,11 +57,11 @@ export default defineConfig({
 			},
 		}),
 	],
-	resolve: {
-		alias: {
-			'@': fileURLToPath(new URL('./src', import.meta.url)),
-		},
-	},
+	// resolve: {
+	// 	alias: {
+	// 		'@': fileURLToPath(new URL('./src', import.meta.url)),
+	// 	},
+	// },
 	server: {
 		port: 3000,
 		proxy: {

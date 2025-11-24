@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getWordScore } from '@/fun/getWordScore'
-import { getWordString } from '@/fun/getWordString'
-import type { IField } from '@/model/IField'
+import { getWordScore } from '../fun/getWordScore'
+import { getWordString } from '../fun/getWordString'
+import type { IField } from '../model/IField'
 import { computed, ref } from 'vue'
 import WordInfoComp from './WordInfoComp.vue'
 import ButtonsComp from './ButtonsComp.vue'

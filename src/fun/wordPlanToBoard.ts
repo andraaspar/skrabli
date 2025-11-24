@@ -1,4 +1,4 @@
-import type { IBoardSize } from '@/model/IBoardSize'
+import type { IBoardSize } from '../model/IBoardSize'
 import type { IWordPlan } from '../model/IWordPlan'
 import type { TBoard } from '../model/TBoard'
 import type { THand } from '../model/THand'
@@ -23,7 +23,7 @@ export function wordPlanToBoard(
 			const fieldIndex =
 				wordPlan.fieldIndex +
 				tileIndex * getFieldIndexOffset(wordPlan.direction, boardSize)
-			const field = boardDraft[fieldIndex]
+			const field = boardDraft[fieldIndex]!
 			field.tile = tile
 			tile.isOwned = true
 			if (tile.isJoker) {
