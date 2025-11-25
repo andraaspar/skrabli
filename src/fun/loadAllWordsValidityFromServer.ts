@@ -1,19 +1,27 @@
-import type { IWordsValidity } from '../model/IWordsValidity'
 import { storeAllWordsValidityToDb } from './storeAllWordsValidityToDb'
 
-export async function loadAllWordsValidityFromServer() {
-	const response = await fetch(`/skrabli/api/all-word-validity`)
-	const json: IWordsValidity | { error: string } = await response.json()
-	if ('error' in json) {
-		throw new Error(json.error + '')
-	}
+let currentLoad: Promise<void> | undefined
+
+export function loadAllWordsValidityFromServer() {
+	if (currentLoad) return currentLoad
+	return (currentLoad = load().finally(() => {
+		currentLoad = undefined
+	}))
+}
+
+async function load() {
+	const response = await fetch(
+		`https://api.github.com/gists/41d9c22f86c827648ba3c0d3dc7b3e01`,
+	)
 	if (!response.ok) {
 		throw new Error(
 			`[rxw9wy] Request error: ${response.status} ${response.statusText}`,
 		)
 	}
-	if (!Array.isArray(json.validWords) || !Array.isArray(json.invalidWords)) {
-		throw new Error(`[rxw9y0] Invalid response format.`)
-	}
-	await storeAllWordsValidityToDb(json)
+	const json: { files: { 'words.txt': { content: string } } } =
+		await response.json()
+	await storeAllWordsValidityToDb({
+		validWords: json.files['words.txt'].content.split(/\n/g).filter(Boolean),
+		invalidWords: [],
+	})
 }

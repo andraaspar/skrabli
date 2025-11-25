@@ -18,7 +18,9 @@ function runEffects(
 	prop: string | symbol,
 	value: unknown,
 ) {
-	if (!allowMutation) throw new Error(`[t59l5g] Mutation not allowed.`)
+	if (!allowMutation) {
+		console.warn(`⚠️👾 Unlabeled mutation!`)
+	}
 	let props__effects = target__props__effects.get(target)
 	if (!props__effects) return
 	let effects = props__effects.get(prop)
@@ -81,6 +83,26 @@ const CBS: IProxifyCallbacks = {
 	cache: new WeakMap(),
 }
 
+export type TPrimitive = number | string | boolean
+export type TAtomicObject = Function | Promise<any> | Date | RegExp | Element
+
+export type TImmutable<T> = T extends TPrimitive
+	? T
+	: T extends TAtomicObject
+	? T
+	: T extends object
+	? { readonly [K in keyof T]: TImmutable<T[K]> }
+	: T
+
+export type TMutableObject<T> = { -readonly [K in keyof T]: TMutable<T[K]> }
+export type TMutable<T> = T extends TPrimitive
+	? T
+	: T extends TAtomicObject
+	? T
+	: T extends object
+	? TMutableObject<T>
+	: T
+
 export function useState<T>(
 	name: string,
 	o: T,
@@ -97,6 +119,7 @@ export async function mutateState<T>(name: string, fn: () => void) {
 		await allEffectsDone()
 	} finally {
 		allowMutation = false
-		if (logLevel >= 1) console.debug(`🛑 👾 Mutation: ${name}`)
 	}
+	await allEffectsDone()
+	if (logLevel >= 1) console.debug(`🛑 👾 Mutation: ${name}`)
 }

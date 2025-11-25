@@ -1,16 +1,10 @@
-import refreshIcon from 'bootstrap-icons/icons/arrow-clockwise.svg?raw'
-import successIcon from 'bootstrap-icons/icons/check-circle-fill.svg?raw'
-import errorIcon from 'bootstrap-icons/icons/exclamation-triangle-fill.svg?raw'
 import signalIcon from 'bootstrap-icons/icons/hand-index-fill.svg?raw'
-import slowIcon from 'bootstrap-icons/icons/hourglass-split.svg?raw'
 import { Show } from '../c-mp/comp/Show'
 import { defineComponent } from '../c-mp/fun/defineComponent'
+import { url } from '../c-mp/fun/url'
 import { useEffect } from '../c-mp/fun/useEffect'
 import { mutateState, useState } from '../c-mp/fun/useState'
 import { getKnownWords } from '../fun/getKnownWords'
-import { suggestWordToServer } from '../fun/suggestWordToServer'
-import { useLoadAllWordsValidity } from '../fun/useLoadAllWordsValidity'
-import { TSuggestResponse } from '../model/TSuggestResponse'
 import { uiStore } from '../store/uiStore'
 import { ButtonsComp } from './ButtonsComp'
 import { DialogBodyComp } from './DialogBodyComp'
@@ -26,7 +20,6 @@ export const WordInfoComp = defineComponent<{
 }>('WordInfoComp', (props, $) => {
 	const state = useState('state', {
 		isWordValid: undefined as boolean | undefined,
-		suggestWordData: undefined as TSuggestResponse | undefined,
 	})
 
 	function makeMekLink(wordString: string) {
@@ -62,9 +55,6 @@ export const WordInfoComp = defineComponent<{
 	async function suggestWord() {
 		const word = props.getWord()
 		const isValid = state.isWordValid
-		mutateState('clear suggestWordData [t6wvt1]', () => {
-			state.suggestWordData = undefined
-		})
 		if (!word) throw new Error(`[rxwcdk] No word!`)
 		mutateState('set confirm [t6wvt2]', () => {
 			uiStore.confirm = {
@@ -87,28 +77,21 @@ FONTOS:
 7. Időbe telik – napok, hetek, hónapok, ki tudja? Légy türelmes!
 8. Az én döntésem, hogy mit fogadok el. Légy megértő!`,
 				ok: async () => {
-					try {
-						await uiStore.lockWhile(async () => {
-							const result = await suggestWordToServer(word, !isValid)
-							mutateState('set suggestWordData [t6wvt3]', () => {
-								state.suggestWordData = result
-							})
-						})
-					} catch (e) {
-						console.error(`[rxwchg]`, e)
-						mutateState('set error [t6wvt4]', () => {
-							uiStore.error = e + ''
-						})
+					if (isValid) {
+						window.open(
+							url`https://github.com/andraaspar/skrabli/issues/new?template=${'érvénytelen-szó'}.md&title=${word}`,
+							'_blank',
+						)
+					} else {
+						window.open(
+							url`https://github.com/andraaspar/skrabli/issues/new?template=${'új-szó'}.md&title=${word}`,
+							'_blank',
+						)
 					}
 				},
 			}
 		})
 	}
-
-	function onSuccess() {
-		props.onClose()
-	}
-	const { loadAllWordsValidity } = useLoadAllWordsValidity(onSuccess)
 
 	let lastWord: string | undefined = undefined
 	let lastIsValid: boolean | undefined = undefined
@@ -141,43 +124,6 @@ FONTOS:
 			})()
 		}
 	})
-
-	const suggestWordIcon = () => {
-		if (state.suggestWordData) {
-			const res = state.suggestWordData
-			if ('valid' in res) {
-				return errorIcon
-			} else if ('alreadySuggested' in res) {
-				return slowIcon
-			} else if ('alreadyRejected' in res) {
-				return errorIcon
-			}
-			return successIcon
-		}
-		return signalIcon
-	}
-
-	const suggestWordLabel = () => {
-		if (state.suggestWordData) {
-			const res = state.suggestWordData
-			if ('valid' in res) {
-				const extra = res.valid === state.isWordValid ? 'Már elbíráltam: ' : ''
-				if (res.valid) {
-					return extra + 'A szó szabályos!'
-				} else {
-					return extra + 'A szó szabálytalan!'
-				}
-			} else if ('alreadySuggested' in res) {
-				return 'Már kérték, rajta vagyok!'
-			} else if ('alreadyRejected' in res) {
-				return 'Már kérték, de sajnos nem szabályos!'
-			}
-			return 'Sikerült! Egy következő játékban ismét megpróbálhatod.'
-		}
-		return state.isWordValid
-			? 'Jelzem ezt a szót, legyen szabálytalan!'
-			: 'Kérem ezt a szót, legyen szabályos!'
-	}
 
 	$.append(
 		<DialogComp isOpen={() => !!props.getWord()}>
@@ -253,26 +199,14 @@ FONTOS:
 					when={() => state.isWordValid != null}
 					then={() => (
 						<ButtonsComp>
-							<button
-								onclick={() => suggestWord()}
-								disabled={() => !!state.suggestWordData}
-							>
-								<IconComp icon={suggestWordIcon} color='#f89' />{' '}
-								{suggestWordLabel}
-							</button>
-							<Show
-								when={() =>
-									state.suggestWordData &&
-									'valid' in state.suggestWordData &&
-									state.suggestWordData.valid !== state.isWordValid
+							<button onclick={() => suggestWord()}>
+								<IconComp icon={signalIcon} color='#f89' />{' '}
+								{() =>
+									state.isWordValid
+										? 'Jelzem ezt a szót, legyen szabálytalan!'
+										: 'Kérem ezt a szót, legyen szabályos!'
 								}
-								then={() => (
-									<button onclick={() => loadAllWordsValidity()}>
-										<IconComp icon={refreshIcon} />
-										Frissítsd a szavakat
-									</button>
-								)}
-							/>
+							</button>
 						</ButtonsComp>
 					)}
 				/>

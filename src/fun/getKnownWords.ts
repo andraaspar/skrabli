@@ -1,9 +1,11 @@
 import { loadAllWordsValidityFromDb } from './loadAllWordsValidityFromDb'
+import { loadAllWordsValidityFromServer } from './loadAllWordsValidityFromServer'
 
 export async function getKnownWords() {
-	const validity = await loadAllWordsValidityFromDb()
-	const { KNOWN_WORDS } = await import('../model/KNOWN_WORDS')
-	return KNOWN_WORDS.filter(
-		(word) => !validity.invalidWords.includes(word),
-	).concat(validity.validWords)
+	let validity = await loadAllWordsValidityFromDb()
+	if (validity.validWords.length === 0) {
+		await loadAllWordsValidityFromServer()
+		validity = await loadAllWordsValidityFromDb()
+	}
+	return validity.validWords
 }
