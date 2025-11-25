@@ -7,4 +7,4 @@ assignees: ''
 
 ---
 
-Szeretném kérni a következő szó eltávolítását az érvényes szavak listájáról:
+Szeretném kérni a címben szereplő szó eltávolítását az érvényes szavak listájáról.

@@ -7,4 +7,4 @@ assignees: ''
 
 ---
 
-Szeretném kérni a következő új szó fölvételét az érvényes szavak listájára:
+Szeretném kérni a címben szereplő új szó fölvételét az érvényes szavak listájára.
