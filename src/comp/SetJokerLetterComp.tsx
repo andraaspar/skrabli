@@ -19,6 +19,7 @@ export const SetJokerLetterComp = defineComponent<{
 		<DialogComp isOpen={props.isOpen}>
 			<div class={css.options}>
 				<For
+					debugName='joker letter buttons [t6c1jv]'
 					each={() => LETTERS}
 					render={(letter) => (
 						<button

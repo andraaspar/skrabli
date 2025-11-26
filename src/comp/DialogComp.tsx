@@ -19,7 +19,7 @@ export const DialogComp = defineComponent<{
 			then={() => (
 				<dialog
 					ref={(it) => {
-						mutateState('set dialog ref [t68s1j]', () => {
+						mutateState(`${$.debugName} set dialog ref [t68s1j]`, () => {
 							dialogElem.ref = it
 						})
 					}}

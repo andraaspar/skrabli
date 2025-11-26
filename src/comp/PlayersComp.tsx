@@ -13,6 +13,7 @@ export const PlayersComp = defineComponent<{}>('PlayersComp', (props, $) => {
 	$.append(
 		<div class={css.players}>
 			<For
+				debugName='players [t6c1kw]'
 				each={() => gameStore.playerInfos}
 				render={(playerInfo) => (
 					<>

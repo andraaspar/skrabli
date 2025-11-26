@@ -27,13 +27,13 @@ export const AppComp = defineComponent<{}>('AppComp', (props, $) => {
 		} catch (e) {
 			console.error(e)
 		}
-		mutateState('clear confirm [t68hvx]', () => {
+		mutateState(`${$.debugName} clear confirm [t68hvx]`, () => {
 			uiStore.confirm = undefined
 		})
 	}
 
 	function cancelConfirm() {
-		mutateState('cancel confirm [t68hvy]', () => {
+		mutateState(`${$.debugName} cancel confirm [t68hvy]`, () => {
 			uiStore.confirm = undefined
 		})
 	}
@@ -55,7 +55,7 @@ export const AppComp = defineComponent<{}>('AppComp', (props, $) => {
 			<DialogComp isOpen={() => !!uiStore.error}>
 				<DialogHeaderComp
 					onClose={() =>
-						mutateState('clear error [t68hvz]', () => {
+						mutateState(`${$.debugName} clear error [t68hvz]`, () => {
 							uiStore.error = ''
 						})
 					}

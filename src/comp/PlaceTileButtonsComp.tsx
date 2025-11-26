@@ -37,25 +37,39 @@ export const PlaceTileButtonsComp = defineComponent<{
 	const getIsOkButtonDisabled = () => {
 		return (
 			gameStore.getMoveErrors().length > 0 ||
+			wordsValidity.status === Status.Never ||
 			wordsValidity.status === Status.Loading ||
 			wordsValidity.status === Status.Error ||
-			wordsValidity.data!.invalidWords.length > 0
+			wordsValidity.status === Status.Deleted ||
+			(wordsValidity.data?.invalidWords.length ?? 1) > 0
 		)
 	}
 	const getOkButtonLabel = () => {
-		if (wordsValidity.status === Status.Loading) return ''
+		if (
+			wordsValidity.status === Status.Never ||
+			wordsValidity.status === Status.Loading
+		)
+			return ''
 		if (wordsValidity.status === Status.Error) return ' Hiba!'
 		if (getIsOkButtonDisabled()) return ' Nem jó!'
 		return ' Oké'
 	}
 	const getOkButtonIcon = () => {
-		if (wordsValidity.status === Status.Loading) return stopwatchIcon
+		if (
+			wordsValidity.status === Status.Never ||
+			wordsValidity.status === Status.Loading
+		)
+			return stopwatchIcon
 		if (wordsValidity.status === Status.Error) return errorIcon
 		if (getIsOkButtonDisabled()) return notOkIcon
 		return okIcon
 	}
 	const getOkButtonIconColor = () => {
-		if (wordsValidity.status === Status.Loading) return undefined
+		if (
+			wordsValidity.status === Status.Never ||
+			wordsValidity.status === Status.Loading
+		)
+			return undefined
 		if (wordsValidity.status === Status.Error) return '#f78'
 		if (getIsOkButtonDisabled()) return undefined
 		return 'lightgreen'
@@ -71,7 +85,7 @@ export const PlaceTileButtonsComp = defineComponent<{
 		const skipsRemaining = Math.ceil(
 			skipsToEndGame - (gameStore.getState().skipCount ?? 0),
 		)
-		mutateState('set confirm [t6wvz1]', () => {
+		mutateState(`${$.debugName} set confirm [t6wvz1]`, () => {
 			uiStore.confirm = {
 				title: `A kör kihagyása`,
 				message:
@@ -91,14 +105,14 @@ export const PlaceTileButtonsComp = defineComponent<{
 	function showHints() {
 		if (gameStore.getPlayerInfo().hints > 0 || gameStore.getState().hintUsed) {
 			if (!gameStore.getState().hintUsed) {
-				mutateState('use a hint [t6wvz2]', () => {
+				mutateState(`${$.debugName} use a hint [t6wvz2]`, () => {
 					gameStore.getState().hintUsed = true
 					gameStore.getPlayerInfo().hints--
 				})
 				gameStore.saveGame()
 			}
 			gameStore.collectTiles()
-			mutateState('open hints [t68qbb]', () => {
+			mutateState(`${$.debugName} open hints [t68qbb]`, () => {
 				state.hintsAreOpen = true
 			})
 		}
@@ -164,7 +178,7 @@ export const PlaceTileButtonsComp = defineComponent<{
 			<HintsComp
 				getIsOpen={() => state.hintsAreOpen}
 				onClose={() =>
-					mutateState('close hints [t68icz]', () => {
+					mutateState(`${$.debugName} close hints [t68icz]`, () => {
 						state.hintsAreOpen = false
 					})
 				}

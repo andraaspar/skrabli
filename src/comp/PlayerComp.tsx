@@ -25,7 +25,7 @@ export const PlayerComp = defineComponent<{}>('PlayerComp', (props, $) => {
 		const playerIndex = gameStore.getState().playerIndex!
 		const name = prompt(`Mi a neved?`, gameStore.playerInfos[playerIndex]!.name)
 		if (name && name.trim()) {
-			mutateState('update player name [t6wvy1]', () => {
+			mutateState(`${$.debugName} update player name [t6wvy1]`, () => {
 				gameStore.playerInfos[playerIndex]!.name = name.trim()
 				gameStore.name = gameNameFromPlayerInfos(gameStore.playerInfos)
 			})
@@ -38,7 +38,7 @@ export const PlayerComp = defineComponent<{}>('PlayerComp', (props, $) => {
 			<div class={css.layout}>
 				<button
 					onclick={() =>
-						mutateState('open players list [t68myi]', () => {
+						mutateState(`${$.debugName} open players list [t68myi]`, () => {
 							state.playersOpen = true
 						})
 					}
@@ -77,7 +77,7 @@ export const PlayerComp = defineComponent<{}>('PlayerComp', (props, $) => {
 			<DialogComp isOpen={() => state.playersOpen}>
 				<DialogHeaderComp
 					onClose={() =>
-						mutateState('close players list [t68n0l]', () => {
+						mutateState(`${$.debugName} close players list [t68n0l]`, () => {
 							state.playersOpen = false
 						})
 					}

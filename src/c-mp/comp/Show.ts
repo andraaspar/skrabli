@@ -34,7 +34,7 @@ export const Show = defineComponent(
 			const lastFlag = flag
 			flag = !!props.when?.()
 			if (logLevel >= 3) {
-				console.debug(`💫 ${$.debugName} value:`, lastFlag, `→`, flag)
+				console.debug(`💫 ${$.debugName} value:`, lastFlag, `✏️`, flag)
 			}
 			if (!flag === !lastFlag && lastFlag !== NEVER) return
 

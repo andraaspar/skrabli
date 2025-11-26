@@ -12,9 +12,13 @@ export const HandComp = defineComponent<{}>('HandComp', (props, $) => {
 			then={() => (
 				<div class={css.hand}>
 					<For
-						each={() =>
-							gameStore.getState().hands[gameStore.getState().playerIndex!]
-						}
+						debugName='player hand tiles [t6c1h5]'
+						each={() => {
+							const playerIndex = gameStore.getState().playerIndex
+							return playerIndex == null
+								? []
+								: gameStore.getState().hands[playerIndex]
+						}}
 						render={(tile) => (
 							<div
 								class={() => [
@@ -30,7 +34,7 @@ export const HandComp = defineComponent<{}>('HandComp', (props, $) => {
 									when={() => tile.item}
 									then={() => (
 										<TileComp
-											getTile={() => tile.item!}
+											getTile={() => tile.item}
 											getNeverOwned={() => true}
 										/>
 									)}

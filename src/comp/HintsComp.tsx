@@ -27,7 +27,7 @@ export const HintsComp = defineComponent<{
 
 	async function load() {
 		try {
-			mutateState('clear hints [t6wvx1]', () => {
+			mutateState(`${$.debugName} clear hints [t6wvx1]`, () => {
 				state.hints = null
 				state.hintsError = null
 			})
@@ -36,18 +36,18 @@ export const HintsComp = defineComponent<{
 				boardSize: jsonClone(gameStore.getState().boardSize),
 				hand: jsonClone(gameStore.getHand()!),
 			})
-			mutateState('set hints [t6wvx2]', () => {
+			mutateState(`${$.debugName} set hints [t6wvx2]`, () => {
 				state.hints = hints
 			})
 		} catch (e) {
 			console.error(`[rx9sem]`, e)
-			mutateState('set hintsError [t6wvx3]', () => {
+			mutateState(`${$.debugName} set hintsError [t6wvx3]`, () => {
 				state.hintsError = e + ''
 			})
 		}
 	}
 
-	useEffect('HintsComp effect [t6wvx4]', () => {
+	useEffect('HintsComp load effect [t6wvx4]', () => {
 		if (props.getIsOpen()) {
 			load()
 		}

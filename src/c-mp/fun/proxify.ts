@@ -75,7 +75,7 @@ export function proxify<T>(name: string, o: T, cbs?: IProxifyCallbacks): T {
 					console.error(
 						`[t68ki1] ${name}.${p.toString()} could not be set:`,
 						oldValue,
-						`→`,
+						`✏️`,
 						newValue,
 						`target:`,
 						target,

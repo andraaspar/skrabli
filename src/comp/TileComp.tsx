@@ -3,7 +3,7 @@ import { ITile } from '../model/ITile'
 import css from './TileComp.module.css'
 
 export const TileComp = defineComponent<{
-	getTile: () => ITile
+	getTile: () => ITile | null | undefined
 	getNeverOwned?: () => boolean
 }>('TileComp', (props, $) => {
 	$.append(
@@ -12,14 +12,16 @@ export const TileComp = defineComponent<{
 				const tile = props.getTile()
 				return [
 					css.tile,
-					!props.getNeverOwned?.() && tile.isOwned && css['is-owned'],
-					tile.isJoker && css['is-joker'],
-					tile.isLast && css['is-last'],
+					!props.getNeverOwned?.() && tile?.isOwned && css['is-owned'],
+					tile?.isJoker && css['is-joker'],
+					tile?.isLast && css['is-last'],
 				]
 			}}
 		>
-			<div class={css['tile-letter']}>{() => props.getTile().letter}</div>
-			<div class={css['tile-score']}>{() => props.getTile().score + ''}</div>
+			<div class={css['tile-letter']}>{() => props.getTile()?.letter}</div>
+			<div class={css['tile-score']}>
+				{() => (props.getTile()?.score ?? '') + ''}
+			</div>
 		</div>,
 	)
 

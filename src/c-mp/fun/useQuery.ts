@@ -104,7 +104,7 @@ export class CacheEntry<T, P> {
 		if (this.status === Status.Deleted) return
 		const oldStatus = this.status
 		if (logLevel >= 2) {
-			console.debug(`🔰 ☁️ ${this.key} ${oldStatus} → ${status}`)
+			console.debug(`🔰 ☁️ ${this.key} ${oldStatus} ✏️ ${status}`)
 		}
 
 		// log1(`data:`, data)
@@ -113,6 +113,9 @@ export class CacheEntry<T, P> {
 
 		// const oldStatus = this.status
 		const dataChanged = !Object.is(data, this.data)
+		if (status === Status.Loaded) {
+			console.log(`[t6casj] ${this.key} ${this.loadFn.name} loaded:`, data)
+		}
 		this.status = status
 		this.data = data
 		this.loadedAt = loadedAt
@@ -133,7 +136,7 @@ export class CacheEntry<T, P> {
 			this.delete()
 		}
 		if (logLevel >= 2) {
-			console.debug(`🛑 ☁️ ${this.key} ${oldStatus} → ${status}`)
+			console.debug(`🛑 ☁️ ${this.key} ${oldStatus} ✏️ ${status}`)
 		}
 	}
 
@@ -315,10 +318,10 @@ export function useQuery<T, P>(
 	name: string,
 	createOptions: () => IUseQueryOptions<T, P>,
 ): IUseQueryState<T> {
-	const debugName = activeComps.at(-1)!.debugName + `→${name}`
+	const debugName = activeComps.at(-1)!.debugName + ` → ${name}`
 	const state = useState<IUseQueryState<T>>(
 		`state`,
-		{ name, status: Status.Never },
+		{ name: debugName, status: Status.Never },
 		debugName,
 	)
 
@@ -357,8 +360,13 @@ export function useQuery<T, P>(
 					})
 					storeCacheEntry(entry)
 				}
-				innerState.isEnabled = options.isEnabled ?? true
-				innerState.entryRef = entry
+				mutateState(
+					`${debugName} → untrackOptionsEffect update innerState [t6c1bq]`,
+					() => {
+						innerState.isEnabled = options.isEnabled ?? true
+						innerState.entryRef = entry
+					},
+				)
 			})
 		},
 		debugName,

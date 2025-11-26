@@ -19,7 +19,7 @@ function runEffects(
 	value: unknown,
 ) {
 	if (!allowMutation) {
-		console.warn(`⚠️👾 Unlabeled mutation!`)
+		console.error(`👾 Unlabeled mutation!`)
 	}
 	let props__effects = target__props__effects.get(target)
 	if (!props__effects) return
@@ -83,43 +83,30 @@ const CBS: IProxifyCallbacks = {
 	cache: new WeakMap(),
 }
 
-export type TPrimitive = number | string | boolean
-export type TAtomicObject = Function | Promise<any> | Date | RegExp | Element
-
-export type TImmutable<T> = T extends TPrimitive
-	? T
-	: T extends TAtomicObject
-	? T
-	: T extends object
-	? { readonly [K in keyof T]: TImmutable<T[K]> }
-	: T
-
-export type TMutableObject<T> = { -readonly [K in keyof T]: TMutable<T[K]> }
-export type TMutable<T> = T extends TPrimitive
-	? T
-	: T extends TAtomicObject
-	? T
-	: T extends object
-	? TMutableObject<T>
-	: T
-
+/**
+ * Creates a state proxy that tracks mutations and invokes effects.
+ */
 export function useState<T>(
 	name: string,
 	o: T,
 	parentName = activeComps.at(-1)?.debugName ?? '-',
 ): T {
-	return proxify(`${parentName}→${name}`, o, CBS)
+	return proxify(`${parentName} → ${name}`, o, CBS)
 }
 
-export async function mutateState<T>(name: string, fn: () => void) {
+/**
+ * Labels mutations for debugging.
+ */
+export async function mutateState(name: string, fn: () => void) {
 	try {
-		if (logLevel >= 1) console.debug(`🔰 👾 Mutation: ${name}`)
+		console.log(logLevel >= 1 ? '🔰 👾' : '👾', name)
 		allowMutation = true
 		fn()
-		await allEffectsDone()
 	} finally {
 		allowMutation = false
 	}
-	await allEffectsDone()
-	if (logLevel >= 1) console.debug(`🛑 👾 Mutation: ${name}`)
+	if (logLevel >= 1) {
+		await allEffectsDone()
+		console.debug(`🛑 👾`, name)
+	}
 }

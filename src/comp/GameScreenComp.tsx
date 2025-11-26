@@ -30,10 +30,10 @@ export const GameScreenComp = defineComponent<{}>(
 		})
 
 		if (!gameStore.getStarted()) {
-			uiStore.lockWhile(async () => {
+			uiStore.lockWhile($.debugName, async () => {
 				const game = await loadContinuableGame()
 				if (game) {
-					mutateState('load continuable game [t6ww01]', () => {
+					mutateState(`${$.debugName} load continuable game [t6ww01]`, () => {
 						Object.assign(gameStore, game)
 					})
 				} else {
@@ -43,10 +43,10 @@ export const GameScreenComp = defineComponent<{}>(
 		}
 
 		async function endGame() {
-			await uiStore.lockWhile(async () => {
+			await uiStore.lockWhile($.debugName, async () => {
 				deleteGameFromDb(gameStore.id)
 			})
-			mutateState('reset game [t6ww02]', () => {
+			mutateState(`${$.debugName} reset game [t6ww02]`, () => {
 				Object.assign(gameStore, DEFAULT_GAME_STORE)
 			})
 			navigate('menu')
@@ -61,9 +61,12 @@ export const GameScreenComp = defineComponent<{}>(
 						<>
 							<BoardComp
 								onSetJokerLetter={() =>
-									mutateState('show joker picker [t68q09]', () => {
-										state.showSetJokerLetter = true
-									})
+									mutateState(
+										`${$.debugName} show joker picker [t68q09]`,
+										() => {
+											state.showSetJokerLetter = true
+										},
+									)
 								}
 							/>
 							<div class={css.tools}>
@@ -83,9 +86,12 @@ export const GameScreenComp = defineComponent<{}>(
 											<ErrorsComp />
 											<PlaceTileButtonsComp
 												onSetJokerLetter={() =>
-													mutateState('show joker picker [t68q0y]', () => {
-														state.showSetJokerLetter = true
-													})
+													mutateState(
+														`${$.debugName} show joker picker [t68q0y]`,
+														() => {
+															state.showSetJokerLetter = true
+														},
+													)
 												}
 											/>
 											<PlacedWordInfoComp />
@@ -126,9 +132,12 @@ export const GameScreenComp = defineComponent<{}>(
 							<SetJokerLetterComp
 								isOpen={() => state.showSetJokerLetter}
 								onClose={() =>
-									mutateState('hide joker picker [t68q2l]', () => {
-										state.showSetJokerLetter = false
-									})
+									mutateState(
+										`${$.debugName} hide joker picker [t68q2l]`,
+										() => {
+											state.showSetJokerLetter = false
+										},
+									)
 								}
 							/>
 						</>

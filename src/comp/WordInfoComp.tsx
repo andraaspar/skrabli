@@ -56,7 +56,7 @@ export const WordInfoComp = defineComponent<{
 		const word = props.getWord()
 		const isValid = state.isWordValid
 		if (!word) throw new Error(`[rxwcdk] No word!`)
-		mutateState('set confirm [t6wvt2]', () => {
+		mutateState(`${$.debugName} set confirm [t6wvt2]`, () => {
 			uiStore.confirm = {
 				title:
 					'„' +
@@ -95,7 +95,7 @@ FONTOS:
 
 	let lastWord: string | undefined = undefined
 	let lastIsValid: boolean | undefined = undefined
-	useEffect('update word is valid [t68rno]', () => {
+	useEffect(`update word is valid [t68rno]`, () => {
 		const word = props.getWord()
 		const isValid = props.getIsValid?.()
 		if (word === lastWord && isValid === lastIsValid) return
@@ -103,21 +103,21 @@ FONTOS:
 		lastIsValid = isValid
 
 		if (word == null) {
-			mutateState('update isWordValid [t6wvt5]', () => {
+			mutateState(`${$.debugName} update isWordValid [t6wvt5]`, () => {
 				state.isWordValid = isValid
 			})
 		} else if (isValid != null) {
-			mutateState('update isWordValid [t6wvt6]', () => {
+			mutateState(`${$.debugName} update isWordValid [t6wvt6]`, () => {
 				state.isWordValid = isValid
 			})
 		} else {
-			mutateState('update isWordValid [t6wvt7]', () => {
+			mutateState(`${$.debugName} update isWordValid [t6wvt7]`, () => {
 				state.isWordValid = undefined
 			})
 			;(async () => {
 				const knownWords = await getKnownWords()
 				if (props.getWord() === word) {
-					mutateState('update isWordValid [t6wvt8]', () => {
+					mutateState(`${$.debugName} update isWordValid [t6wvt8]`, () => {
 						state.isWordValid = knownWords.includes(word)
 					})
 				}
@@ -148,7 +148,8 @@ FONTOS:
 				<Show
 					when={() => props.getWord()}
 					then={() => {
-						const word = props.getWord()!
+						const word = props.getWord()
+						if (!word) return ''
 						return (
 							<ButtonsComp>
 								<a

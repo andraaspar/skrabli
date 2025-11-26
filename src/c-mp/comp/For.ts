@@ -18,6 +18,7 @@ export interface IForElemProps<T> {
 }
 
 export interface IForProps<T> extends IProps {
+	debugName: string
 	each: () => T[] | undefined
 	getKey?: (item: T, index: number) => TKey
 	render: (state: IForState<T>) => TChildrenIn
@@ -98,10 +99,13 @@ export const For = defineComponent(
 							itemData.state.item = item
 						} else {
 							// Initialize new item.
-							const state = useState<IForState<T>>(`${$.debugName}→itemState`, {
-								index,
-								item,
-							})
+							const state = useState<IForState<T>>(
+								`${$.debugName} → itemState`,
+								{
+									index,
+									item,
+								},
+							)
 
 							// Create a context for each item to allow effects to work. This will
 							// run outside the For context, so it must be disposed of manually.

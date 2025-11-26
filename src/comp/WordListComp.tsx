@@ -22,6 +22,7 @@ export const WordListComp = defineComponent<{
 
 	$.append(
 		<Show
+			debugName='WordListComp.words'
 			when={() => props.getWords().length > 0}
 			then={() => {
 				const words = props.getWords()
@@ -35,13 +36,17 @@ export const WordListComp = defineComponent<{
 						/>
 						<ButtonsComp>
 							<For
+								debugName='words [t6c1ka]'
 								each={() => words}
 								render={(word) => (
 									<button
 										onclick={() =>
-											mutateState('set open word index [t68q97]', () => {
-												state.openWordIndex = word.index
-											})
+											mutateState(
+												`${$.debugName} set open word index [t68q97]`,
+												() => {
+													state.openWordIndex = word.index
+												},
+											)
 										}
 									>
 										<span
@@ -72,9 +77,12 @@ export const WordListComp = defineComponent<{
 							getWord={() => wordStrings[state.openWordIndex]!}
 							getIsValid={props.getValidity}
 							onClose={() =>
-								mutateState('unset open word index [t68qa6]', () => {
-									state.openWordIndex = -1
-								})
+								mutateState(
+									`${$.debugName} unset open word index [t68qa6]`,
+									() => {
+										state.openWordIndex = -1
+									},
+								)
 							}
 						/>
 					</div>

@@ -30,6 +30,7 @@ export const ErrorsComp = defineComponent<{}>('ErrorsComp', (props, $) => {
 			then={() => (
 				<div class={css.errors}>
 					<For
+						debugName='move errors [t6c1ge]'
 						each={() => gameStore.getMoveErrors()}
 						render={(error) => (
 							<WarningComp warning={() => errorToString(error.item)} />

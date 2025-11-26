@@ -74,6 +74,7 @@ export const MenuScreenComp = defineComponent<{}>(
 										then={() => (
 											<div class={css['menu-buttons']}>
 												<For
+													debugName='gameInfos [t6c1hv]'
 													each={() => state.gameInfos}
 													render={(gameInfo) => (
 														<div class={css['button-row']}>
@@ -123,11 +124,10 @@ export const MenuScreenComp = defineComponent<{}>(
 
 		async function continueGame() {
 			if (!gameStore.getStarted()) {
-				await uiStore.lockWhile(async () => {
+				await uiStore.lockWhile($.debugName, async () => {
 					const game = await loadContinuableGame()
 					if (game) {
-						mutateState('continueGame set game [t62op2]', () => {
-							console.log(`[t68jnk] gameStore:`, gameStore, `game:`, game)
+						mutateState(`${$.debugName} use continuable game [t62op2]`, () => {
 							Object.assign(gameStore, game)
 						})
 					}
@@ -143,24 +143,27 @@ export const MenuScreenComp = defineComponent<{}>(
 		}
 
 		function onSuccess() {
-			mutateState('update allWordsValidityUpdated [t62ni1]', () => {
-				state.allWordsValidityUpdated = Date.now()
-			})
+			mutateState(
+				`${$.debugName} update allWordsValidityUpdated [t62ni1]`,
+				() => {
+					state.allWordsValidityUpdated = Date.now()
+				},
+			)
 		}
 		const { loadAllWordsValidity } = useLoadAllWordsValidity(onSuccess)
 
-		uiStore.lockWhile(async () => {
+		uiStore.lockWhile($.debugName, async () => {
 			const gameInfos = await loadGameInfos()
-			mutateState('set gameInfos [t62nft]', () => {
+			mutateState(`${$.debugName} set gameInfos [t6c9br]`, () => {
 				state.gameInfos = gameInfos
 			})
 		})
 
 		async function loadGameById(id: string) {
-			await uiStore.lockWhile(async () => {
+			await uiStore.lockWhile($.debugName, async () => {
 				const game = await loadGame(id)
 				if (!game) throw new Error(`[ryb06t] Game not found!`)
-				mutateState('set loaded game [t62nj8]', () => {
+				mutateState(`${$.debugName} use loaded game [t62nj8]`, () => {
 					Object.assign(gameStore, game)
 				})
 			})
@@ -174,20 +177,22 @@ export const MenuScreenComp = defineComponent<{}>(
 		}
 
 		async function deleteGameById(id: string) {
-			mutateState('set confirm [t62nas]', () => {
+			mutateState(`${$.debugName} set confirm [t62nas]`, () => {
 				uiStore.confirm = {
 					title: `Törlés`,
 					message: `Biztosan töröljem a játékot?\n${getGameTitleById(id)}`,
 					ok: async () => {
-						await uiStore.lockWhile(async () => {
+						await uiStore.lockWhile($.debugName, async () => {
 							await deleteGameFromDb(id)
 							const gameInfos = await loadGameInfos()
-							mutateState('set gameInfos [t62nft]', () => {
+							mutateState(`${$.debugName} update gameInfos [t62nft]`, () => {
 								state.gameInfos = gameInfos
 							})
 						})
 						if (gameStore.id === id) {
-							Object.assign(gameStore, DEFAULT_GAME_STORE)
+							mutateState(`${$.debugName} use default game [t6c1z3]`, () => {
+								Object.assign(gameStore, DEFAULT_GAME_STORE)
+							})
 						}
 					},
 				}
@@ -196,7 +201,7 @@ export const MenuScreenComp = defineComponent<{}>(
 
 		async function update() {
 			if (uiStore.updateServiceWorker) {
-				await uiStore.lockWhile(uiStore.updateServiceWorker)
+				await uiStore.lockWhile($.debugName, uiStore.updateServiceWorker)
 			}
 		}
 

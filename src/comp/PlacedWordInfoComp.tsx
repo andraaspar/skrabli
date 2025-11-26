@@ -13,7 +13,9 @@ export const PlacedWordInfoComp = defineComponent<{}>(
 				then={() => (
 					<div class={css['placed-word-info']}>
 						<WordListComp
-							getWords={() => gameStore.getPlacedValidAndInvalidWords()!.valid}
+							getWords={() =>
+								gameStore.getPlacedValidAndInvalidWords()?.valid ?? []
+							}
 							getLabel={() => 'Szavak a választott mezőn'}
 						/>
 					</div>

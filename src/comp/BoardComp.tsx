@@ -65,11 +65,11 @@ export const BoardComp = defineComponent<{
 				props.onSetJokerLetter()
 			}
 		} else if (state.fieldIndex === fieldIndex) {
-			mutateState('unset field index [t68q6i]', () => {
+			mutateState(`${$.debugName} unset field index [t68q6i]`, () => {
 				state.fieldIndex = null
 			})
 		} else {
-			mutateState('set field index [t68q7a]', () => {
+			mutateState(`${$.debugName} set field index [t68q7a]`, () => {
 				state.fieldIndex = fieldIndex
 			})
 		}
@@ -81,6 +81,7 @@ export const BoardComp = defineComponent<{
 			style={{ aspectRatio: getAspectRatio() + '' }}
 		>
 			<For
+				debugName='board fields [t6c1fv]'
 				each={getBoard}
 				render={(field) => (
 					<div
@@ -108,7 +109,7 @@ export const BoardComp = defineComponent<{
 					>
 						<Show
 							when={() => field.item.tile}
-							then={() => <TileComp getTile={() => field.item.tile!} />}
+							then={() => <TileComp getTile={() => field.item.tile} />}
 							else={() => (
 								<Slot get={() => fieldKindToString(field.item.kind)} />
 							)}
