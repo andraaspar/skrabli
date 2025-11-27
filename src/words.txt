@@ -35658,7 +35658,7 @@ oh
 óhatatlan
 óhaza
 óhitű
-ohm
+ohó
 ojt
 ojtás
 ojtatlan
@@ -41807,7 +41807,6 @@ sí
 síber
 síbol
 síbot
-sic
 sicc
 síel
 síelés
