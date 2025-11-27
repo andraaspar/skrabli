@@ -231,7 +231,7 @@ export const gameStore = useState('gameStore', {
 	},
 
 	collectTiles() {
-		mutateState(`gameStore collectTiles [5d9fb5]`, () => {
+		mutateState(`gameStore`, `collectTiles [5d9fb5]`, () => {
 			const tiles: ITile[] = []
 			for (const field of gameStore.getState().board) {
 				if (field.tile && field.tile.isOwned) {
@@ -252,7 +252,7 @@ export const gameStore = useState('gameStore', {
 	},
 
 	disownTiles() {
-		mutateState(`gameStore disownTiles [d8dc08]`, () => {
+		mutateState(`gameStore`, `disownTiles [d8dc08]`, () => {
 			disownTiles(gameStore.getState().board)
 		})
 	},
@@ -264,7 +264,7 @@ export const gameStore = useState('gameStore', {
 			hand.length - getHandTileCount(hand),
 		)
 		const tiles: ITile[] = []
-		mutateState(`gameStore grab tiles [95be12]`, () => {
+		mutateState(`gameStore`, `grab tiles [95be12]`, () => {
 			for (let i = 0; i < count; i++) {
 				const tile = gameStore
 					.getState()
@@ -276,7 +276,7 @@ export const gameStore = useState('gameStore', {
 				tiles.push(tile)
 			}
 		})
-		mutateState(`gameStore fill hand [e16ac4]`, () => {
+		mutateState(`gameStore`, `fill hand [e16ac4]`, () => {
 			const newHand = (gameStore.getState().hands[
 				gameStore.getState().playerIndex!
 			] = hand.map((tile) => (tile ? tile : tiles.shift() || null)))
@@ -285,7 +285,7 @@ export const gameStore = useState('gameStore', {
 	},
 
 	nextPlayer() {
-		mutateState(`gameStore nextPlayer [500255]`, () => {
+		mutateState(`gameStore`, `nextPlayer [500255]`, () => {
 			const state = gameStore.getState()
 			state.playerIndex = state.playerIndex == null ? 0 : state.playerIndex + 1
 			if (state.playerIndex >= gameStore.playerInfos.length) {
@@ -298,14 +298,14 @@ export const gameStore = useState('gameStore', {
 	},
 
 	score() {
-		mutateState(`gameStore score [8b76e2]`, () => {
+		mutateState(`gameStore`, `score [8b76e2]`, () => {
 			const state = gameStore.getState()
 			state.playerScores[state.playerIndex!]! += gameStore.getMoveScore()
 		})
 	},
 
 	setJokerLetter(letter: string) {
-		mutateState(`gameStore setJokerLetter [52bd18]`, () => {
+		mutateState(`gameStore`, `setJokerLetter [52bd18]`, () => {
 			gameStore.getState().board[
 				gameStore.getState().fieldIndex!
 			]!.tile!.letter = letter
@@ -314,7 +314,7 @@ export const gameStore = useState('gameStore', {
 	},
 
 	setMode(mode: Mode) {
-		mutateState(`gameStore setMode [7c7dd4]`, () => {
+		mutateState(`gameStore`, `setMode [7c7dd4]`, () => {
 			if (mode !== gameStore.getState().mode) {
 				gameStore.getState().fieldIndex = null
 				gameStore.getState().handIndex = null
@@ -324,7 +324,7 @@ export const gameStore = useState('gameStore', {
 	},
 
 	swapHandAndBoard(fieldIndex: number, handIndex: number) {
-		mutateState(`gameStore swapHandAndBoard [1d5228]`, () => {
+		mutateState(`gameStore`, `swapHandAndBoard [1d5228]`, () => {
 			const state = gameStore.getState()
 			const hand = gameStore.getHand()
 			if (!hand) return
@@ -341,7 +341,7 @@ export const gameStore = useState('gameStore', {
 	},
 
 	swapHands(handIndexA: number, handIndexB: number) {
-		mutateState(`gameStore swapHands [780fe2]`, () => {
+		mutateState(`gameStore`, `swapHands [780fe2]`, () => {
 			const hand =
 				gameStore.getState().hands[gameStore.getState().playerIndex!]!
 			const tileA = hand[handIndexA]!
@@ -353,7 +353,7 @@ export const gameStore = useState('gameStore', {
 	},
 
 	swapTiles(fieldIndexA: number, fieldIndexB: number) {
-		mutateState(`gameStore swapTiles [ad0d48]`, () => {
+		mutateState(`gameStore`, `swapTiles [ad0d48]`, () => {
 			const fieldATile = gameStore.getState().board[fieldIndexA]!.tile
 			const fieldBTile = gameStore.getState().board[fieldIndexB]!.tile
 			gameStore.getState().fieldIndex = null
@@ -363,14 +363,14 @@ export const gameStore = useState('gameStore', {
 	},
 
 	toggleHandIndexToReplace(handIndex: number) {
-		mutateState(`gameStore toggleHandIndexToReplace [edac8b]`, () => {
+		mutateState(`gameStore`, `toggleHandIndexToReplace [edac8b]`, () => {
 			gameStore.getState().handIndicesToReplace[handIndex] =
 				!gameStore.getState().handIndicesToReplace[handIndex]
 		})
 	},
 
 	removeTilesToReplaceFromHand() {
-		mutateState(`gameStore removeTilesToReplaceFromHand [17ff98]`, () => {
+		mutateState(`gameStore`, `removeTilesToReplaceFromHand [17ff98]`, () => {
 			const hand =
 				gameStore.getState().hands[gameStore.getState().playerIndex!]!
 			gameStore.getState().hands[gameStore.getState().playerIndex!] = hand.map(
@@ -381,31 +381,31 @@ export const gameStore = useState('gameStore', {
 	},
 
 	deselectTilesToReplace() {
-		mutateState(`gameStore deselectTilesToReplace [154336]`, () => {
+		mutateState(`gameStore`, `deselectTilesToReplace [154336]`, () => {
 			gameStore.getState().handIndicesToReplace.fill(false)
 		})
 	},
 
 	addTilesToBag(tiles: ITile[]) {
-		mutateState(`gameStore addTilesToBag [e1aa28]`, () => {
+		mutateState(`gameStore`, `addTilesToBag [e1aa28]`, () => {
 			gameStore.getState().bag.push(...tiles)
 		})
 	},
 
 	incrementSkipCount() {
-		mutateState(`gameStore incrementSkipCount [679b4b]`, () => {
+		mutateState(`gameStore`, `incrementSkipCount [679b4b]`, () => {
 			gameStore.getState().skipCount = (gameStore.getState().skipCount || 0) + 1
 		})
 	},
 
 	resetSkipCount() {
-		mutateState(`gameStore resetSkipCount [6071ce]`, () => {
+		mutateState(`gameStore`, `resetSkipCount [6071ce]`, () => {
 			gameStore.getState().skipCount = 0
 		})
 	},
 
 	scoreBonuses() {
-		mutateState(`gameStore scoreBonuses [1ea10a]`, () => {
+		mutateState(`gameStore`, `scoreBonuses [1ea10a]`, () => {
 			for (
 				let playerIndex = 0;
 				playerIndex < gameStore.playerInfos.length;
@@ -418,14 +418,14 @@ export const gameStore = useState('gameStore', {
 	},
 
 	startGame() {
-		mutateState(`gameStore set game name [773808]`, () => {
+		mutateState(`gameStore`, `set game name [773808]`, () => {
 			gameStore.name = gameNameFromPlayerInfos(gameStore.playerInfos)
 		})
 		for (let i = 0; i < gameStore.playerInfos.length; i++) {
 			gameStore.nextPlayer()
 			gameStore.fillHand()
 		}
-		mutateState(`gameStore startGame [395e48]`, () => {
+		mutateState(`gameStore`, `startGame [395e48]`, () => {
 			gameStore.getState().mode = Mode.PlaceTile
 		})
 		gameStore.nextPlayer()
@@ -464,7 +464,8 @@ export const gameStore = useState('gameStore', {
 		if (moves.length === 0) {
 			if (gameStore.getCanSwap()) {
 				mutateState(
-					`gameStore aiMove set handIndicesToReplace [aa4a38]`,
+					`gameStore`,
+					`aiMove set handIndicesToReplace [aa4a38]`,
 					() => {
 						gameStore.getState().handIndicesToReplace = range(HAND_SIZE).map(
 							() => true,
@@ -477,7 +478,7 @@ export const gameStore = useState('gameStore', {
 			}
 		} else {
 			const move = getMoveByAiLevel(moves, gameStore.getPlayerInfo().aiLevel)
-			mutateState(`gameStore aiMove make move [be31b8]`, () => {
+			mutateState(`gameStore`, `aiMove make move [be31b8]`, () => {
 				gameStore.getState().board = move.board
 				gameStore.getState().hands[gameStore.getState().playerIndex!] =
 					move.hand
@@ -498,12 +499,12 @@ export const gameStore = useState('gameStore', {
 				gameStore.swapHandAndBoard(state.fieldIndex!, handIndexToSelect)
 			} else {
 				if (state.handIndex === handIndexToSelect) {
-					mutateState(`gameStore selectHand null [a5a3c8]`, () => {
+					mutateState(`gameStore`, `selectHand null [a5a3c8]`, () => {
 						state.handIndex = null
 					})
 				} else {
 					if (state.handIndex == null) {
-						mutateState(`gameStore selectHand N [d4dad8]`, () => {
+						mutateState(`gameStore`, `selectHand N [d4dad8]`, () => {
 							state.handIndex = state.hands[state.playerIndex!]![
 								handIndexToSelect
 							]
@@ -556,7 +557,7 @@ export const gameStore = useState('gameStore', {
 	},
 
 	setUndoPoint() {
-		mutateState(`gameStore setUndoPoint [419458]`, () => {
+		mutateState(`gameStore`, `setUndoPoint [419458]`, () => {
 			gameStore.states.push(jsonClone(gameStore.getState()))
 		})
 	},
@@ -577,7 +578,7 @@ export const gameStore = useState('gameStore', {
 		await uiStore.lockWhile('gameStore loadGame [t6c2e2]', async () => {
 			const game = await loadGame(id)
 			if (!game) throw new Error(`[ry5ln7] Game not found!`)
-			mutateState(`gameStore apply loaded game [556b1b]`, () => {
+			mutateState(`gameStore`, `apply loaded game [556b1b]`, () => {
 				Object.assign(gameStore, game)
 			})
 		})

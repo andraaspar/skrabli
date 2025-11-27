@@ -21,17 +21,17 @@ export const uiStore = useState('uiStore', {
 
 	async lockWhile(name: string, fn: () => Promise<void>) {
 		try {
-			mutateState(`${name} increment lockedCount [t62otg]`, () => {
+			mutateState(name, `increment lockedCount [t62otg]`, () => {
 				this.lockedCount++
 			})
 			await fn()
 		} catch (e) {
 			console.error(e)
-			mutateState(`${name} set error [t62otc]`, () => {
+			mutateState(name, `set error [t62otc]`, () => {
 				this.error = e + ''
 			})
 		} finally {
-			mutateState(`${name} decrement lockedCount [t62otj]`, () => {
+			mutateState(name, `decrement lockedCount [t62otj]`, () => {
 				this.lockedCount--
 			})
 		}

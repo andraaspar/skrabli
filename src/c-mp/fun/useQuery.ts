@@ -113,9 +113,6 @@ export class CacheEntry<T, P> {
 
 		// const oldStatus = this.status
 		const dataChanged = !Object.is(data, this.data)
-		if (status === Status.Loaded) {
-			console.log(`[t6casj] ${this.key} ${this.loadFn.name} loaded:`, data)
-		}
 		this.status = status
 		this.data = data
 		this.loadedAt = loadedAt
@@ -214,7 +211,7 @@ export class CacheEntry<T, P> {
 	}
 
 	private updateState(state: IUseQueryState<T>, dataChanged = true) {
-		mutateState(`☁️ ${this.key} 👉 ${state.name} (${this.status})`, () => {
+		mutateState('☁️ ' + this.key, `👉 ${state.name} (${this.status})`, () => {
 			state.status = this.status
 			// state.data = data
 			if (
@@ -336,12 +333,12 @@ export function useQuery<T, P>(
 
 	// Declare effect to keep track of changes in dependencies.
 	useEffect(
-		'optionsEffect',
+		'options changed [t6e0aa]',
 		() => {
 			// Create the options in the effect to track dependencies.
 			const options = createOptions()
 
-			return untrack('untrackOptionsEffect', () => {
+			return untrack('apply [t6e0ai]', () => {
 				// The params as a string will be key to get the entry.
 				const paramsString = jsonStringify(options.params, { ordered: true })
 				// Look up the entry in the cache.
@@ -361,7 +358,8 @@ export function useQuery<T, P>(
 					storeCacheEntry(entry)
 				}
 				mutateState(
-					`${debugName} → untrackOptionsEffect update innerState [t6c1bq]`,
+					debugName,
+					`→ untrackOptionsEffect update innerState [t6c1bq]`,
 					() => {
 						innerState.isEnabled = options.isEnabled ?? true
 						innerState.entryRef = entry
@@ -373,7 +371,7 @@ export function useQuery<T, P>(
 	)
 
 	useEffect(
-		'entryEffect',
+		'entry changed [t6e0as]',
 		() => {
 			const entry = innerState.entryRef
 			if (entry != null) {

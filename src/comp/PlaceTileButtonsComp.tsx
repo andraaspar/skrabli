@@ -85,7 +85,7 @@ export const PlaceTileButtonsComp = defineComponent<{
 		const skipsRemaining = Math.ceil(
 			skipsToEndGame - (gameStore.getState().skipCount ?? 0),
 		)
-		mutateState(`${$.debugName} set confirm [t6wvz1]`, () => {
+		mutateState($.debugName, `set confirm [t6wvz1]`, () => {
 			uiStore.confirm = {
 				title: `A kör kihagyása`,
 				message:
@@ -105,14 +105,14 @@ export const PlaceTileButtonsComp = defineComponent<{
 	function showHints() {
 		if (gameStore.getPlayerInfo().hints > 0 || gameStore.getState().hintUsed) {
 			if (!gameStore.getState().hintUsed) {
-				mutateState(`${$.debugName} use a hint [t6wvz2]`, () => {
+				mutateState($.debugName, `use a hint [t6wvz2]`, () => {
 					gameStore.getState().hintUsed = true
 					gameStore.getPlayerInfo().hints--
 				})
 				gameStore.saveGame()
 			}
 			gameStore.collectTiles()
-			mutateState(`${$.debugName} open hints [t68qbb]`, () => {
+			mutateState($.debugName, `open hints [t68qbb]`, () => {
 				state.hintsAreOpen = true
 			})
 		}
@@ -178,7 +178,7 @@ export const PlaceTileButtonsComp = defineComponent<{
 			<HintsComp
 				getIsOpen={() => state.hintsAreOpen}
 				onClose={() =>
-					mutateState(`${$.debugName} close hints [t68icz]`, () => {
+					mutateState($.debugName, `close hints [t68icz]`, () => {
 						state.hintsAreOpen = false
 					})
 				}

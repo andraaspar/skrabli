@@ -27,7 +27,7 @@ export const OwnWordInfoComp = defineComponent<{}>(
 
 		useEffect('update wordsValidity [t6cbzm]', () => {
 			if (!wordsValidity.data) {
-				mutateState(`${$.debugName} no words validity [t6cbty]`, () => {
+				mutateState($.debugName, `no words validity [t6cbty]`, () => {
 					validAndInvalidWords.value = undefined
 				})
 				return
@@ -42,14 +42,14 @@ export const OwnWordInfoComp = defineComponent<{}>(
 				}
 			}
 			if (valid.length > 0 || invalid.length > 0) {
-				mutateState(`${$.debugName} set words validity [t6cbus]`, () => {
+				mutateState($.debugName, `set words validity [t6cbus]`, () => {
 					validAndInvalidWords.value = {
 						valid,
 						invalid,
 					}
 				})
 			} else {
-				mutateState(`${$.debugName} no words validity [t6cbv3]`, () => {
+				mutateState($.debugName, `no words validity [t6cbv3]`, () => {
 					validAndInvalidWords.value = undefined
 				})
 			}
@@ -58,17 +58,17 @@ export const OwnWordInfoComp = defineComponent<{}>(
 		$.append(
 			<Show
 				debugName='validAndInvalidWords'
-				when={() => validAndInvalidWords.value != null}
-				then={() => (
+				when={() => validAndInvalidWords.value}
+				then={(getValidAndInvalidWords) => (
 					<div class={css['own-word-info']}>
 						<WordListComp
-							getWords={() => validAndInvalidWords.value?.valid ?? []}
+							getWords={() => getValidAndInvalidWords().valid}
 							getValidity={() => true}
 							getShowScore={() => true}
 							getLabel={() => 'Szabályos szavak'}
 						/>
 						<WordListComp
-							getWords={() => validAndInvalidWords.value?.invalid ?? []}
+							getWords={() => getValidAndInvalidWords().invalid}
 							getValidity={() => false}
 							getLabel={() => 'Szabálytalan szavak'}
 						/>

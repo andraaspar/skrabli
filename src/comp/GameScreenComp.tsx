@@ -33,7 +33,7 @@ export const GameScreenComp = defineComponent<{}>(
 			uiStore.lockWhile($.debugName, async () => {
 				const game = await loadContinuableGame()
 				if (game) {
-					mutateState(`${$.debugName} load continuable game [t6ww01]`, () => {
+					mutateState($.debugName, `load continuable game [t6ww01]`, () => {
 						Object.assign(gameStore, game)
 					})
 				} else {
@@ -46,7 +46,7 @@ export const GameScreenComp = defineComponent<{}>(
 			await uiStore.lockWhile($.debugName, async () => {
 				deleteGameFromDb(gameStore.id)
 			})
-			mutateState(`${$.debugName} reset game [t6ww02]`, () => {
+			mutateState($.debugName, `reset game [t6ww02]`, () => {
 				Object.assign(gameStore, DEFAULT_GAME_STORE)
 			})
 			navigate('menu')
@@ -61,12 +61,9 @@ export const GameScreenComp = defineComponent<{}>(
 						<>
 							<BoardComp
 								onSetJokerLetter={() =>
-									mutateState(
-										`${$.debugName} show joker picker [t68q09]`,
-										() => {
-											state.showSetJokerLetter = true
-										},
-									)
+									mutateState($.debugName, `show joker picker [t68q09]`, () => {
+										state.showSetJokerLetter = true
+									})
 								}
 							/>
 							<div class={css.tools}>
@@ -87,7 +84,8 @@ export const GameScreenComp = defineComponent<{}>(
 											<PlaceTileButtonsComp
 												onSetJokerLetter={() =>
 													mutateState(
-														`${$.debugName} show joker picker [t68q0y]`,
+														$.debugName,
+														`show joker picker [t68q0y]`,
 														() => {
 															state.showSetJokerLetter = true
 														},
@@ -132,12 +130,9 @@ export const GameScreenComp = defineComponent<{}>(
 							<SetJokerLetterComp
 								isOpen={() => state.showSetJokerLetter}
 								onClose={() =>
-									mutateState(
-										`${$.debugName} hide joker picker [t68q2l]`,
-										() => {
-											state.showSetJokerLetter = false
-										},
-									)
+									mutateState($.debugName, `hide joker picker [t68q2l]`, () => {
+										state.showSetJokerLetter = false
+									})
 								}
 							/>
 						</>

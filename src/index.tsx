@@ -12,7 +12,7 @@ document.getElementById('app')?.append(<AppComp />)
 
 const updateServiceWorker = registerSW({
 	onNeedRefresh() {
-		mutateState(`index set updateServiceWorker [t6c9j3]`, () => {
+		mutateState(`index`, `set updateServiceWorker [t6c9j3]`, () => {
 			uiStore.updateServiceWorker = () => updateServiceWorker(true)
 		})
 	},

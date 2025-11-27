@@ -1,4 +1,4 @@
-import { TChildrenIn } from './TChildrenIn'
+import { TChildrenIn } from './TChildren'
 import { TStyle } from './TStyle'
 
 /**

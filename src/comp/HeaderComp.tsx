@@ -1,7 +1,7 @@
 import listSvg from 'bootstrap-icons/icons/list.svg?raw'
 import logoSvg from '../asset/logo.svg?raw'
 import { defineComponent } from '../c-mp/fun/defineComponent'
-import { TChildrenIn } from '../c-mp/model/TChildrenIn'
+import { TChildrenIn } from '../c-mp/model/TChildren'
 import { navigate } from '../fun/navigate'
 import css from './HeaderComp.module.css'
 import { IconComp } from './IconComp'

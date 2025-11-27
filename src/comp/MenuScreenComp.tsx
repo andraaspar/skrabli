@@ -127,7 +127,7 @@ export const MenuScreenComp = defineComponent<{}>(
 				await uiStore.lockWhile($.debugName, async () => {
 					const game = await loadContinuableGame()
 					if (game) {
-						mutateState(`${$.debugName} use continuable game [t62op2]`, () => {
+						mutateState($.debugName, `use continuable game [t62op2]`, () => {
 							Object.assign(gameStore, game)
 						})
 					}
@@ -144,7 +144,8 @@ export const MenuScreenComp = defineComponent<{}>(
 
 		function onSuccess() {
 			mutateState(
-				`${$.debugName} update allWordsValidityUpdated [t62ni1]`,
+				$.debugName,
+				`update allWordsValidityUpdated [t62ni1]`,
 				() => {
 					state.allWordsValidityUpdated = Date.now()
 				},
@@ -154,7 +155,7 @@ export const MenuScreenComp = defineComponent<{}>(
 
 		uiStore.lockWhile($.debugName, async () => {
 			const gameInfos = await loadGameInfos()
-			mutateState(`${$.debugName} set gameInfos [t6c9br]`, () => {
+			mutateState($.debugName, `set gameInfos [t6c9br]`, () => {
 				state.gameInfos = gameInfos
 			})
 		})
@@ -163,7 +164,7 @@ export const MenuScreenComp = defineComponent<{}>(
 			await uiStore.lockWhile($.debugName, async () => {
 				const game = await loadGame(id)
 				if (!game) throw new Error(`[ryb06t] Game not found!`)
-				mutateState(`${$.debugName} use loaded game [t62nj8]`, () => {
+				mutateState($.debugName, `use loaded game [t62nj8]`, () => {
 					Object.assign(gameStore, game)
 				})
 			})
@@ -177,7 +178,7 @@ export const MenuScreenComp = defineComponent<{}>(
 		}
 
 		async function deleteGameById(id: string) {
-			mutateState(`${$.debugName} set confirm [t62nas]`, () => {
+			mutateState($.debugName, `set confirm [t62nas]`, () => {
 				uiStore.confirm = {
 					title: `Törlés`,
 					message: `Biztosan töröljem a játékot?\n${getGameTitleById(id)}`,
@@ -185,12 +186,12 @@ export const MenuScreenComp = defineComponent<{}>(
 						await uiStore.lockWhile($.debugName, async () => {
 							await deleteGameFromDb(id)
 							const gameInfos = await loadGameInfos()
-							mutateState(`${$.debugName} update gameInfos [t62nft]`, () => {
+							mutateState($.debugName, `update gameInfos [t62nft]`, () => {
 								state.gameInfos = gameInfos
 							})
 						})
 						if (gameStore.id === id) {
-							mutateState(`${$.debugName} use default game [t6c1z3]`, () => {
+							mutateState($.debugName, `use default game [t6c1z3]`, () => {
 								Object.assign(gameStore, DEFAULT_GAME_STORE)
 							})
 						}

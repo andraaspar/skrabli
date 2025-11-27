@@ -79,7 +79,7 @@ export const NewGameScreenComp = defineComponent<{}>(
 		}
 
 		function nextBoard(offset: number) {
-			mutateState(`${$.debugName} nextBoard [t6wx01]`, () => {
+			mutateState($.debugName, `nextBoard [t6wx01]`, () => {
 				state.newGame.boardIndex += offset
 				if (state.newGame.boardIndex < 0)
 					state.newGame.boardIndex = BOARDS.length - 1
@@ -89,7 +89,7 @@ export const NewGameScreenComp = defineComponent<{}>(
 		}
 
 		function addPlayer() {
-			mutateState(`${$.debugName} addPlayer [t6wx02]`, () => {
+			mutateState($.debugName, `addPlayer [t6wx02]`, () => {
 				state.newGame.players.push({
 					name: `${state.newGame.players.length + 1}. játékos`,
 					level: AiLevel.Human,
@@ -98,19 +98,19 @@ export const NewGameScreenComp = defineComponent<{}>(
 		}
 
 		function removePlayer(index: number) {
-			mutateState(`${$.debugName} removePlayer [t6wx03]`, () => {
+			mutateState($.debugName, `removePlayer [t6wx03]`, () => {
 				state.newGame.players.splice(index, 1)
 			})
 		}
 
 		function changeLevel(index: number) {
-			mutateState(`${$.debugName} changeLevel [t6wx04]`, () => {
+			mutateState($.debugName, `changeLevel [t6wx04]`, () => {
 				state.changeLevelIndex = index
 			})
 		}
 
 		function selectLevel(aiLevel: AiLevel) {
-			mutateState(`${$.debugName} selectLevel [t6wx05]`, () => {
+			mutateState($.debugName, `selectLevel [t6wx05]`, () => {
 				const player = state.newGame.players.at(state.changeLevelIndex!)
 				if (player) {
 					if (player.level !== aiLevel) {
@@ -125,7 +125,7 @@ export const NewGameScreenComp = defineComponent<{}>(
 		}
 
 		function closeChangeLevel() {
-			mutateState(`${$.debugName} closeChangeLevel [t6wx06]`, () => {
+			mutateState($.debugName, `closeChangeLevel [t6wx06]`, () => {
 				state.changeLevelIndex = undefined
 			})
 		}
@@ -135,7 +135,7 @@ export const NewGameScreenComp = defineComponent<{}>(
 			if (value) {
 				const num = parseInt(value, 10)
 				if (!isNaN(num) && isFinite(num)) {
-					mutateState(`${$.debugName} onInputHintsCount [t6wx07]`, () => {
+					mutateState($.debugName, `onInputHintsCount [t6wx07]`, () => {
 						state.newGame.hintsCount = Math.max(0, Math.min(999, num))
 					})
 				}
@@ -150,7 +150,7 @@ export const NewGameScreenComp = defineComponent<{}>(
 		function start() {
 			const board = jsonClone(BOARDS[state.newGame.boardIndex]!.board)
 			const boardSize = jsonClone(BOARDS[state.newGame.boardIndex]!.boardSize)
-			mutateState(`${$.debugName} start game [t6wx08]`, () => {
+			mutateState($.debugName, `start game [t6wx08]`, () => {
 				Object.assign(gameStore, DEFAULT_GAME_STORE)
 				gameStore.playerInfos = state.newGame.players.map((player) => ({
 					name: player.name,
@@ -222,7 +222,8 @@ export const NewGameScreenComp = defineComponent<{}>(
 											value={() => newPlayer.item.name}
 											oninput={(e) => {
 												mutateState(
-													`${$.debugName} update player name [t6wx09]`,
+													$.debugName,
+													`update player name [t6wx09]`,
 													() => {
 														newPlayer.item.name = (
 															e.currentTarget as HTMLInputElement

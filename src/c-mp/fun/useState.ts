@@ -97,9 +97,13 @@ export function useState<T>(
 /**
  * Labels mutations for debugging.
  */
-export async function mutateState(name: string, fn: () => void) {
+export async function mutateState(
+	parent: string,
+	name: string,
+	fn: () => void,
+) {
 	try {
-		console.log(logLevel >= 1 ? '🔰 👾' : '👾', name)
+		console.log(logLevel >= 1 ? '🔰 👾' : '👾', parent, name)
 		allowMutation = true
 		fn()
 	} finally {
@@ -107,6 +111,6 @@ export async function mutateState(name: string, fn: () => void) {
 	}
 	if (logLevel >= 1) {
 		await allEffectsDone()
-		console.debug(`🛑 👾`, name)
+		console.debug(`🛑 👾`, parent, name)
 	}
 }

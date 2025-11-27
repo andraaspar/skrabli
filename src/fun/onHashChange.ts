@@ -2,7 +2,7 @@ import { mutateState } from '../c-mp/fun/useState'
 import { Screen, uiStore } from '../store/uiStore'
 
 export function onHashChange() {
-	mutateState(`onHashChange [t6c2f3]`, () => {
+	mutateState(`onHashChange`, `set screen [t6c2f3]`, () => {
 		switch (location.hash.slice(1)) {
 			case 'new':
 				uiStore.screen = Screen.New

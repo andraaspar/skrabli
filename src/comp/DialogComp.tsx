@@ -2,7 +2,7 @@ import { Show } from '../c-mp/comp/Show'
 import { defineComponent } from '../c-mp/fun/defineComponent'
 import { useEffect } from '../c-mp/fun/useEffect'
 import { mutateState, useState } from '../c-mp/fun/useState'
-import { TChildrenIn } from '../c-mp/model/TChildrenIn'
+import { TChildrenIn } from '../c-mp/model/TChildren'
 
 export const DialogComp = defineComponent<{
 	isOpen: () => boolean
@@ -19,7 +19,7 @@ export const DialogComp = defineComponent<{
 			then={() => (
 				<dialog
 					ref={(it) => {
-						mutateState(`${$.debugName} set dialog ref [t68s1j]`, () => {
+						mutateState($.debugName, `set dialog ref [t68s1j]`, () => {
 							dialogElem.ref = it
 						})
 					}}
@@ -33,7 +33,7 @@ export const DialogComp = defineComponent<{
 	)
 
 	useEffect('show dialog [t68hvv]', () => {
-		if (dialogElem.ref && props.isOpen()) {
+		if (dialogElem.ref && props.isOpen() && !dialogElem.ref.open) {
 			dialogElem.ref.showModal()
 		}
 	})

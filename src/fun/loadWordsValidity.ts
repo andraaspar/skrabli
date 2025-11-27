@@ -62,10 +62,8 @@ export async function loadWordsValidity(
 	// 		invalidWords: Array.from(invalidWords),
 	// 	}),
 	// )
-	const result: IWordsValidity = {
+	return {
 		validWords: Array.from(validWords),
 		invalidWords: Array.from(invalidWords),
 	}
-	console.log(`[t6cbbu] loadWordsValidity`, result)
-	return result
 }

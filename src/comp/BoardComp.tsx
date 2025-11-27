@@ -65,11 +65,11 @@ export const BoardComp = defineComponent<{
 				props.onSetJokerLetter()
 			}
 		} else if (state.fieldIndex === fieldIndex) {
-			mutateState(`${$.debugName} unset field index [t68q6i]`, () => {
+			mutateState($.debugName, `unset field index [t68q6i]`, () => {
 				state.fieldIndex = null
 			})
 		} else {
-			mutateState(`${$.debugName} set field index [t68q7a]`, () => {
+			mutateState($.debugName, `set field index [t68q7a]`, () => {
 				state.fieldIndex = fieldIndex
 			})
 		}

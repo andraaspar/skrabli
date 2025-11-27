@@ -1,6 +1,6 @@
 import xSvg from 'bootstrap-icons/icons/x-lg.svg?raw'
 import { defineComponent } from '../c-mp/fun/defineComponent'
-import { TChildrenIn } from '../c-mp/model/TChildrenIn'
+import { TChildrenIn } from '../c-mp/model/TChildren'
 import { IconComp } from './IconComp'
 
 export const DialogHeaderComp = defineComponent<{

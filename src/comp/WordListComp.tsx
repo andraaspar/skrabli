@@ -2,7 +2,7 @@ import { For } from '../c-mp/comp/For'
 import { Show } from '../c-mp/comp/Show'
 import { defineComponent } from '../c-mp/fun/defineComponent'
 import { mutateState, useState } from '../c-mp/fun/useState'
-import { TSlotGetter } from '../c-mp/model/TChildrenIn'
+import { TSlotGetter } from '../c-mp/model/TChildren'
 import { getWordScore } from '../fun/getWordScore'
 import { getWordString } from '../fun/getWordString'
 import { IField } from '../model/IField'
@@ -42,7 +42,8 @@ export const WordListComp = defineComponent<{
 									<button
 										onclick={() =>
 											mutateState(
-												`${$.debugName} set open word index [t68q97]`,
+												$.debugName,
+												`set open word index [t68q97]`,
 												() => {
 													state.openWordIndex = word.index
 												},
@@ -78,7 +79,8 @@ export const WordListComp = defineComponent<{
 							getIsValid={props.getValidity}
 							onClose={() =>
 								mutateState(
-									`${$.debugName} unset open word index [t68qa6]`,
+									$.debugName,
+									`unset open word index [t68qa6]`,
 									() => {
 										state.openWordIndex = -1
 									},

@@ -1,7 +1,7 @@
 import { defineComponent } from '../fun/defineComponent'
 import { expandSlots } from '../fun/expandSlots'
 import { untrack, useEffect } from '../fun/useEffect'
-import { TSlotValue } from '../model/TChildrenIn'
+import { TSlotValue } from '../model/TChildren'
 
 /**
  * Displays JSX or a string. If the string is trusted, shows it unescaped.
@@ -18,11 +18,11 @@ export const Slot = defineComponent<{
 	 */
 	isTrustedHtml?: boolean
 }>('Slot', (props, $) => {
-	useEffect('slotGetEffect', () => {
+	useEffect('value changed [t6e03o]', () => {
 		// Get the new value.
 		let value = props.get?.()
 
-		untrack('untrackSlotGetEffect', () => {
+		untrack('apply value [t6e03y]', () => {
 			// Remove the old content.
 			$.innerHTML = ''
 
