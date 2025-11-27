@@ -1,3 +1,4 @@
+import { useMemo } from '../c-mp/fun/useMemo'
 import { mutateState, useState } from '../c-mp/fun/useState'
 import { disownTiles } from '../fun/disownTiles'
 import { findStartFieldIndex } from '../fun/findStartFieldIndex'
@@ -80,24 +81,24 @@ export const gameStore = useState('gameStore', {
 			.playerScores.at(gameStore.getState().playerIndex!)!
 	},
 
-	getWordInfo(): IWordInfo {
+	getWordInfo: useMemo('getWordInfo', (): IWordInfo => {
 		return getWordInfo(
 			gameStore.getState().board,
 			gameStore.getState().boardSize,
 		)
-	},
+	}),
 
-	getAllOwnedWords(): IField[][] {
+	getAllOwnedWords: useMemo('getAllOwnedWords', (): IField[][] => {
 		return getAllOwnedWords(
 			gameStore.getState().board,
 			gameStore.getState().boardSize,
 			gameStore.getWordInfo(),
 		)
-	},
+	}),
 
-	getAllOwnedWordStrings(): string[] {
+	getAllOwnedWordStrings: useMemo('getAllOwnedWordStrings', (): string[] => {
 		return gameStore.getAllOwnedWords().map((word) => getWordString(word))
-	},
+	}),
 
 	getHand(): THand | null | undefined {
 		const playerIndex = gameStore.getState().playerIndex
@@ -119,22 +120,22 @@ export const gameStore = useState('gameStore', {
 		return gameStore.getField()?.tile ?? null
 	},
 
-	getStartFieldIndex(): number {
+	getStartFieldIndex: useMemo('getStartFieldIndex', (): number => {
 		return findStartFieldIndex(gameStore.getState().board)
-	},
+	}),
 
-	getMoveErrors(): MoveError[] {
+	getMoveErrors: useMemo('getMoveErrors', (): MoveError[] => {
 		return getMoveErrors(
 			gameStore.getState().board,
 			gameStore.getStartFieldIndex(),
 			gameStore.getAllOwnedWords(),
 			gameStore.getWordInfo(),
 		)
-	},
+	}),
 
-	getMoveScore(): number {
+	getMoveScore: useMemo('getMoveScore', (): number => {
 		return getMoveScore(gameStore.getAllOwnedWords(), gameStore.getIsBingo())
-	},
+	}),
 
 	getHandCount(): number {
 		return (gameStore.getHand() ?? []).reduce(
@@ -166,29 +167,32 @@ export const gameStore = useState('gameStore', {
 		})
 	},
 
-	getPlacedValidAndInvalidWords(): IValidAndInvalidWords | null {
-		const state = gameStore.getState()
-		const tile = gameStore.getTile()
-		if (state.fieldIndex == null || !tile || tile.isOwned) return null
-		const words = [
-			getWordAt(
-				state.board,
-				state.boardSize,
-				state.fieldIndex,
-				Direction.Horizontal,
-			).word,
-			getWordAt(
-				state.board,
-				state.boardSize,
-				state.fieldIndex,
-				Direction.Vertical,
-			).word,
-		].filter((word) => word.length > 1)
-		return {
-			valid: words,
-			invalid: [],
-		}
-	},
+	getPlacedValidAndInvalidWords: useMemo(
+		'getPlacedValidAndInvalidWords',
+		(): IValidAndInvalidWords | undefined => {
+			const state = gameStore.getState()
+			const tile = gameStore.getTile()
+			if (state.fieldIndex == null || !tile || tile.isOwned) return undefined
+			const words = [
+				getWordAt(
+					state.board,
+					state.boardSize,
+					state.fieldIndex,
+					Direction.Horizontal,
+				).word,
+				getWordAt(
+					state.board,
+					state.boardSize,
+					state.fieldIndex,
+					Direction.Vertical,
+				).word,
+			].filter((word) => word.length > 1)
+			return {
+				valid: words,
+				invalid: [],
+			}
+		},
+	),
 
 	getWinners(): number[] {
 		if (gameStore.getState().mode !== Mode.Ended) return []

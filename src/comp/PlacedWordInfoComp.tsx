@@ -9,13 +9,11 @@ export const PlacedWordInfoComp = defineComponent<{}>(
 	(props, $) => {
 		$.append(
 			<Show
-				when={() => !!gameStore.getPlacedValidAndInvalidWords()}
-				then={() => (
+				when={gameStore.getPlacedValidAndInvalidWords}
+				then={(getPlacedValidAndInvalidWords) => (
 					<div class={css['placed-word-info']}>
 						<WordListComp
-							getWords={() =>
-								gameStore.getPlacedValidAndInvalidWords()?.valid ?? []
-							}
+							getWords={() => getPlacedValidAndInvalidWords().valid}
 							getLabel={() => 'Szavak a választott mezőn'}
 						/>
 					</div>
