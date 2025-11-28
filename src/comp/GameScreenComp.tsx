@@ -114,9 +114,7 @@ export const GameScreenComp = defineComponent<{}>(
 												<Show
 													when={() => gameStore.getIsGameDrawn()}
 													then={() => 'Döntetlen!'}
-													else={() =>
-														`${() => gameStore.getWinnersNames()} győzött!`
-													}
+													else={() => `${gameStore.getWinnersNames()} győzött!`}
 												/>
 											</div>
 											<PlayersComp />
